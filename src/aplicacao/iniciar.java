@@ -90,6 +90,7 @@ public class iniciar {
 					JFrame frame2 = new SalvarDadosFuncionariosGUI(a1,m1);
 					JFrame frame3 = new SalvarDadosFuncionariosGUI(a1,e0);
 					JFrame frame4 = new SalvarDadosFuncionariosGUI(a1,e1);
+					frame3.setVisible(true);
 					
 				} catch (Exception e) {
 					e.printStackTrace();

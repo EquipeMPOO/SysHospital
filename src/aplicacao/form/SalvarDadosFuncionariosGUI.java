@@ -121,8 +121,7 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		//Neste primeiro caso ele foi criado sem nenhum atributo pela GerenteGUI
 		//Caso contrario, quer dizer que ele já existe e foi passado pela GerenciarFuncionarioGUI e já tem todos os atributos instanciados
 		
-		
-		if (!funcionario.getPessoa().equals(null)){ //Se funcionario.getPessoa() for diferente de nulo, ele fará o que está abaixo
+		if (!(funcionario.getPessoa() == null)){ //Se funcionario.getPessoa() for diferente de nulo, ele fará o que está abaixo
 			nomeField.setText(funcionario.getPessoa().getNome());
 			cpfField.setText(funcionario.getPessoa().getCpf());
 			nRegistroField.setText(Integer.toString(funcionario.getNumeroDeRegistro()));
