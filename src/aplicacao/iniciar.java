@@ -24,9 +24,5 @@ public class iniciar {
 		
 		JFrame primeiraTela = new LoginGUI();
 		primeiraTela.setVisible(true);
-
-		Administrador x = new Administrador();
-		JFrame a = new GerenciarFuncionarioGUI(x);
-		a.setVisible(true);
 	}
 }
