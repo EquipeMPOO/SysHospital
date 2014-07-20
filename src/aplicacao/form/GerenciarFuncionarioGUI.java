@@ -90,31 +90,9 @@ public class GerenciarFuncionarioGUI extends JFrame {
 //		PesquisarFuncionarioControle controlePesquisa = new PesquisarFuncionarioControle();
 //		final List<Funcionario> funcionariosPesquisados = controlePesquisa.pesquisar();
 //		
-		
-		
-		Pessoa x = new Pessoa();
-		x.setNome("fulano de tal");
-		x.setCpf("0000000");
-		Pessoa y = new Pessoa();
-		y.setNome("beltrano");
-		y.setCpf("16120");
-		Pessoa z = new Pessoa();
-		z.setNome("ciclano");
-		z.setCpf("414.465");
-		Funcionario a = new Medico();
-		a.setPessoa(x);
-		a.setIdentificadorInterno("10000");
-		Funcionario b = new Medico();
-		b.setPessoa(y);
-		b.setIdentificadorInterno("4000");
-		Funcionario c = new Enfermeiro();
-		c.setPessoa(z);
-		c.setIdentificadorInterno("3333");
+
 		
 		final ArrayList<Funcionario> funcionariosPesquisados = new ArrayList<Funcionario>();
-		funcionariosPesquisados.add(a);
-		funcionariosPesquisados.add(b);
-		funcionariosPesquisados.add(c);
 
 		Vector listaComboBox = new Vector();
 		listaComboBox.add("Pesquisar Funcionario...");
@@ -157,6 +135,42 @@ public class GerenciarFuncionarioGUI extends JFrame {
 	
 		funcionarioBox.setBounds(50, 61, 392, 20);
 		contentPane.add(funcionarioBox);
+		
+		btnInativar.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				 if (funcionarioBox.getSelectedItem() instanceof Enfermeiro){
+					 
+					 EnfermeiroDAO database = new EnfermeiroDAO();
+					 database.excluir((Enfermeiro)funcionarioBox.getSelectedItem());
+					 
+					 
+				 }
+				 else if (funcionarioBox.getSelectedItem() instanceof Medico){
+					 
+					 MedicoDAO database = new MedicoDAO();
+					 database.excluir((Medico) funcionarioBox.getSelectedItem());
+					 
+				 }
+				
+			}
+			
+		});
+		
+		btnAlterarDados.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+							 
+					 JFrame novaTela = new SalvarDadosFuncionariosGUI(usuario,funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1));
+					 novaTela.setVisible(true);
+					 GerenciarFuncionarioGUI.this.dispose();					 
+								
+			}
+			
+		
+		});
 		
 	}
 	
