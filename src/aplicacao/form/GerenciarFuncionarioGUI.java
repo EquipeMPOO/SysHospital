@@ -25,7 +25,8 @@ import javax.swing.JSpinner;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 
-import aplicacao.controle.PesquisarFuncionarioControle;
+import aplicacao.controle.GerenciamentoControle;
+import aplicacao.controle.PesquisarControle;
 import aplicacao.dao.EnfermeiroDAO;
 import aplicacao.dao.MedicoDAO;
 import aplicacao.dominio.*;
@@ -37,7 +38,7 @@ public class GerenciarFuncionarioGUI extends JFrame {
 	private JPanel contentPane;
 	private JComboBox funcionarioBox;
 	private JButton btnInativar, btnAlterarDados, btnVoltar;
-	private JTextPane textPane;
+	private JTextPane textLabel;
 	private JLabel lblGerenciarFuncionrio;
 
 	/**
@@ -75,9 +76,9 @@ public class GerenciarFuncionarioGUI extends JFrame {
 		btnAlterarDados.setFont(new Font("Georgia", Font.ITALIC, 11));
 		btnAlterarDados.setBounds(365, 238, 117, 23);
 		
-		textPane = new JTextPane();
-		textPane.setBackground(SystemColor.inactiveCaptionBorder);
-		textPane.setBounds(10, 92, 472, 135);
+		textLabel = new JTextPane();
+		textLabel.setBackground(SystemColor.inactiveCaptionBorder);
+		textLabel.setBounds(10, 92, 472, 135);
 		
 		this.configurarJComboBox();
 		
@@ -87,12 +88,39 @@ public class GerenciarFuncionarioGUI extends JFrame {
 	public void configurarJComboBox(){
 		
 		//Cria um objeto da classe PesquisarFuncionarioControle e em seguida utiliza o metodo pesquisar para retornar uma lista de todos os usuarios pesquisados
-//		PesquisarFuncionarioControle controlePesquisa = new PesquisarFuncionarioControle();
-//		final List<Funcionario> funcionariosPesquisados = controlePesquisa.pesquisar();
-//		
-
+		PesquisarControle controlePesquisa = new PesquisarControle();
 		
-		final ArrayList<Funcionario> funcionariosPesquisados = new ArrayList<Funcionario>();
+		Funcionario Mparametro = new Medico();
+		Funcionario Eparametro = new Enfermeiro();
+		Mparametro.setStatusDeUsuario(StatusDeUsuario.I.getStatus());
+		Eparametro.setStatusDeUsuario(StatusDeUsuario.I.getStatus());
+		
+		Pessoa x = new Pessoa();
+		x.setNome("fulano de tal");
+		x.setCpf("0000000");
+		Pessoa y = new Pessoa();
+		y.setNome("beltrano");
+		y.setCpf("16120");
+		Pessoa z = new Pessoa();
+		z.setNome("ciclano");
+		z.setCpf("414.465");
+		Funcionario a = new Medico();
+		a.setPessoa(x);
+		a.setIdentificadorInterno("10000");
+		Funcionario b = new Medico();
+		b.setPessoa(y);
+		b.setIdentificadorInterno("4000");
+		Funcionario c = new Enfermeiro();
+		c.setPessoa(z);
+		c.setIdentificadorInterno("3333");
+		
+		final List<Funcionario> funcionariosPesquisados = new ArrayList<Funcionario>();
+		//funcionariosPesquisados.addAll(controlePesquisa.pesquisarFuncionarioEspecifico(Mparametro));
+		//funcionariosPesquisados.addAll(controlePesquisa.pesquisarFuncionarioEspecifico(Eparametro));
+		
+		funcionariosPesquisados.add(a);
+		funcionariosPesquisados.add(b);
+		funcionariosPesquisados.add(c);
 
 		Vector listaComboBox = new Vector();
 		listaComboBox.add("Pesquisar Funcionario...");
@@ -109,7 +137,7 @@ public class GerenciarFuncionarioGUI extends JFrame {
 				
 				if (funcionarioBox.getSelectedIndex() == 0){
 					for (Component item : contentPane.getComponents()) {
-						if (item == textPane || item == btnAlterarDados || item == btnInativar){
+						if (item == textLabel || item == btnAlterarDados || item == btnInativar){
 							contentPane.remove(item);
 						}
 					}
@@ -125,8 +153,8 @@ public class GerenciarFuncionarioGUI extends JFrame {
 							+ "CPF: " + funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1).getPessoa().getCpf() + "\n"
 							+ "Identificador Interno: " + funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1).getIdentificadorInterno();						
 					
-					textPane.setText(texto);
-					contentPane.add(textPane);
+					textLabel.setText(texto);
+					contentPane.add(textLabel);
 				}				
 				
 			}
@@ -140,19 +168,10 @@ public class GerenciarFuncionarioGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				 if (funcionarioBox.getSelectedItem() instanceof Enfermeiro){
-					 
-					 EnfermeiroDAO database = new EnfermeiroDAO();
-					 database.excluir((Enfermeiro)funcionarioBox.getSelectedItem());
-					 
-					 
-				 }
-				 else if (funcionarioBox.getSelectedItem() instanceof Medico){
-					 
-					 MedicoDAO database = new MedicoDAO();
-					 database.excluir((Medico) funcionarioBox.getSelectedItem());
-					 
-				 }
+
+				GerenciamentoControle controleInativacao = new GerenciamentoControle(funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1));
+				controleInativacao.Inativar();
+				
 				
 			}
 			

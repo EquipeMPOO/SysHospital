@@ -23,7 +23,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 
-import aplicacao.controle.GerenciamentoFuncionarioControle;
+import aplicacao.controle.GerenciamentoControle;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Medico;
@@ -287,7 +287,7 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 
 				    					
 					//Aciona camada de Negócio do sistema para ela fazer as validaçoes necessarias
-					GerenciamentoFuncionarioControle controleAtualizar = new GerenciamentoFuncionarioControle(funcionario);
+					GerenciamentoControle controleAtualizar = new GerenciamentoControle(funcionario);
 					controleAtualizar.AlterarDados();
 			
 				}
@@ -302,7 +302,7 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 					adicionarTipoSanguineo(); //o Java interpreta isso como sendo this.adicionarTipoSanguineo()
 					
 					//Aciona camada de Negócio do sistema para ela fazer as validaçoes necessarias
-					GerenciamentoFuncionarioControle controleSalvar = new GerenciamentoFuncionarioControle(funcionario);
+					GerenciamentoControle controleSalvar = new GerenciamentoControle(funcionario);
 					controleSalvar.AlterarDados();
 					
 				}

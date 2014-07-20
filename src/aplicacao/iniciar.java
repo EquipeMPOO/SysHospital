@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+import aplicacao.dominio.Administrador;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Gerente;
@@ -24,6 +25,8 @@ public class iniciar {
 		JFrame primeiraTela = new LoginGUI();
 		primeiraTela.setVisible(true);
 
-		
+		Administrador x = new Administrador();
+		JFrame a = new GerenciarFuncionarioGUI(x);
+		a.setVisible(true);
 	}
 }
