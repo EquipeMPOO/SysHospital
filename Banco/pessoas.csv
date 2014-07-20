@@ -1,0 +1,11 @@
+idpessoa,nome,cpf,idade,tiposanguineo,sexo,paciente,statusdepessoa,funcionarios
+1,Gledes,001.773.697-81,34,AB+,F,NULL,Viva,NULL
+2,George,743.961.555-02,32,O-,M,NULL,Viva,NULL
+3,Haphael,987.634.777-98,40,B-,M,NULL,Viva,NULL
+4,Maurilha,123.985.964-32,37,A+,F,NULL,Viva,NULL
+5,Adelha,364.897.962-95,28,A-,F,NULL,Viva,NULL
+6,Yury,754.741.720-35,25,B+,M,NULL,Viva,NULL
+7,Larissa,325.325.652-62,24,O+,F,NULL,Viva,NULL
+8,Daiela,234.456.678-89,35,AB-,F,NULL,Viva,NULL
+9,Kelvs,567.765.576.76,25,O+,M,NULL,Viva,NULL
+10,Onésio,879.654.123.00,41,A-,M,NULL,Viva,NULL

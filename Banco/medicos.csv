@@ -1,0 +1,5 @@
+idfuncionario,login,senha,identificadorinterno,statusdeusuario,pessoa,numeroderegistro,especialidade
+1,Abc,12345,Abc-02-001,Inativo,1,21578,"Clínico geral"
+2,Cba,54321,Cba-01-003,Inativo,4,97500,Anestesista
+3,Wyz,67890,Wyz-03-002,Inativo,3,36971,Cirugião
+4,Zyw,09876,Zyw-01-004,Inativo,2,35753,Anestesista
