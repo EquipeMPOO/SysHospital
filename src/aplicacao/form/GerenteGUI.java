@@ -17,6 +17,8 @@ import java.awt.SystemColor;
 public class GerenteGUI extends JFrame {
 
 	private Gerente usuario;
+	private Medico medico;
+	private Enfermeiro enfermeiro;
 	private JPanel contentPane;
 	private JButton btnCadastrarPaciente, btnSair,btnCadastrarMedico,btnCadastrarEnfermeiro,btnInternarPaciente,btnLiberarPaciente, btnGerenciarFuncinario;
 
@@ -112,7 +114,7 @@ public class GerenteGUI extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Cadastro de Medico
 			
-				JFrame proximaTela = new CadastroMedicoGUI(usuario);
+				JFrame proximaTela = new SalvarDadosFuncionariosGUI(usuario, medico);
 				GerenteGUI.this.dispose();
 				proximaTela.setVisible(true);
 			
@@ -123,7 +125,7 @@ public class GerenteGUI extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Cadastro de Enfermeiro
 			
-				JFrame proximaTela = new CadastroEnfermeiroGUI(usuario);
+				JFrame proximaTela = new SalvarDadosFuncionariosGUI(usuario,enfermeiro);
 				GerenteGUI.this.dispose(); 
 				proximaTela.setVisible(true);
 				

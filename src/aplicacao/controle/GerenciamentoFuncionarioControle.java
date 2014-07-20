@@ -66,7 +66,7 @@ public class GerenciamentoFuncionarioControle {
 		if(funcionario instanceof Medico){
 			
 			MedicoDAO database = new MedicoDAO();
-			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,true);
+			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,false);
 			
 			//caso ele percorra todo o banco de dados e não encontre nenhum, quer dizer que ele ainda não está salvo no banco
 			if (funcionariosPesquisados.size() == 0){ 
@@ -79,7 +79,7 @@ public class GerenciamentoFuncionarioControle {
 		else{
 			
 			EnfermeiroDAO database = new EnfermeiroDAO();
-			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,true);
+			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,false);
 			
 			//caso ele percorra todo o banco de dados e não encontre nenhum, quer dizer que ele ainda não está salvo no banco 
 			if (funcionariosPesquisados.size() == 0){
