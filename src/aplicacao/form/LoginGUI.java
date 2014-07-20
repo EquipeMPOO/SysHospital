@@ -46,9 +46,6 @@ public class LoginGUI extends JFrame {
 	 */
 	public LoginGUI() {
 		
-		Gerente a = new Administrador();
-		JFrame b = new GerenteGUI(a);
-		
 		setTitle("SysHospital");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 250);
