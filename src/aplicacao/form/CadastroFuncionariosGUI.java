@@ -150,15 +150,29 @@ public class CadastroFuncionariosGUI extends JFrame {
 	public void criarLabel(){
 		
 		lblTitulo = new JLabel();
-		// Determina o nome do JLabel lblTitulo de acordo com o tipo de cadastro (Medico ou Enfermeiro)
+		// Determina o nome do JLabel lblTitulo de acordo com o tipo de cadastro/atualização (Medico ou Enfermeiro)
 		
 		if (funcionario instanceof Medico){
-			lblTitulo.setName("Cadastro de Médico");
+			if (funcionario.getPessoa() == null){
+				lblTitulo.setName("Cadastro de Médico");
+			}
+			else{
+				lblTitulo.setName("Atualizar dados de Médico");
+			}
 			
 		}
-		else{
-			lblTitulo.setName("Cadastro de Enfermeiro");
+		else if (funcionario instanceof Enfermeiro){
+			
+			if (funcionario.getPessoa() == null){
+				lblTitulo.setName("Cadastro de Enfermeiro");
+			}
+			else{
+				lblTitulo.setName("Atualizar dados de Enfemeiro");
+			}
 		}
+		
+		
+		
 		
 		lblTitulo.setFont(new Font("Georgia", Font.ITALIC, 25));
 		lblTitulo.setBounds(10, 11, 227, 33);
