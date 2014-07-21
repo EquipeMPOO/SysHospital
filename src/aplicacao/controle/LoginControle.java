@@ -14,19 +14,19 @@ import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
 import aplicacao.enums.StatusDeUsuario;
 
-public class FuncionarioControle {
+public class LoginControle {
 	private IFuncionarioDAO funcionario;
 	
-	public FuncionarioControle (Administrador f){
+	public LoginControle (Administrador f){
 			this.funcionario = new AdministradorDAO();
 	}
-	public FuncionarioControle (Atendente f){
+	public LoginControle (Atendente f){
 			this.funcionario = new AtendenteDAO();
 	}
-	public FuncionarioControle (Enfermeiro f){
+	public LoginControle (Enfermeiro f){
 			this.funcionario = new EnfermeiroDAO();
 	}
-	public FuncionarioControle (Medico f){
+	public LoginControle (Medico f){
 			this.funcionario = new MedicoDAO();
 	}
 	

@@ -24,7 +24,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
 	
 	public List<Funcionario> pesquisarTodos(Boolean pesquisarPessoa){
 		
-		Connection conecxao = ConecxaoBD.getConnection();
+		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Funcionario> funcionarios = new ArrayList<Funcionario>();
@@ -61,7 +61,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
         		e1.printStackTrace();
         	}
         	finally{
-        		ConecxaoBD.close(conecxao, ps, rs);
+        		ConexaoDAO.close(conecxao, ps, rs);
         	}
         	e.printStackTrace();
         }
@@ -72,7 +72,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
 	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
 		
 		Administrador administradorDeParametro = (Administrador) f;
-		Connection conecxao = ConecxaoBD.getConnection();
+		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Funcionario> funcionarios = new ArrayList<Funcionario>();
@@ -112,7 +112,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
         		e1.printStackTrace();
         	}
         	finally{
-        		ConecxaoBD.close(conecxao, ps, rs);
+        		ConexaoDAO.close(conecxao, ps, rs);
         	}
         	e.printStackTrace();
         }
@@ -122,7 +122,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
 	
 	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
 		
-		Connection conecxao = ConecxaoBD.getConnection();
+		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         List<Funcionario> funcionarios = new ArrayList<Funcionario>();
@@ -161,7 +161,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
         		e1.printStackTrace();
         	}
         	finally{
-        		ConecxaoBD.close(conecxao, ps, rs);
+        		ConexaoDAO.close(conecxao, ps, rs);
         	}
         	e.printStackTrace();
         }
@@ -174,7 +174,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
 	}
 	
 	public Funcionario alterar(Funcionario f, int iap){
-		Connection conecxao = ConecxaoBD.getConnection();
+		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         Administrador administrador = (Administrador) f;
         
@@ -194,7 +194,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
             	}catch(SQLException e1){
             		e1.printStackTrace();
             	}finally{
-            		ConecxaoBD.close(conecxao, ps, null);
+            		ConexaoDAO.close(conecxao, ps, null);
             	}
             	e.printStackTrace();
             }

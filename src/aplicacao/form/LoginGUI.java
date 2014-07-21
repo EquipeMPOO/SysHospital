@@ -22,7 +22,7 @@ import java.awt.Panel;
 
 import javax.swing.JSeparator;
 
-import aplicacao.controle.FuncionarioControle;
+import aplicacao.controle.LoginControle;
 import aplicacao.dominio.*;
 import aplicacao.enums.StatusDeUsuario;
 
@@ -31,18 +31,25 @@ import java.awt.Insets;
 import java.awt.SystemColor;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Icaro
+ * Tela inicial do programa. Um objeto desta classe é criado na classe Main
+ */
+
 public class LoginGUI extends JFrame {
 
 	private JPanel panelGeral;
 	private JPasswordField textSenha;
 	private JTextField textLogin;
 	private JLabel lblLogin, lblSenha, lblStatus;
-	private JButton btnEntrar, btnCancelar, btnGerente;
+	private JButton btnEntrar, btnApagar, btnGerente;
 	private Panel panelDeStatus;
 	private JSeparator separator;
 	
 	/**
-	 * Create the frame.
+	 * Construtor da tela de Login
+	 * Adiciona as configurações básicas de tela e utiliza o metodo CriarEventos
 	 */
 	public LoginGUI() {
 		
@@ -86,6 +93,10 @@ public class LoginGUI extends JFrame {
 		
 	}
 	
+	/**
+	 * Cria os atributos da classe JPasswordField
+	 * @return void
+	 */
 	
 	public void criarPasswordField(){
 		
@@ -97,7 +108,10 @@ public class LoginGUI extends JFrame {
 	}
 	
 	
-	
+	/**
+	 * Cria os atributos da classe JTextField
+	 * @return void
+	 */
 	public void criarTextFirld(){
 		
 		textLogin = new JTextField();
@@ -108,6 +122,10 @@ public class LoginGUI extends JFrame {
 	}
 	
 	
+	/**
+	 * Cria os atributos da classe JButton
+	 * @return void
+	 */
 	
 	public void criarButton(){
 		
@@ -116,10 +134,10 @@ public class LoginGUI extends JFrame {
 		btnEntrar.setBounds(75, 134, 90, 23);
 		panelGeral.add(btnEntrar);
 		
-		btnCancelar = new JButton("Cancelar");
-		btnCancelar.setFont(new Font("Georgia", Font.ITALIC, 12));
-		btnCancelar.setBounds(175, 134, 90, 23);
-		panelGeral.add(btnCancelar);
+		btnApagar = new JButton("Apagar");
+		btnApagar.setFont(new Font("Georgia", Font.ITALIC, 12));
+		btnApagar.setBounds(175, 134, 90, 23);
+		panelGeral.add(btnApagar);
 		
 		btnGerente = new JButton("Novo Gerente");
 		btnGerente.setFont(new Font("Georgia", Font.ITALIC, 12));
@@ -131,7 +149,10 @@ public class LoginGUI extends JFrame {
 		
 	}
 	
-	
+	/**
+	 * Cria os atributos da classe JLabel
+	 * @return void
+	 */
 	
 	public void criarLabel(){
 		
@@ -154,23 +175,44 @@ public class LoginGUI extends JFrame {
 	
 	}
 	
+	/**
+	 * Metodo que adiciona os eventos da classe LoginGUI
+	 * Cria duas classes internas chamadas EventoEntrar e EventoApagar
+	 * Instancia objetos dessas classes nos atributos btnApagar e btnEntrar
+	 * 
+	 *@return void
+	 */
+	
 	public void adicionarEventos(){
 		
+		 /**
+		 * Classe interna que implementa a interface ActionListener e sobrescreve o metodo actionPerformed
+		 */
 		class EventoEntrar implements ActionListener{			
 		
+			/**
+			 * Inicialmente há uma verificação para confirmar se todos os campos foram preenchidos
+			 * Caso não hajam impedimentos, serão criados objetos das subclasses de Funcionario: Enfermeiro, Administrador, Medico e Atendente
+			 * Em seguida, cria-se quatro objetos da classe LoginControle com os objetos criados acima como parâmetro
+			 * Em todos os objetos da classe LoginControle se utiliza-se o metodo pesquisarFiltrando que retorna uma lista de Funcionarios da mesma classe do parâmetro que tenham mesmo Login e senha
+			 * Espera-se que nas tabelas não existam usuarios com informações duplicadas, logo, só haverá um ou nenhum elemento nas listas retornadas pelo metodo pesquisarFiltrando
+			 * Cria-se um objeto das Classes GerenteGUI, MedicoGUI ou EnfermeiroGUI dependendo do tipo de usuário encontrando no banco de dados
+			 * Por fim, caso não seja possível logar por algum motivo, o programa executará o metodo informarMotivoDeNaoLogar
+			 * @return void
+			 */
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if (textLogin.getText().equals("") & textSenha.getText().equals("")){
 					lblStatus.setForeground(Color.RED);
-					lblStatus.setText("Por favor, isira o Login e a Senha.");
+					lblStatus.setText("Por favor, insira o Login e a Senha.");
 				}
 				else if (textLogin.getText().equals("")){
 					lblStatus.setForeground(Color.RED);
-					lblStatus.setText("Por favor, isira o Login.");
+					lblStatus.setText("Por favor, insira o Login.");
 				}
 				else if (textSenha.getText().equals("")){
 					lblStatus.setForeground(Color.RED);
-					lblStatus.setText("Por favor, isira a Senha.");
+					lblStatus.setText("Por favor, insira a Senha.");
 				}
 				
 				else if ( !(textLogin.getText().equals("")) & !(textSenha.getText().equals("")) ) {
@@ -179,15 +221,15 @@ public class LoginGUI extends JFrame {
 					administrador.setLogin(textLogin.getText());
 					administrador.setSenha(textSenha.getText());
 					ArrayList<Funcionario> adm = new ArrayList();
-					FuncionarioControle funcionarioAdministrador = new FuncionarioControle(administrador);
+					LoginControle funcionarioAdministrador = new LoginControle(administrador);
 					adm = (ArrayList<Funcionario>)funcionarioAdministrador.pesquisarFiltrando(administrador, false);
 					
 					Atendente aterndente = new Atendente();
 					aterndente.setLogin(textLogin.getText());
 					aterndente.setSenha(textSenha.getText());
 					ArrayList<Funcionario> ate = new ArrayList();
-					FuncionarioControle funcionarioAtendente =
-							new FuncionarioControle(aterndente);
+					LoginControle funcionarioAtendente =
+							new LoginControle(aterndente);
 					ate = (ArrayList<Funcionario>)
 							funcionarioAtendente.pesquisarFiltrando(aterndente, false);
 					
@@ -195,8 +237,8 @@ public class LoginGUI extends JFrame {
 					enfermeiro.setLogin(textLogin.getText());
 					enfermeiro.setSenha(textSenha.getText());
 					ArrayList<Funcionario> enf = new ArrayList();
-					FuncionarioControle funcionarioEnfermeiro =
-							new FuncionarioControle(enfermeiro);
+					LoginControle funcionarioEnfermeiro =
+							new LoginControle(enfermeiro);
 					enf = (ArrayList<Funcionario>)
 							funcionarioEnfermeiro.pesquisarFiltrando(enfermeiro, false);
 					
@@ -204,8 +246,8 @@ public class LoginGUI extends JFrame {
 					medico.setLogin(textLogin.getText());
 					medico.setSenha(textSenha.getText());
 					ArrayList<Funcionario> med = new ArrayList();
-					FuncionarioControle funcionarioMedico =
-							new FuncionarioControle(medico);
+					LoginControle funcionarioMedico =
+							new LoginControle(medico);
 					med = (ArrayList<Funcionario>)
 							funcionarioMedico.pesquisarFiltrando(medico, false);
 					
@@ -273,10 +315,15 @@ public class LoginGUI extends JFrame {
 					}
 				}
 			}
+			
+			/**
+			 * Verifica o atributo StatusDeUsuario do parametro f e exibe na label de Status o motivo de não ter sido possível efetuar login
+			 * @param f - Funcionario passado pelo metodo actionPerformed
+			 */
 
 			private void informarMotivoDeNaoLogar(Funcionario f) {
 				
-				if ( f.getStatusDeUsuario().equals(StatusDeUsuario.A.getStatus()) ){ // Caso a ser pensado!!!!
+				if ( f.getStatusDeUsuario().equals(StatusDeUsuario.A.getStatus()) ){
 					lblStatus.setForeground(Color.RED);
 					lblStatus.setText("Este usuário já está logado!");
 				}else
@@ -294,9 +341,16 @@ public class LoginGUI extends JFrame {
 			}
 		}
 		
+		/**
+		 * Classe interna que implementa a interface ActionListener e sobrescreve o metodo actionPerformed
+		 */
 		
-		class EventoCancelar implements ActionListener{
+		class EventoApagar implements ActionListener{
 			
+			/**
+			 * Apaga os campos de Login ou Senha, ou seja, trocam seu conteudo por uma String vazia
+			 * @return void
+			 */
 			public void actionPerformed(ActionEvent arg0) {
 				textLogin.setText("");
 				textSenha.setText("");
@@ -307,32 +361,10 @@ public class LoginGUI extends JFrame {
 		}
 		
 		EventoEntrar eventoEntrar = new EventoEntrar();
-		EventoCancelar eventoCancelar = new EventoCancelar();
+		EventoApagar eventoApagar = new EventoApagar();
 		btnEntrar.addActionListener(eventoEntrar);
-		btnCancelar.addActionListener(eventoCancelar);
+		btnApagar.addActionListener(eventoApagar);
 
 	}
 	
-	
-	
-	/*
-	
-	// Para testes com a tela.
-	
-	
-	private static final long serialVersionUID = 1L;
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					LoginGUI frame = new LoginGUI();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	 */
 }

@@ -26,7 +26,7 @@ import javax.swing.JTextPane;
 import javax.swing.JLabel;
 
 import aplicacao.controle.GerenciamentoControle;
-import aplicacao.controle.PesquisarControle;
+import aplicacao.controle.PacienteControle;
 import aplicacao.dao.EnfermeiroDAO;
 import aplicacao.dao.MedicoDAO;
 import aplicacao.dominio.*;
@@ -88,7 +88,7 @@ public class GerenciarFuncionarioGUI extends JFrame {
 	public void configurarJComboBox(){
 		
 		//Cria um objeto da classe PesquisarFuncionarioControle e em seguida utiliza o metodo pesquisar para retornar uma lista de todos os usuarios pesquisados
-		PesquisarControle controlePesquisa = new PesquisarControle();
+		PacienteControle controlePesquisa = new PacienteControle();
 		
 		Funcionario Mparametro = new Medico();
 		Funcionario Eparametro = new Enfermeiro();
@@ -169,6 +169,19 @@ public class GerenciarFuncionarioGUI extends JFrame {
 		
 		});
 		
+		btnVoltar.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+							 
+					 JFrame novaTela = new GerenteGUI(usuario);
+					 novaTela.setVisible(true);
+					 GerenciarFuncionarioGUI.this.dispose();					 
+								
+			}
+			
+		
+		});
 	}
 	
 

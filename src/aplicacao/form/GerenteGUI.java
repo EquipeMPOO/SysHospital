@@ -14,6 +14,14 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.SystemColor;
 
+/**
+ * 
+ * @author ICARO
+ * Classe GerenteGUI que herda a classe JFrame
+ * É instanciada após o Login ou ao se cancelar/finalizar uma operação de outra tela
+ *
+ */
+
 public class GerenteGUI extends JFrame {
 
 	private Gerente usuario;
@@ -22,9 +30,12 @@ public class GerenteGUI extends JFrame {
 	private JPanel contentPane;
 	private JButton btnCadastrarPaciente, btnSair,btnCadastrarMedico,btnCadastrarEnfermeiro,btnInternarPaciente,btnLiberarPaciente, btnGerenciarFuncinario;
 
+
 	/**
-	 * Cria a janela.
-	 * 
+	 * Construtor da classe. Assiona os metodos que adicionam os componentes e eventos da tela
+	 * O tipo da instancia usuario define qual será o tamanho da tela e quais são seus componentes
+	 * @param user - Administrador ou Atendente passado na tela anterior
+	 * @return void
 	 */
 	public GerenteGUI(Gerente user) {
 		
@@ -34,7 +45,13 @@ public class GerenteGUI extends JFrame {
 		//espaco para configurar a janela e seu contentPane
 		setBackground(SystemColor.activeCaption);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 228, 391);
+		if (usuario instanceof Administrador){
+			setBounds(100, 100, 228, 391);
+		}
+		else{
+			setBounds(50, 100, 228, 251);
+		}
+
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -47,6 +64,12 @@ public class GerenteGUI extends JFrame {
 		
 	}
 	
+	/**
+	 * Metodo que adiciona os atributos da classe JButton
+	 * As configurações de localização e composição dependem da classe do atributo usuario
+	 * @return void
+	 */
+	
 	public void criarBotoes(){
 		
 		//metodo que cria todos os botoes necessarios para o GerenteGUI
@@ -58,42 +81,51 @@ public class GerenteGUI extends JFrame {
 		btnCadastrarPaciente.setBounds(10, 11, 193, 38);
 		contentPane.add(btnCadastrarPaciente);
 		
-		//this.botaoSair
-		btnSair = new JButton("Sair");
-		btnSair.setFont(new Font("Georgia", Font.ITALIC, 11));
-		btnSair.setBackground(SystemColor.activeCaption);
-		btnSair.setBounds(10, 318, 89, 23);
-		contentPane.add(btnSair);
-		
-		btnCadastrarMedico = new JButton("Cadastrar medico");
-		btnCadastrarMedico.setFont(new Font("Georgia", Font.ITALIC, 16));
-		btnCadastrarMedico.setBackground(SystemColor.activeCaption);
-		btnCadastrarMedico.setBounds(10, 60, 193, 38);
-		contentPane.add(btnCadastrarMedico);
-		
-		btnCadastrarEnfermeiro = new JButton("Cadastrar enfermeiro");
-		btnCadastrarEnfermeiro.setFont(new Font("Georgia", Font.ITALIC, 16));
-		btnCadastrarEnfermeiro.setBackground(SystemColor.activeCaption);
-		btnCadastrarEnfermeiro.setBounds(10, 109, 193, 38);
-		contentPane.add(btnCadastrarEnfermeiro);
-		
 		btnInternarPaciente = new JButton("Internar paciente");
 		btnInternarPaciente.setFont(new Font("Georgia", Font.ITALIC, 16));
 		btnInternarPaciente.setBackground(SystemColor.activeCaption);
-		btnInternarPaciente.setBounds(10, 256, 193, 38);
+		btnInternarPaciente.setBounds(10, 60, 193, 38);
 		contentPane.add(btnInternarPaciente);
 		
 		btnLiberarPaciente = new JButton("Liberar paciente");
 		btnLiberarPaciente.setFont(new Font("Georgia", Font.ITALIC, 16));
 		btnLiberarPaciente.setBackground(SystemColor.activeCaption);
-		btnLiberarPaciente.setBounds(10, 207, 193, 38);
+		btnLiberarPaciente.setBounds(10, 109, 193, 38);
 		contentPane.add(btnLiberarPaciente);
+
 		
-		btnGerenciarFuncinario = new JButton("Gerenciar funcin\u00E1rio");
-		btnGerenciarFuncinario.setFont(new Font("Georgia", Font.ITALIC, 16));
-		btnGerenciarFuncinario.setBackground(SystemColor.activeCaption);
-		btnGerenciarFuncinario.setBounds(10, 158, 193, 38);
-		contentPane.add(btnGerenciarFuncinario);
+		//this.botaoSair
+		btnSair = new JButton("Sair");
+		btnSair.setFont(new Font("Georgia", Font.ITALIC, 11));
+		btnSair.setBackground(SystemColor.activeCaption);
+		btnSair.setBounds(10, 178, 89, 23);
+		contentPane.add(btnSair);
+		
+		if (usuario instanceof Administrador){
+			
+			btnCadastrarMedico = new JButton("Cadastrar medico");
+			btnCadastrarMedico.setFont(new Font("Georgia", Font.ITALIC, 16));
+			btnCadastrarMedico.setBackground(SystemColor.activeCaption);
+			btnCadastrarMedico.setBounds(10, 256, 193, 38);
+			contentPane.add(btnCadastrarMedico);
+			
+			btnCadastrarEnfermeiro = new JButton("Cadastrar enfermeiro");
+			btnCadastrarEnfermeiro.setFont(new Font("Georgia", Font.ITALIC, 16));
+			btnCadastrarEnfermeiro.setBackground(SystemColor.activeCaption);
+			btnCadastrarEnfermeiro.setBounds(10, 158, 193, 38);
+			contentPane.add(btnCadastrarEnfermeiro);
+			
+			btnGerenciarFuncinario = new JButton("Gerenciar funcionario");
+			btnGerenciarFuncinario.setFont(new Font("Georgia", Font.ITALIC, 16));
+			btnGerenciarFuncinario.setBackground(SystemColor.activeCaption);
+			btnGerenciarFuncinario.setBounds(10, 207, 193, 38);
+			contentPane.add(btnGerenciarFuncinario);
+			
+			btnSair.setBounds(10, 318, 89, 23);
+
+		
+		}
+
 	}
 
 	
@@ -191,12 +223,18 @@ public class GerenteGUI extends JFrame {
 		ActionListener[] lista = this.criarClassesEvento();	//captura a lista retornada pelo metodo criarClassesEvento() e adiciona numa variavel lista do tipo ActionListener Array
 		
 		btnCadastrarPaciente.addActionListener(lista[0]);
-		btnCadastrarMedico.addActionListener(lista[1]);
-		btnCadastrarEnfermeiro.addActionListener(lista[2]);
-		btnGerenciarFuncinario.addActionListener(lista[3]);
+		
+		if(usuario instanceof Administrador){
+			btnCadastrarMedico.addActionListener(lista[1]);
+			btnCadastrarEnfermeiro.addActionListener(lista[2]);
+			btnGerenciarFuncinario.addActionListener(lista[3]);
+		}
+		
 		btnInternarPaciente.addActionListener(lista[4]);
 		btnLiberarPaciente.addActionListener(lista[5]);
 		btnSair.addActionListener(lista[6]); 
 		
 	}
+	
+	
 }

@@ -12,7 +12,7 @@ import aplicacao.dominio.Medico;
 import aplicacao.dominio.Paciente;
 import aplicacao.enums.StatusDeUsuario;
 
-public class PesquisarControle {
+public class PacienteControle {
 	
 	
 	

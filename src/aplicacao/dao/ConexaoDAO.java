@@ -6,7 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ConecxaoBD {
+public class ConexaoDAO {
 	
     private static final String URL_MYSQL = "jdbc:mysql://localhost/syshospital_v1";
     private static final String DRIVER_CLASS_MYSQL = "com.mysql.jdbc.Driver";

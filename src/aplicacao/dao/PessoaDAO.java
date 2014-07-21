@@ -18,7 +18,7 @@ public class PessoaDAO implements IPessoaDAO{
 	@Override
 	public int cadastrar(Pessoa novaPessoa) {
 		
-		Connection conexao = ConecxaoBD.getConnection();
+		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement statement = null;
 		int retorno = 0;
 
@@ -60,7 +60,7 @@ public class PessoaDAO implements IPessoaDAO{
         		 
         		 e1.printStackTrace();
         	 }finally{
-        		 ConecxaoBD.close(conexao, statement, null);
+        		 ConexaoDAO.close(conexao, statement, null);
         	 }
         	 e.printStackTrace();
         	 
