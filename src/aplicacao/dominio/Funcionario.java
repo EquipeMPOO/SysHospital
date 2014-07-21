@@ -2,21 +2,22 @@ package aplicacao.dominio;
 
 public abstract class Funcionario {
 	
-	private int numeroDeRegistro;
+	private int NumeroDeRegistro;
 	private int idFuncionario;
 	private String login;
 	private String senha;
 	private String identificadorInterno;
 	private String statusDeUsuario;
-	private Pessoa pessoa;
-	
+	private Pessoa pessoa;	
 	
 	public int getNumeroDeRegistro() {
-		return numeroDeRegistro;
+		return NumeroDeRegistro;
 	}
+
 	public void setNumeroDeRegistro(int numeroDeRegistro) {
-		this.numeroDeRegistro = numeroDeRegistro;
+		NumeroDeRegistro = numeroDeRegistro;
 	}
+
 	public int getIdFuncionario() {
 		return idFuncionario;
 	}
