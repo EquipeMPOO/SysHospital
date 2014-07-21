@@ -114,6 +114,10 @@ public class Testes {
 		JFrame frame2 = new SalvarDadosFuncionariosGUI(a1,m1);
 		JFrame frame3 = new SalvarDadosFuncionariosGUI(a1,e0);
 		JFrame frame4 = new SalvarDadosFuncionariosGUI(a1,e1);
+		frame1.setVisible(true);
+		frame2.setVisible(true);
+		frame3.setVisible(true);
+		frame4.setVisible(true);
 		
 		/*
 		// Teste dos métodos de Administrador:
