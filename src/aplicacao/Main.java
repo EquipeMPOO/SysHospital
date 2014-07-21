@@ -26,8 +26,8 @@ public class Main {
 		
 	public static void main(String[] args) throws SQLException {
 		
-		//JFrame primeiraTela = new LoginGUI();
-		//primeiraTela.setVisible(true);
+		JFrame primeiraTela = new LoginGUI();
+		primeiraTela.setVisible(true);
 		
 	}
 }
