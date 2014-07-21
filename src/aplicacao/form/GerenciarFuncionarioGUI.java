@@ -93,34 +93,12 @@ public class GerenciarFuncionarioGUI extends JFrame {
 		Funcionario Mparametro = new Medico();
 		Funcionario Eparametro = new Enfermeiro();
 		Mparametro.setStatusDeUsuario(StatusDeUsuario.I.getStatus());
-		Eparametro.setStatusDeUsuario(StatusDeUsuario.I.getStatus());
-		
-		Pessoa x = new Pessoa();
-		x.setNome("fulano de tal");
-		x.setCpf("0000000");
-		Pessoa y = new Pessoa();
-		y.setNome("beltrano");
-		y.setCpf("16120");
-		Pessoa z = new Pessoa();
-		z.setNome("ciclano");
-		z.setCpf("414.465");
-		Funcionario a = new Medico();
-		a.setPessoa(x);
-		a.setIdentificadorInterno("10000");
-		Funcionario b = new Medico();
-		b.setPessoa(y);
-		b.setIdentificadorInterno("4000");
-		Funcionario c = new Enfermeiro();
-		c.setPessoa(z);
-		c.setIdentificadorInterno("3333");
+		//Eparametro.setStatusDeUsuario(StatusDeUsuario.I.getStatus());
 		
 		final List<Funcionario> funcionariosPesquisados = new ArrayList<Funcionario>();
-		//funcionariosPesquisados.addAll(controlePesquisa.pesquisarFuncionarioEspecifico(Mparametro));
+		funcionariosPesquisados.addAll(controlePesquisa.pesquisarFuncionarioEspecifico(Mparametro));
 		//funcionariosPesquisados.addAll(controlePesquisa.pesquisarFuncionarioEspecifico(Eparametro));
 		
-		funcionariosPesquisados.add(a);
-		funcionariosPesquisados.add(b);
-		funcionariosPesquisados.add(c);
 
 		Vector listaComboBox = new Vector();
 		listaComboBox.add("Pesquisar Funcionario...");
