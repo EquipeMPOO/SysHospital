@@ -1,8 +1,12 @@
 package aplicacao;
 
 import java.awt.EventQueue;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
+
+import com.mysql.jdbc.Connection;
 
 import aplicacao.dominio.Administrador;
 import aplicacao.dominio.Atendente;
@@ -20,9 +24,10 @@ import aplicacao.dao.MedicoDAO;
 
 public class iniciar {
 		
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		
 		JFrame primeiraTela = new LoginGUI();
 		primeiraTela.setVisible(true);
+		
 	}
 }
