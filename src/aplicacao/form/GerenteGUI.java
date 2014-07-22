@@ -238,13 +238,5 @@ public class GerenteGUI extends JFrame {
 		
 	}
 	
-	public static void main(String[] args) {
-		
-		Gerente x = new Administrador();
-		GerenteGUI b = new GerenteGUI(x);
-		b.setVisible(true);
-		
-	}
-	
 	
 }
