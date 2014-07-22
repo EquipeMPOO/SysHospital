@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.Color;
 
 /**
  * 
@@ -53,7 +54,7 @@ public class GerenteGUI extends JFrame {
 		}
 
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.inactiveCaption);
+		contentPane.setBackground(SystemColor.activeCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -76,20 +77,21 @@ public class GerenteGUI extends JFrame {
 		
 		//this.botaoCadastrarPaciente
 		btnCadastrarPaciente = new JButton("Cadastrar paciente");
-		btnCadastrarPaciente.setBackground(SystemColor.activeCaption);
+		btnCadastrarPaciente.setForeground(SystemColor.controlText);
+		btnCadastrarPaciente.setBackground(SystemColor.controlHighlight);
 		btnCadastrarPaciente.setFont(new Font("Georgia", Font.ITALIC, 16));	
 		btnCadastrarPaciente.setBounds(10, 11, 193, 38);
 		contentPane.add(btnCadastrarPaciente);
 		
 		btnInternarPaciente = new JButton("Internar paciente");
 		btnInternarPaciente.setFont(new Font("Georgia", Font.ITALIC, 16));
-		btnInternarPaciente.setBackground(SystemColor.activeCaption);
+		btnInternarPaciente.setBackground(SystemColor.controlHighlight);
 		btnInternarPaciente.setBounds(10, 60, 193, 38);
 		contentPane.add(btnInternarPaciente);
 		
 		btnLiberarPaciente = new JButton("Liberar paciente");
 		btnLiberarPaciente.setFont(new Font("Georgia", Font.ITALIC, 16));
-		btnLiberarPaciente.setBackground(SystemColor.activeCaption);
+		btnLiberarPaciente.setBackground(SystemColor.controlHighlight);
 		btnLiberarPaciente.setBounds(10, 109, 193, 38);
 		contentPane.add(btnLiberarPaciente);
 
@@ -97,7 +99,7 @@ public class GerenteGUI extends JFrame {
 		//this.botaoSair
 		btnSair = new JButton("Sair");
 		btnSair.setFont(new Font("Georgia", Font.ITALIC, 11));
-		btnSair.setBackground(SystemColor.activeCaption);
+		btnSair.setBackground(SystemColor.controlHighlight);
 		btnSair.setBounds(10, 178, 89, 23);
 		contentPane.add(btnSair);
 		
@@ -105,19 +107,19 @@ public class GerenteGUI extends JFrame {
 			
 			btnCadastrarMedico = new JButton("Cadastrar medico");
 			btnCadastrarMedico.setFont(new Font("Georgia", Font.ITALIC, 16));
-			btnCadastrarMedico.setBackground(SystemColor.activeCaption);
+			btnCadastrarMedico.setBackground(SystemColor.controlHighlight);
 			btnCadastrarMedico.setBounds(10, 256, 193, 38);
 			contentPane.add(btnCadastrarMedico);
 			
 			btnCadastrarEnfermeiro = new JButton("Cadastrar enfermeiro");
 			btnCadastrarEnfermeiro.setFont(new Font("Georgia", Font.ITALIC, 16));
-			btnCadastrarEnfermeiro.setBackground(SystemColor.activeCaption);
+			btnCadastrarEnfermeiro.setBackground(SystemColor.controlHighlight);
 			btnCadastrarEnfermeiro.setBounds(10, 158, 193, 38);
 			contentPane.add(btnCadastrarEnfermeiro);
 			
 			btnGerenciarFuncinario = new JButton("Gerenciar funcionario");
 			btnGerenciarFuncinario.setFont(new Font("Georgia", Font.ITALIC, 16));
-			btnGerenciarFuncinario.setBackground(SystemColor.activeCaption);
+			btnGerenciarFuncinario.setBackground(SystemColor.controlHighlight);
 			btnGerenciarFuncinario.setBounds(10, 207, 193, 38);
 			contentPane.add(btnGerenciarFuncinario);
 			
@@ -233,6 +235,14 @@ public class GerenteGUI extends JFrame {
 		btnInternarPaciente.addActionListener(lista[4]);
 		btnLiberarPaciente.addActionListener(lista[5]);
 		btnSair.addActionListener(lista[6]); 
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		Gerente x = new Administrador();
+		GerenteGUI b = new GerenteGUI(x);
+		b.setVisible(true);
 		
 	}
 	

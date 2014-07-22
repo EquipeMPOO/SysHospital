@@ -43,7 +43,7 @@ public class LoginGUI extends JFrame {
 	private JPasswordField textSenha;
 	private JTextField textLogin;
 	private JLabel lblLogin, lblSenha, lblStatus;
-	private JButton btnEntrar, btnApagar, btnGerente;
+	private JButton btnEntrar, btnApagar;
 	private Panel panelDeStatus;
 	private JSeparator separator;
 	
@@ -131,21 +131,13 @@ public class LoginGUI extends JFrame {
 		
 		btnEntrar = new JButton("Entrar");
 		btnEntrar.setFont(new Font("Georgia", Font.ITALIC, 12));
-		btnEntrar.setBounds(75, 134, 90, 23);
+		btnEntrar.setBounds(126, 134, 90, 23);
 		panelGeral.add(btnEntrar);
 		
 		btnApagar = new JButton("Apagar");
 		btnApagar.setFont(new Font("Georgia", Font.ITALIC, 12));
-		btnApagar.setBounds(175, 134, 90, 23);
-		panelGeral.add(btnApagar);
-		
-		btnGerente = new JButton("Novo Gerente");
-		btnGerente.setFont(new Font("Georgia", Font.ITALIC, 12));
-		btnGerente.setMargin(new Insets(2, 4, 2, 4));
-		btnGerente.setBounds(275, 134, 90, 23);
-		panelGeral.add(btnGerente);
-		
-		
+		btnApagar.setBounds(275, 134, 90, 23);
+		panelGeral.add(btnApagar);		
 		
 	}
 	
