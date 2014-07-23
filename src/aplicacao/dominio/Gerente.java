@@ -1,5 +1,11 @@
 package aplicacao.dominio;
 
+/**
+ * 
+ * @author icaro
+ * Classe abstrara que representa os gerentes do sistema
+ */
+
 public abstract class Gerente extends Funcionario {
  
 	private String cargo;

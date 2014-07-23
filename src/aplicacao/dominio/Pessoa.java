@@ -1,5 +1,11 @@
 package aplicacao.dominio;
 
+/**
+ * 
+ * @author icaro
+ * Classe que representa todas as pessoas físicas do sistema
+ */
+
 public class Pessoa {
 	
 	private int idPessoa;

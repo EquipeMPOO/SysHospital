@@ -1,5 +1,12 @@
 package aplicacao.dominio;
 
+/**
+ * 
+ * @author icaro
+ * Classe abastrata que agrupa todos os funcionarios do sistema
+ * Possui todos os dados comuns a todos os trabalhadores do software, além de um atributo da classe pessoa
+ */
+
 public abstract class Funcionario {
 	
 	private int NumeroDeRegistro;

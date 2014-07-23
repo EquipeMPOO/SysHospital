@@ -32,6 +32,13 @@ import aplicacao.dominio.Gerente;
 import aplicacao.dominio.Pessoa;
 import aplicacao.enums.TipoSanguineo;
 
+/**
+ * 
+ * @author icaro
+ * Classe que agrupa a tela responsável por todas as operações de inserção e modificação de médicos e enfermeiros no sistema
+ * Pode ser instanciada por um administrador para gerenciar os demais funcionarios do software ou para adicionar um novo funcionario
+ */
+
 public class SalvarDadosFuncionariosGUI extends JFrame {
 	
 	private Gerente usuario;
@@ -43,7 +50,7 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 	private Funcionario funcionario;
 	
 	/**
-	 * Cria a janela.
+	 * Cria a janela e adocopma todos os componentes adequados para a operação realizada pela tela
 	 */
 	
 	public SalvarDadosFuncionariosGUI(Gerente usuario,Funcionario funcionario) {
@@ -69,7 +76,9 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 	
 	
 	/**
-	 * Mehtodos para criar os componentes na tela.
+	 * Metodos para criar os componentes na tela.
+	 * Caso esta tela esteja sendo utilizada para cadastro, os campos serão inicializados vazios
+	 * Caso esta tela esteja sendo utilizada para atualização de dados, os campos serão inicializados com os valores informados no construtor da tela
 	 */
 	
 	public void criarTextField(){
@@ -117,6 +126,10 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 	}
 	
 	// OBSERVE: ALTERACAO FEITA AQUI!!!!
+	/**
+	 * Aplica os campos de texto fixos da tela. O título que aparecerá no topo da tela e alguns campos preenchidos dependem de qual classe o atributo funcionario pertence
+	 */
+	
 	public void criarLabel(){
 		
 		lblTitulo = new JLabel();
@@ -201,6 +214,12 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 	}
 	
 	// OBSERVE: ALTERACAO FEITA AQUI!!!
+	
+	/**
+	 * Adiciona todas as caixas de seleção necessarias para as operações socilitadas
+	 * Caso o tipo de funcionario a ser cadastrado/alterado seja um medico, haverá uma caixa de selação extra para definir qual a sua especialidade 
+	 */
+	
 	public void criarComboBox(){
 		
 		sexoBox = new JComboBox();
@@ -232,7 +251,9 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		
 	}
 	
-	
+	/**
+	 * Adiciona os botoes necessarios para execucao da tela
+	 */
 	public void criarButton(){
 		
 		btnSalvar = new JButton("Salvar");
@@ -247,6 +268,13 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		
 	}
 
+	
+	/**
+	 * Metodo responsavel pela adicao de todos os eventos necessarios para cadastrar/atualizar dados de um funcionario no sistema
+	 * A operação realizada ao se realizar o evento do clico dependerá da classe a qual o atributo funcionario pertence
+	 * Os dados capturados pela tela serão salvos num objeto da classe de domínio que representará o funcionario que se deseja cadastrar/alterar
+	 * Dentro desse metodo há um acesso a camada de negócio que fará as validações e verificações necessárias para efetuação do casdastro/alteração
+	 */
 	
 	public void adicionarEventoSalvarFuncionario(){			
 		
@@ -311,7 +339,11 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		});
 		
 	}	
-		
+	
+	/**
+	 * Metodo necessario por adicionar um evento de cancelar operação
+	 * Retorna para a tela de gerente 
+	 */
 		
 	public void adicionarEventocancelar(){
 		
@@ -329,7 +361,11 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 	
 			
 	}
-		
+	
+	/**
+	 * Metodo responsavel pela analise de qual tipo sanguineo foi selecionado pelo usuario e qual será devidamente cadastrado no banco de dados
+	 * A operação depende da combinação das opções selecionadas entre as caixas de seleção de tipo sanguineo e fator RH
+	 */
 		
 	public void adicionarTipoSanguineo(){
 		

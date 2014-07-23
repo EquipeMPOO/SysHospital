@@ -14,6 +14,12 @@ import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
 import aplicacao.enums.StatusDeUsuario;
 
+/**
+ * 
+ * @author icaro
+ * Classe que aplica as regras necessarias para efetivação do ato de login
+ */
+
 public class LoginControle {
 	private IFuncionarioDAO funcionario;
 	

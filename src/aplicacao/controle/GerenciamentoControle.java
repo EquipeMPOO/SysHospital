@@ -11,6 +11,11 @@ import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
 
+/** 
+ * @author icaro
+ * Classe responsável pelo controle das ações de alteração, inserção e remoção de funcionarios do sistema
+ */
+
 public class GerenciamentoControle {
 	
 	private Funcionario funcionario;
@@ -19,6 +24,11 @@ public class GerenciamentoControle {
 		this.funcionario = funcionario;
 	}
 	
+	
+	/**
+	 * Metodo que verifica qual a classe do atributo funcionario e decide qual a classe de persistência adequada para operar a mudança de dados
+	 * @return boolean - Explica se a operação solicitada foi concluida
+	 */
 	
 	public boolean AlterarDados(){
 		
@@ -45,6 +55,11 @@ public class GerenciamentoControle {
 		
 	}
 	
+	/**
+	 * Metodo que verifica qual a classe do atributo funcionario e decide qual a classe de persistência adequada para operar a inativação do funcionario no sistema
+	 * @return boolean - Explica se a operação solicitada foi concluida
+	 */
+	
 	public boolean Inativar(){
 		
 		if(funcionario instanceof Medico){
@@ -70,6 +85,13 @@ public class GerenciamentoControle {
 		return true;
 		
 	}
+	
+	
+	/**
+	 * Metodo que verifica qual a classe do atributo funcionario e decide qual a classe de persistência adequada para operar o cadastro
+	 * Antes de relizar o cadastro há uma verificação para conferir se já há um funcionario com os dados informados no banco de dados
+	 * @return boolean - Explica se a operação solicitada foi concluida
+	 */
 	
 	public boolean Cadastrar(){
 		
