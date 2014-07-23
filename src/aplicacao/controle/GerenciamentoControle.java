@@ -2,9 +2,11 @@ package aplicacao.controle;
 
 import java.util.List;
 
+import aplicacao.dao.AtendenteDAO;
 import aplicacao.dao.EnfermeiroDAO;
 import aplicacao.dao.MedicoDAO;
 import aplicacao.dao.EnfermeiroDAO;
+import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
@@ -26,14 +28,18 @@ public class GerenciamentoControle {
 			database.alterar(funcionario, 0);
 			
 		}
-		else{
+		else if (funcionario instanceof Enfermeiro){
 			
 			EnfermeiroDAO database = new EnfermeiroDAO();
 			database.alterar(funcionario, 0);
 			
-			
 		}
 		
+		else if (funcionario instanceof Atendente){
+			AtendenteDAO database = new AtendenteDAO();
+			database.alterar(funcionario, 0);
+			
+		}
 		return true;
 		
 		
@@ -48,9 +54,15 @@ public class GerenciamentoControle {
 			
 		}
 		
-		else{
+		else if (funcionario instanceof Enfermeiro){
 			
 			EnfermeiroDAO database = new EnfermeiroDAO();
+			database.excluir(funcionario);
+			
+		}
+		
+		else if (funcionario instanceof Atendente){
+			AtendenteDAO database = new AtendenteDAO();
 			database.excluir(funcionario);
 			
 		}
@@ -76,7 +88,7 @@ public class GerenciamentoControle {
 			
 		}
 		
-		else{
+		else if (funcionario instanceof Enfermeiro){
 			
 			EnfermeiroDAO database = new EnfermeiroDAO();
 			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,false);
@@ -87,6 +99,19 @@ public class GerenciamentoControle {
 				resultado = true;
 			}
 			
+			
+		}
+		
+		else if (funcionario instanceof Atendente){
+			
+			AtendenteDAO database = new AtendenteDAO();
+			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,false);
+			
+			//caso ele percorra todo o banco de dados e não encontre nenhum, quer dizer que ele ainda não está salvo no banco 
+			if (funcionariosPesquisados.size() == 0){
+				database.cadastrar(funcionario);
+				resultado = true;
+			}
 			
 		}
 		return resultado;

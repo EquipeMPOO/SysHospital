@@ -1,9 +1,7 @@
 package aplicacao.form;
 
-import java.awt.BorderLayout;
-import aplicacao.dominio.*;
-import java.awt.EventQueue;
 
+import aplicacao.dominio.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -13,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.SystemColor;
-import java.awt.Color;
 
 /**
  * 
@@ -28,8 +25,9 @@ public class GerenteGUI extends JFrame {
 	private Gerente usuario;
 	private Medico medico;
 	private Enfermeiro enfermeiro;
+	private Atendente atendente;
 	private JPanel contentPane;
-	private JButton btnCadastrarPaciente, btnSair,btnCadastrarMedico,btnCadastrarEnfermeiro,btnInternarPaciente,btnLiberarPaciente, btnGerenciarFuncinario;
+	private JButton btnCadastrarPaciente, btnSair,btnCadastrarMedico,btnCadastrarEnfermeiro,btnInternarPaciente,btnLiberarPaciente, btnGerenciarFuncinario, btnCadastrarAtendente;
 
 
 	/**
@@ -47,7 +45,7 @@ public class GerenteGUI extends JFrame {
 		setBackground(SystemColor.activeCaption);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		if (usuario instanceof Administrador){
-			setBounds(100, 100, 228, 391);
+			setBounds(100, 100, 228, 445);
 		}
 		else{
 			setBounds(50, 100, 228, 251);
@@ -100,7 +98,7 @@ public class GerenteGUI extends JFrame {
 		btnSair = new JButton("Sair");
 		btnSair.setFont(new Font("Georgia", Font.ITALIC, 11));
 		btnSair.setBackground(SystemColor.controlHighlight);
-		btnSair.setBounds(10, 178, 89, 23);
+		btnSair.setBounds(10, 175, 89, 23);
 		contentPane.add(btnSair);
 		
 		if (usuario instanceof Administrador){
@@ -108,7 +106,7 @@ public class GerenteGUI extends JFrame {
 			btnCadastrarMedico = new JButton("Cadastrar medico");
 			btnCadastrarMedico.setFont(new Font("Georgia", Font.ITALIC, 16));
 			btnCadastrarMedico.setBackground(SystemColor.controlHighlight);
-			btnCadastrarMedico.setBounds(10, 256, 193, 38);
+			btnCadastrarMedico.setBounds(10, 207, 193, 38);
 			contentPane.add(btnCadastrarMedico);
 			
 			btnCadastrarEnfermeiro = new JButton("Cadastrar enfermeiro");
@@ -120,11 +118,18 @@ public class GerenteGUI extends JFrame {
 			btnGerenciarFuncinario = new JButton("Gerenciar funcionario");
 			btnGerenciarFuncinario.setFont(new Font("Georgia", Font.ITALIC, 16));
 			btnGerenciarFuncinario.setBackground(SystemColor.controlHighlight);
-			btnGerenciarFuncinario.setBounds(10, 207, 193, 38);
+			btnGerenciarFuncinario.setBounds(10, 305, 193, 38);
 			contentPane.add(btnGerenciarFuncinario);
 			
-			btnSair.setBounds(10, 318, 89, 23);
-
+			btnCadastrarAtendente = new JButton("Cadastrar Atendente");
+			btnCadastrarAtendente.setFont(new Font("Georgia", Font.ITALIC, 16));
+			btnCadastrarAtendente.setBackground(SystemColor.controlHighlight);
+			btnCadastrarAtendente.setBounds(10, 256, 193, 38);
+			contentPane.add(btnCadastrarAtendente);
+			
+			btnSair.setBounds(10, 371, 89, 23);
+			
+	
 		
 		}
 
@@ -160,6 +165,17 @@ public class GerenteGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Cadastro de Enfermeiro
 			
 				JFrame proximaTela = new SalvarDadosFuncionariosGUI(usuario,enfermeiro);
+				GerenteGUI.this.dispose(); 
+				proximaTela.setVisible(true);
+				
+			}
+		}
+		
+		class EventoCadastrarAtendente implements ActionListener { //criação da classe interna 
+			
+			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Cadastro de Atendente
+			
+				JFrame proximaTela = new SalvarDadosFuncionariosGUI(usuario,atendente);
 				GerenteGUI.this.dispose(); 
 				proximaTela.setVisible(true);
 				
@@ -207,12 +223,13 @@ public class GerenteGUI extends JFrame {
 		EventoCadastrarPaciente eventoCadastroP = new EventoCadastrarPaciente();
 		EventoCadastrarMedico eventoCadastroM = new EventoCadastrarMedico();
 		EventoCadastrarEnfermeiro eventoCadastroE = new EventoCadastrarEnfermeiro();
+		EventoCadastrarAtendente eventoCadastroA = new EventoCadastrarAtendente();
 		EventoGerenciar eventoG = new EventoGerenciar();
 		EventoInternar eventoInternar = new EventoInternar();
 		EventoLiberar eventoLiberar = new EventoLiberar();
 		EventoSair eventoSair = new EventoSair();
 		
-		ActionListener[] lista = {eventoCadastroP,eventoCadastroM,eventoCadastroE,eventoG,eventoInternar,eventoLiberar,eventoSair}; //adicionando todos os objetos criados acima
+		ActionListener[] lista = {eventoCadastroP,eventoCadastroM,eventoCadastroE,eventoG,eventoInternar,eventoLiberar,eventoSair,eventoCadastroA}; //adicionando todos os objetos criados acima
 		return lista;
 		
 	}
@@ -229,6 +246,7 @@ public class GerenteGUI extends JFrame {
 		if(usuario instanceof Administrador){
 			btnCadastrarMedico.addActionListener(lista[1]);
 			btnCadastrarEnfermeiro.addActionListener(lista[2]);
+			btnCadastrarAtendente.addActionListener(lista[7]);
 			btnGerenciarFuncinario.addActionListener(lista[3]);
 		}
 		
@@ -237,6 +255,4 @@ public class GerenteGUI extends JFrame {
 		btnSair.addActionListener(lista[6]); 
 		
 	}
-	
-	
 }

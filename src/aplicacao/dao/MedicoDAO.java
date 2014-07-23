@@ -12,6 +12,7 @@ import aplicacao.dao.util.ComandoSQL;
 import aplicacao.dao.util.Comparacao;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
+import aplicacao.dominio.Pessoa;
 import aplicacao.enums.StatusDeUsuario;
 
 public class MedicoDAO implements IFuncionarioDAO {
@@ -40,14 +41,17 @@ public class MedicoDAO implements IFuncionarioDAO {
         		medico.setSenha(rs.getString("senha"));
         		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		medico.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//m.setPessoa(pessoa);
+
+        			if (pesquisarPessoa){
+        				PessoaDAO a = new PessoaDAO();
+        				medico.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+        			}
+        		
         		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
         		medico.setEspecialidade(rs.getString("especialidade"));
         		
         		funcionarios.add(medico);
         		
-        		// ----x>  Apenas de teste;
-        		//System.out.println(medico.getNumeroDeRegistro());
         	}
         }
         catch(SQLException e){
@@ -89,7 +93,12 @@ public class MedicoDAO implements IFuncionarioDAO {
         		medicoBD.setSenha(rs.getString("senha"));
         		medicoBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		medicoBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		// ----0> m.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				medicoBD.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    		
         		medicoBD.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
         		medicoBD.setEspecialidade(rs.getString("especialidade"));
         		
@@ -145,14 +154,17 @@ public class MedicoDAO implements IFuncionarioDAO {
         		medico.setSenha(rs.getString("senha"));
         		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		medico.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//medico.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				medico.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    		
         		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
         		medico.setEspecialidade(rs.getString("especialidade"));
         		
         		funcionarios.add(medico);
         		
-        		// ----x>  Apenas de teste;
-        		//System.out.println(medico.getNumeroDeRegistro());
         	}
         }
         catch(SQLException e){

@@ -1,5 +1,8 @@
 package aplicacao.form;
 
+import GerenteGUI;
+import SalvarDadosFuncionariosGUI;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -41,22 +44,6 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 	private JButton btnSalvar, btnCancelar;
 	private JPasswordField senhaField;
 	private Funcionario funcionario;
-	
-
-	
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					CadastroFuncionariosGUI frame = new CadastroFuncionariosGUI();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
 	
 	/**
 	 * Cria a janela.
@@ -154,6 +141,15 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 			}
 			else{
 				lblTitulo.setName("Atualizar dados de Enfemeiro");
+			}
+		}
+		else if (funcionario instanceof Atendente){
+			
+			if (funcionario.getPessoa()==null){
+				lblTitulo.setName("Cadastro de Atendente");
+			}
+			else{
+				lblTitulo.setName("Atualizar dados de Atendente");
 			}
 		}
 		
@@ -301,6 +297,12 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 					funcionario.setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
 					adicionarTipoSanguineo(); //o Java interpreta isso como sendo this.adicionarTipoSanguineo()
 					
+					// Condicional que seta a especializacao se o funcionario pertencer a classe Medico
+					if (funcionario instanceof Medico){
+						//Cast duplo para garantir que o funcionario é um medico e que o SelectedItem da especializacaoBox retornara uma String
+						((Medico)funcionario).setEspecialidade((String) especializacaoBox.getSelectedItem());
+					}
+					
 					//Aciona camada de Negócio do sistema para ela fazer as validaçoes necessarias
 					GerenciamentoControle controleSalvar = new GerenciamentoControle(funcionario);
 					controleSalvar.AlterarDados();
@@ -386,4 +388,3 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 			
 	
 }
-

@@ -18,9 +18,6 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 	private static final String SQL_PESQUISA =
 		"SELECT * FROM enfermeiro";
 	
-	// ----x> temporário:
-	int a = 1;
-	
 	public List<Funcionario> pesquisarTodos(Boolean pesquisarPessoa){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -40,13 +37,16 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         		enfermeiro.setSenha(rs.getString("senha"));
         		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		enfermeiro.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//enfermeiro.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				enfermeiro.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    			
         		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
         		
         		funcionarios.add(enfermeiro);
         		
-        		// ----x>  Apenas de teste;
-        		//System.out.println(atendente.getIdFuncionario());
         	}
         }
         catch(SQLException e){
@@ -88,7 +88,12 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         		enfermeiroBD.setSenha(rs.getString("senha"));
         		enfermeiroBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		enfermeiroBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		// ----0> m.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				enfermeiroBD.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    			
         		enfermeiroBD.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
         		
         		Comparacao comparacao = new Comparacao();
@@ -143,7 +148,12 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         		enfermeiro.setSenha(rs.getString("senha"));
         		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		enfermeiro.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//m.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				enfermeiro.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    		
         		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
         		
         		funcionarios.add(enfermeiro);
@@ -171,7 +181,7 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 	}
 	
 	public int cadastrar(Funcionario funcionario) {
-		return a;
+		return 0;
 		
 	}
 	
@@ -234,6 +244,6 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 	}
 	
 	public int deslogar(Funcionario funcionario){
-		return a;
+		return 0;
 	}
 }

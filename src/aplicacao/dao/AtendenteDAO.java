@@ -40,7 +40,12 @@ public class AtendenteDAO implements IFuncionarioDAO {
         		atendenteBD.setSenha(rs.getString("senha"));
         		atendenteBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		atendenteBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//atendenteBD.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				atendenteBD.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    			
         		atendenteBD.setCargo(rs.getString("cargo"));
         		
         		funcionarios.add(atendenteBD);
@@ -85,7 +90,12 @@ public class AtendenteDAO implements IFuncionarioDAO {
         		atendenteBD.setSenha(rs.getString("senha"));
         		atendenteBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		atendenteBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//m.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				atendenteBD.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    			
         		atendenteBD.setCargo(rs.getString("cargo"));
         		
         		Comparacao comparacao = new Comparacao();
@@ -126,9 +136,6 @@ public class AtendenteDAO implements IFuncionarioDAO {
         	ComandoSQL codigo = new ComandoSQL();
         	String comandoSQL = codigo.gerarPesquisa(f, 2);
         	
-    		// ----x>  Apenas de teste;
-    		//System.out.println(comandoSQL);
-        	
         	ps = conecxao.prepareStatement(comandoSQL);
         	rs = ps.executeQuery();
         	
@@ -140,7 +147,12 @@ public class AtendenteDAO implements IFuncionarioDAO {
         		atendenteBD.setSenha(rs.getString("senha"));
         		atendenteBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		atendenteBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//atendenteBD.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				atendenteBD.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    			
         		atendenteBD.setCargo(rs.getString("cargo"));
         		
         		funcionarios.add(atendenteBD);

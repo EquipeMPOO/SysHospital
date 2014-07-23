@@ -19,9 +19,6 @@ public class AdministradorDAO implements IFuncionarioDAO{
 	private static final String SQL_PESQUISA =
 		"SELECT * FROM administrador";
 	
-	// ----x> temporário:
-	int a = 1;
-	
 	public List<Funcionario> pesquisarTodos(Boolean pesquisarPessoa){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -42,13 +39,16 @@ public class AdministradorDAO implements IFuncionarioDAO{
         		administrador.setSenha(rs.getString("senha"));
         		administrador.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		administrador.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//m.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				administrador.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    			
         		administrador.setCargo(rs.getString("cargo"));
         		
         		funcionarios.add(administrador);
-        		
-        		// ----x>  Apenas de teste;
-        		//System.out.println(administrador.getIdFuncionario());
+       
         	}
         }
         catch(SQLException e){
@@ -90,7 +90,12 @@ public class AdministradorDAO implements IFuncionarioDAO{
         		administradorBD.setSenha(rs.getString("senha"));
         		administradorBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		administradorBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//m.setPessoa(pessoa);
+
+    			if (pesquisarPessoa){
+    				PessoaDAO a = new PessoaDAO();
+    				administradorBD.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    			}
+    			
         		administradorBD.setCargo(rs.getString("cargo"));
         		
         		Comparacao comparacao = new Comparacao();
@@ -145,7 +150,14 @@ public class AdministradorDAO implements IFuncionarioDAO{
         		administradorBD.setSenha(rs.getString("senha"));
         		administradorBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		administradorBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-        		//administradorBD.setPessoa(pessoa);
+
+        		if (pesquisarPessoa){
+        			
+        			PessoaDAO databasePessoa = new PessoaDAO();
+        			administradorBD.setPessoa(databasePessoa.pesquisarporID(rs.getInt("idpessoa")));
+        			
+        		}
+        		
         		administradorBD.setCargo(rs.getString("cargo"));
         		
         		funcionarios.add(administradorBD);
@@ -170,7 +182,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
 	}
 	
 	public int cadastrar(Funcionario funcionario) {
-		return a;
+		return 0;
 	}
 	
 	public Funcionario alterar(Funcionario f, int iap){
@@ -232,7 +244,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
 	}
 	
 	public int deslogar(Funcionario funcionario){
-		return a;
+		return 0;
 	}
 	
 }
