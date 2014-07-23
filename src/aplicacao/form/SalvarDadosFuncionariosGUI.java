@@ -1,8 +1,5 @@
 package aplicacao.form;
 
-import GerenteGUI;
-import SalvarDadosFuncionariosGUI;
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
