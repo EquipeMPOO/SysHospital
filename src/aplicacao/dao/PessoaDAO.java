@@ -16,64 +16,32 @@ public class PessoaDAO{
 	
 	private static final String SQL_PESQUISA = "SELECT * FROM pessoa";
 	
-	private static final String SQL_INSERT=
-			  "INSERT INTO pessoa(nome, cpf, idade, tiposanguineo, sexo, paciente, statusdepessoa, funcionarios)values(?,?,?,?,?,?,?,?)";
-
-	public int cadastrar(Pessoa novaPessoa) {
+	public void cadastrar(Pessoa novaPessoa) {
 		
 		Connection conexao = ConexaoDAO.getConnection();
-		PreparedStatement statement = null;
-		int retorno = 0;
-
-		 PreparedStatement statement1 = null;
-         try{
-        	 
-        	 System.out.println(
-        			 
-                     novaPessoa.getNome() + "\n" +
-                     novaPessoa.getCpf() + "\n" +
-                     novaPessoa.getIdade() + "\n" +
-                     novaPessoa.getTipoSanguineo() + "\n" +
-                     novaPessoa.getSexo() + "\n" +
-                     
-                     novaPessoa.getStatusDePessoa()
-
-             
-        	 );
-        	 
-             statement1 = conexao.prepareStatement(SQL_INSERT);
-             statement1.setString(1, novaPessoa.getNome());
-             statement1.setString(2, novaPessoa.getCpf());
-             statement1.setInt(3, novaPessoa.getIdade());
-             statement1.setString(4, novaPessoa.getTipoSanguineo());
-             statement1.setString(5, novaPessoa.getSexo());
-             statement1.setInt(6, novaPessoa.getPaciente().getIdPaciente());
-             statement1.setString(7, novaPessoa.getStatusDePessoa());
-             statement1.setInt(7, novaPessoa.getFuncionariosDePessoa().getIdFuncionariosDePessoa());
-             
-             retorno = statement1.executeUpdate();
-             
-         }catch(SQLException e){
-        	 try{
-        		 if(conexao!=null){
-        			
-        			 conexao.rollback();
-        		 }
-        	 }catch(SQLException e1){
-        		 
-        		 e1.printStackTrace();
-        	 }finally{
-        		 ConexaoDAO.close(conexao, statement, null);
-        	 }
-        	 e.printStackTrace();
-        	 
-         }
+		PreparedStatement ps = null;
 		
-		return retorno;
+        String comando = "INSERT INTO pessoa(nome, cpf, idade, tiposanguineo, sexo, statusdepessoa) VALUES ("+
+        				"'"+novaPessoa.getNome()+"'"+ ","+ 
+        				"'"+novaPessoa.getCpf()+"'"+","+ 
+        				"'"+novaPessoa.getIdade()+"'"+","+ 
+        				"'"+novaPessoa.getTipoSanguineo()+"'"+","+ 
+        				"'"+novaPessoa.getSexo()+"'"+","+ 
+        				"'"+novaPessoa.getStatusDePessoa()+"'" + ")";
+        
+        try {
+			ps = conexao.prepareStatement(comando);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conexao, ps, null);
+		}
+		
 	}
 
 
-	public int alterar(Pessoa pessoa) throws SQLException {		
+	public void alterar(Pessoa pessoa) {		
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
@@ -87,13 +55,19 @@ public class PessoaDAO{
         				  ", statusdepessoa = " + "'"+ pessoa.getStatusDePessoa() + "'"+ 
         		          "WHERE idpessoa = " + "'" + pessoa.getIdPessoa() + "'" ;
                 
-        ps = conecxao.prepareStatement(comando);
-        ps.executeUpdate();
-        return 0;
-	}
+        try {
+			ps = conecxao.prepareStatement(comando);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conecxao, ps, rs);
+		}
+
+ 	}
 
 	
-	public int excluir(Pessoa pessoa) throws SQLException {
+	public void excluir(Pessoa pessoa){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
@@ -102,10 +76,14 @@ public class PessoaDAO{
         String comando = "UPDATE pessoa SET statusdepessoa = " + "'"+ StatusDePessoa.M.getStatus() + "'"+ 
 		          "WHERE idpessoa = " + "'" + pessoa.getIdPessoa() + "'" ;
       
-        ps = conecxao.prepareStatement(comando);
-        ps.executeUpdate();
-
-		return 0;
+        try {
+ 			ps = conecxao.prepareStatement(comando);
+ 			ps.executeUpdate();
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}finally{
+ 			ConexaoDAO.close(conecxao, ps, rs);
+ 		}
 	}
 
 	public ArrayList<Pessoa> pesquisarTodos() {
@@ -153,7 +131,6 @@ public class PessoaDAO{
 
 	public Pessoa pesquisarporID(int idPessoa) {
 		
-		// TODO Auto-generated method stub
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -202,8 +179,14 @@ public class PessoaDAO{
 		PessoaDAO a = new PessoaDAO();
 		
 		Pessoa fulano = new Pessoa();
-		fulano.setIdPessoa(1);
-		
+		fulano.setIdPessoa(11);
+		fulano.setNome("beltrano");
+		fulano.setCpf("123");
+		fulano.setIdade(14);
+		fulano.setSexo("M");
+		fulano.setStatusDePessoa("Vivo");
+		fulano.setTipoSanguineo("O+");
+		System.out.println("ok");
 		a.excluir(fulano);
 		
 	}	

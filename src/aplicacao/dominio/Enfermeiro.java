@@ -7,5 +7,15 @@ package aplicacao.dominio;
  */
 
 public class Enfermeiro extends Funcionario {
+	
+	private int numeroDeRegistro;
+	
+	public int getNumeroDeRegistro() {
+		return numeroDeRegistro;
+	}
+	public void setNumeroDeRegistro(int numeroderegistro) {
+		this.numeroDeRegistro = numeroderegistro;
+	}
+	
 }
  

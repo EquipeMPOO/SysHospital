@@ -15,6 +15,7 @@ import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
 import aplicacao.dominio.Pessoa;
+import aplicacao.form.GerenciarFuncionarioGUI;
 import aplicacao.form.SalvarDadosFuncionariosGUI;
 
 public class Testes {
@@ -110,14 +111,8 @@ public class Testes {
 		m0.setEspecialidade("");
 
 		//--- Para testes do SalvarDadosFunconarioGUI
-		JFrame frame1 = new SalvarDadosFuncionariosGUI(a1,m0);
-		JFrame frame2 = new SalvarDadosFuncionariosGUI(a1,m1);
-		JFrame frame3 = new SalvarDadosFuncionariosGUI(a1,e0);
-		JFrame frame4 = new SalvarDadosFuncionariosGUI(a1,e1);
-		frame1.setVisible(true);
-		frame2.setVisible(true);
-		frame3.setVisible(true);
-		frame4.setVisible(true);
+		JFrame frame1 = new GerenciarFuncionarioGUI(a1);
+		
 		
 		/*
 		// Teste dos métodos de Administrador:

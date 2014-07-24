@@ -7,7 +7,7 @@ class AtributoUsavel {
 	
 	private ArrayList<String> tipoInteiro = new ArrayList<String>();
 	private ArrayList<String> tipoString = new ArrayList<String>();
-	private ArrayList<String> tipoPessoa = new ArrayList<String>();
+	private ArrayList<String> tipoObjeto = new ArrayList<String>();
 	private ArrayList<String> todos = new ArrayList<String>();
 	private ArrayList<String> todosEmOrdemDeAdd = new ArrayList<String>();
 	
@@ -27,11 +27,11 @@ class AtributoUsavel {
 		this.todosEmOrdemDeAdd.clear();
 	}
 	
-	public ArrayList<String> getTipoPessoa() {
-		return tipoPessoa;
+	public ArrayList<String> getTipoObjeto() {
+		return tipoObjeto;
 	}
-	public void setTipoPessoa(ArrayList<String> tipoPessoa) {
-		this.tipoPessoa = (ArrayList<String>) tipoPessoa.clone();
+	public void setTipoObjeto(ArrayList<String> tipoObjeto) {
+		this.tipoObjeto = (ArrayList<String>) tipoObjeto.clone();
 		this.todosEmOrdemDeAdd.clear();
 	}
 	
@@ -54,8 +54,8 @@ class AtributoUsavel {
 		for (int i = 0; i < tipoString.size(); i++) {
 			todos.add(tipoString.get(i));
 		}
-		for (int i = 0; i < tipoPessoa.size(); i++) {
-			todos.add(tipoPessoa.get(i));
+		for (int i = 0; i < tipoObjeto.size(); i++) {
+			todos.add(tipoObjeto.get(i));
 		}
 	}
 	
@@ -67,8 +67,8 @@ class AtributoUsavel {
 		tipoString.add(nome);
 		todosEmOrdemDeAdd.add(nome);
 	}
-	public void addPessoa(String nome) {
-		tipoPessoa.add(nome);
+	public void addObjeto(String nome) {
+		tipoObjeto.add(nome);
 		todosEmOrdemDeAdd.add(nome);
 	}
 	
@@ -84,17 +84,17 @@ class AtributoUsavel {
 			todosEmOrdemDeAdd.add(string.get(i));
 		}
 	}
-	public void addListaDePessoa(ArrayList<String> pessoa) {
-		for (int i = 0; i < pessoa.size(); i++) {
-			tipoPessoa.add(pessoa.get(i));
-			todosEmOrdemDeAdd.add(pessoa.get(i));
+	public void addListaDeObjeto(ArrayList<String> objeto) {
+		for (int i = 0; i < objeto.size(); i++) {
+			tipoObjeto.add(objeto.get(i));
+			todosEmOrdemDeAdd.add(objeto.get(i));
 		}
 	}
 	
 	public void limpar() {
 		this.tipoInteiro.clear();
 		this.tipoString.clear();
-		this.tipoPessoa.clear();
+		this.tipoObjeto.clear();
 		this.todos.clear();
 		this.todosEmOrdemDeAdd.clear();
 	}

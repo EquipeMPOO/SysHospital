@@ -11,147 +11,354 @@ import aplicacao.dominio.Funcionario;
 public class ComandoSQL {
 	
 	AtributoUsavel atributoUsavel = new AtributoUsavel();
-	AtributoUsavel todosAtributo = new AtributoUsavel();
 	
-	public String gerarPesquisa(Funcionario f, int superclassesDiretas) {
+	public String gerarFiltragem(Object f, int superclassesDiretas) {
 		
 		atributoUsavel.limpar();
 		
-		Class<?> c1 = (Class<?>) invocarUmGet("getClass", f);
+		Class<?> c1 = f.getClass();
 		
 		if (superclassesDiretas > 0){
 			ArrayList<Object> classes = new ArrayList<>();
-			Class<?> ci = (Class<?>) invocarUmGet("getSuperclass", c1);
-			for (int i = 0; i < superclassesDiretas; i++) {
-				
-				classes.add(ci);
-				
-				ci = (Class<?>) invocarUmGet("getSuperclass", ci);
-			}
+			classes = getSuperclasses(superclassesDiretas, c1);
 			
 			int todaClasse = classes.size();
 			for (int i = 0; i < todaClasse; i++) {
-				int classe = todaClasse - i - 1;
-				Class<?> c = (Class<?>) classes.get(classe);
+				int iTodaClasse = todaClasse - i - 1;
+				Class<?> c = (Class<?>) classes.get(iTodaClasse);
 				analiseDeClasse(c, f);
 			}
 		}
 		
 		analiseDeClasse(c1, f);
+		ArrayList<String> colunas = new ArrayList<String>();
+		colunas = atributoUsavel.getTodosEmOrdemDeAdd();
+		String codigoSQL = "";
 		
 		// ----x>  Apenas de teste;
 		//System.out.println("--------------------------------------------------------\n" + atributoUsavel.getTodosEmOrdemDeAdd());
 		
-		ArrayList<String> atributos = new ArrayList<String>();
-		atributos = atributoUsavel.getTodosEmOrdemDeAdd();
-		
-		String tabela = f.getClass().getSimpleName().toLowerCase();
-		
-		String codigoSQL = "SELECT * FROM " + tabela + " WHERE ";
-		for (int i = 0; i < atributos.size(); i++) {
-			String coluna = atributos.get(i).toLowerCase();
+		if (!colunas.isEmpty()){
 			
-			String primeiraLetra = atributos.get(i).substring(0,1);
-			String semPrimeiraLetra = atributos.get(i).substring(1);
-			String nomeDeMetodo = "get" + primeiraLetra.toUpperCase() + semPrimeiraLetra;
+			String tabela = f.getClass().getSimpleName().toLowerCase();
 			
-			Object valorParaPesquisar = invocarUmGet(nomeDeMetodo, f);
-			if (valorParaPesquisar instanceof String){
-				valorParaPesquisar = ((String) valorParaPesquisar).replace(" ", "%");
-			}
-			
-			if (i == 0){
-				codigoSQL = codigoSQL + coluna + " Like '%" + valorParaPesquisar + "%'";
-			}
-			else {
-				codigoSQL = codigoSQL + "AND " + coluna + " Like '%" + valorParaPesquisar + "%'";
+			codigoSQL = "SELECT * FROM " + tabela + " WHERE ";
+			for (int i = 0; i < colunas.size(); i++) {
+				String coluna = colunas.get(i).toLowerCase();
+				
+				String primeiraLetra = colunas.get(i).substring(0,1);
+				String semPrimeiraLetra = colunas.get(i).substring(1);
+				String nomeDeMetodo = "get" + primeiraLetra.toUpperCase() + semPrimeiraLetra;
+				Object valorParaPesquisar = invocarUmGet(nomeDeMetodo, f);
+				
+				boolean tipoString = valorParaPesquisar instanceof String;
+				boolean tipoInt = valorParaPesquisar instanceof Number;
+				boolean tipoObject = valorParaPesquisar instanceof Object;
+				
+				if (tipoString){
+					valorParaPesquisar = "'" + ((String) valorParaPesquisar) + "'";
+				}else
+				
+				if (tipoInt){
+				}else
+				
+				if (tipoObject){
+					String nomeDaClasseContida = valorParaPesquisar.getClass().getSimpleName();
+					
+					try{
+						nomeDeMetodo = "getId" + nomeDaClasseContida;
+						valorParaPesquisar = invocarUmGet(nomeDeMetodo, valorParaPesquisar);
+					}
+					catch (Throwable e) {
+						System.err.println(e + "/n" +
+										   "A classe " + nomeDaClasseContida + "não possui um getId" + nomeDaClasseContida +
+										   "() desta forma gerarAtualizacao() não tem como permitir a atualização de " + i +
+										   ", mas o programa seguirá normalmente (sem fazer a adição)."
+										  );
+						return codigoSQL ="";
+					}
+				}
+				
+				if (i == 0){
+					codigoSQL = codigoSQL + coluna + "=" + valorParaPesquisar;
+				}
+				else {
+					codigoSQL = codigoSQL + " AND " + coluna + "=" + valorParaPesquisar;
+				}
 			}
 		}
 		
 		// ----x>  Apenas de teste;
 		//System.out.println("\nCódigo: " + codigoSQL);
-		
 		return codigoSQL;
 	}
 	
-	public String gerarAtualizacao(Funcionario f, int intAtributoDePesquisa, int superclassesDiretas) {
-		intAtributoDePesquisa = intAtributoDePesquisa - 1;
-		String strAtributoDePesquisa;
+	public String gerarPesquisa(Object f, int superclassesDiretas) {
 		
 		atributoUsavel.limpar();
 		
-		Class<?> c1 = (Class<?>) invocarUmGet("getClass", f);
-		ArrayList<String> toodosAtributos = new ArrayList<>();
+		Class<?> c1 = f.getClass();
 		
 		if (superclassesDiretas > 0){
 			ArrayList<Object> classes = new ArrayList<>();
-			Class<?> ci = (Class<?>) invocarUmGet("getSuperclass", c1);
-			for (int i = 0; i < superclassesDiretas; i++) {
-				
-				classes.add(ci);
-				
-				ci = (Class<?>) invocarUmGet("getSuperclass", ci);
-			}
+			classes = getSuperclasses(superclassesDiretas, c1);
 			
 			int todaClasse = classes.size();
 			for (int i = 0; i < todaClasse; i++) {
-				int classe = todaClasse - i - 1;
-				Class<?> c = (Class<?>) classes.get(classe);
-				ArrayList<String> a = analiseDeClasse(c, f);
-				for (String i1 : a){
-					toodosAtributos.add(i1);
+				int iTodaClasse = todaClasse - i - 1;
+				Class<?> c = (Class<?>) classes.get(iTodaClasse);
+				analiseDeClasse(c, f);
+			}
+		}
+		
+		analiseDeClasse(c1, f);
+		ArrayList<String> colunas = new ArrayList<String>();
+		colunas = atributoUsavel.getTodosEmOrdemDeAdd();
+		String codigoSQL = "";
+		
+		// ----x>  Apenas de teste;
+		//System.out.println("--------------------------------------------------------\n" + atributoUsavel.getTodosEmOrdemDeAdd());
+		
+		if (!colunas.isEmpty()){
+			
+			String tabela = f.getClass().getSimpleName().toLowerCase();
+			
+			codigoSQL = "SELECT * FROM " + tabela + " WHERE ";
+			for (int i = 0; i < colunas.size(); i++) {
+				String coluna = colunas.get(i).toLowerCase();
+				
+				String primeiraLetra = colunas.get(i).substring(0,1);
+				String semPrimeiraLetra = colunas.get(i).substring(1);
+				String nomeDeMetodo = "get" + primeiraLetra.toUpperCase() + semPrimeiraLetra;
+				
+				Object valorParaPesquisar = invocarUmGet(nomeDeMetodo, f);
+				
+				boolean tipoString = valorParaPesquisar instanceof String;
+				boolean tipoInt = valorParaPesquisar instanceof Number;
+				boolean tipoObject = valorParaPesquisar instanceof Object;
+				
+				if (tipoString){
+					valorParaPesquisar = ((String) valorParaPesquisar).replace(" ", "%");
+				}else
+					
+				if (tipoInt){
+				}else
+				
+				if (tipoObject){
+					String nomeDaClasseContida = valorParaPesquisar.getClass().getSimpleName();
+					
+					try{
+						nomeDeMetodo = "getId" + nomeDaClasseContida;
+						valorParaPesquisar = invocarUmGet(nomeDeMetodo, valorParaPesquisar);
+					}
+					catch (Throwable e) {
+						System.err.println(e + "/n" +
+										   "A classe " + nomeDaClasseContida + "não possui um getId" + nomeDaClasseContida +
+										   "() desta forma gerarAtualizacao() não tem como permitir a atualização de " + i +
+										   ", mas o programa seguirá normalmente (sem fazer a adição)."
+										  );
+						return codigoSQL ="";
+					}
+				}
+				
+				if (i == 0){
+					codigoSQL = codigoSQL + coluna + " Like '%" + valorParaPesquisar + "%'";
+				}
+				else {
+					codigoSQL = codigoSQL + " AND " + coluna + " Like '%" + valorParaPesquisar + "%'";
 				}
 			}
 		}
 		
-		ArrayList<String> a = analiseDeClasse(c1, f);
-		for (String i : a){
-			toodosAtributos.add(i);
+		// ----x>  Apenas de teste;
+		//System.out.println("\nCódigo: " + codigoSQL);
+		return codigoSQL;
+	}
+	
+	public String gerarCadastro(Object f, int superclassesDiretas) {
+		
+		atributoUsavel.limpar();
+		
+		Class<?> c1 = f.getClass();
+		
+		if (superclassesDiretas > 0){
+			ArrayList<Object> classes = new ArrayList<>();
+			classes = getSuperclasses(superclassesDiretas, c1);
+			
+			int todaClasse = classes.size();
+			for (int i = 0; i < todaClasse; i++) {
+				int iTodaClasse = todaClasse - i - 1;
+				Class<?> c = (Class<?>) classes.get(iTodaClasse);
+				analiseDeClasse(c, f);
+			}
 		}
-		strAtributoDePesquisa = toodosAtributos.get(intAtributoDePesquisa);
 		
-		ArrayList<String> atributos = new ArrayList<String>();
-		atributos = atributoUsavel.getTodosEmOrdemDeAdd();
-		
-		intAtributoDePesquisa = atributos.indexOf(strAtributoDePesquisa);
-		boolean validadeAtributoDePesquisa = atributos.remove(strAtributoDePesquisa);
+		analiseDeClasse(c1, f);
+		ArrayList<String> colunas = new ArrayList<String>();
+		colunas = atributoUsavel.getTodosEmOrdemDeAdd();
 		String codigoSQL = "";
-		ArrayList<String> vazio = new ArrayList<String>();
 		
-		if (validadeAtributoDePesquisa == true && !(atributos.equals(vazio))){
+		if (!colunas.isEmpty()){
+			
 			String tabela = f.getClass().getSimpleName().toLowerCase();
 			
-			codigoSQL = "UPDATE " + tabela + " SET ";
-			
-			for (String i : atributos) {
+			codigoSQL = "INSERT INTO " + tabela + " WHERE ";
+			for (String i : colunas){
 				
 				String primeiraLetra = i.substring(0,1);
 				String semPrimeiraLetra = i.substring(1);
 				String nomeDeMetodo = "get" + primeiraLetra.toUpperCase() + semPrimeiraLetra;
 				
+				Object valorParaInserir = invocarUmGet(nomeDeMetodo, f);
+				
+				boolean tipoString = valorParaInserir instanceof String;
+				boolean tipoInt = valorParaInserir instanceof Number;
+				boolean tipoObject = valorParaInserir instanceof Object;
+				
+				if (tipoString){
+					valorParaInserir = "'" + valorParaInserir + "'";
+				}
+				else if (tipoInt == true){
+					continue;
+				}
+				else if (tipoObject){
+					String nomeDaClasseContida = valorParaInserir.getClass().getSimpleName();
+					
+					try{
+						nomeDeMetodo = "getId" + nomeDaClasseContida;
+						valorParaInserir = invocarUmGet(nomeDeMetodo, valorParaInserir);
+					}
+					catch (Throwable e) {
+						System.err.println(e + "/n" +
+										   "A classe " + nomeDaClasseContida + "não possui um getId" + nomeDaClasseContida +
+										   "() desta forma gerarAtualizacao() não tem como permitir a atualização de " + i +
+										   ", mas o programa seguirá normalmente (sem fazer a adição)."
+										  );
+						return codigoSQL ="";
+					}
+				}
+				
+				codigoSQL = codigoSQL + i.toLowerCase() + "=" + valorParaInserir + ", ";
+			}
+		}
+		
+		int retirarCaracteresExtras = codigoSQL.length() - 2;
+		codigoSQL = codigoSQL.substring(0, retirarCaracteresExtras);
+		// ----x>  Apenas de teste;
+		//System.out.println(codigoSQL);
+		return codigoSQL;
+	}
+	
+	public String gerarAtualizacao(Object f, String strAtributoDePesquisa, int superclassesDiretas) {
+		
+		atributoUsavel.limpar();
+		
+		Class<?> c1 = f.getClass();
+		ArrayList<String> toodosAtributos = new ArrayList<>();
+		
+		if (superclassesDiretas > 0){
+			ArrayList<Object> classes = new ArrayList<>();
+			classes = getSuperclasses(superclassesDiretas, c1);
+			
+			int todaClasse = classes.size();
+			for (int i = 0; i < todaClasse; i++) {
+				int iTodaClasse = todaClasse - i - 1;
+				Class<?> c = (Class<?>) classes.get(iTodaClasse);
+				ArrayList<String> atributosDaClasse = analiseDeClasse(c, f);
+				for (String i1 : atributosDaClasse){
+					toodosAtributos.add(i1);
+				}
+			}
+		}
+		
+		ArrayList<String> atributosDaClasse = analiseDeClasse(c1, f);
+		ArrayList<String> colunas = new ArrayList<String>();
+		colunas = atributoUsavel.getTodosEmOrdemDeAdd();
+		String codigoSQL = "";
+		
+		if (!colunas.isEmpty()){
+			
+			for (String i : atributosDaClasse){
+				toodosAtributos.add(i);
+			}
+			boolean validadeAtributoDePesquisa = colunas.remove(strAtributoDePesquisa);
+			
+			if (validadeAtributoDePesquisa == true){
+				String tabela = f.getClass().getSimpleName().toLowerCase();
+				
+				codigoSQL = "UPDATE " + tabela + " SET ";
+				
+				for (String i : colunas) {
+					
+					String primeiraLetra = i.substring(0,1);
+					String semPrimeiraLetra = i.substring(1);
+					String nomeDeMetodo = "get" + primeiraLetra.toUpperCase() + semPrimeiraLetra;
+					
+					Object valorParaAtualizar = invocarUmGet(nomeDeMetodo, f);
+					
+					boolean tipoString = valorParaAtualizar instanceof String;
+					boolean tipoInt = valorParaAtualizar instanceof Number;
+					boolean tipoObject = valorParaAtualizar instanceof Object;
+					
+					if (tipoString){
+						valorParaAtualizar = "'" + valorParaAtualizar + "'";
+					}else
+					
+					if (tipoInt){
+					}else
+						
+					if (tipoObject){
+						String nomeDaClasseContida = valorParaAtualizar.getClass().getSimpleName();
+						
+						try{
+							nomeDeMetodo = "getId" + nomeDaClasseContida;
+							valorParaAtualizar = invocarUmGet(nomeDeMetodo, valorParaAtualizar);
+						}
+						catch (Throwable e) {
+							System.err.println(e + "/n" +
+											   "A classe " + nomeDaClasseContida + "não possui um getId" + nomeDaClasseContida +
+											   "() desta forma gerarAtualizacao() não tem como permitir a atualização de " + i +
+											   ", mas o programa seguirá normalmente (sem fazer a atualização)."
+											  );
+							return codigoSQL ="";
+						}
+					}
+					
+					codigoSQL = codigoSQL + i.toLowerCase() + "=" + valorParaAtualizar + ", ";
+				}
+				
+				String primeiraLetra = strAtributoDePesquisa.substring(0,1);
+				String semPrimeiraLetra = strAtributoDePesquisa.substring(1);
+				String nomeDeMetodo = "get" + primeiraLetra.toUpperCase() + semPrimeiraLetra;
 				Object valorParaAtualizar = invocarUmGet(nomeDeMetodo, f);
 				if (valorParaAtualizar instanceof String){
 					valorParaAtualizar = "'" + valorParaAtualizar + "'";
 				}
 				
-				codigoSQL = codigoSQL + i.toLowerCase() + "=" + valorParaAtualizar + ", ";
+				codigoSQL = codigoSQL.substring(0, (codigoSQL.length() - 2) );
+				codigoSQL = codigoSQL + " WHERE " + strAtributoDePesquisa.toLowerCase() + "=" + valorParaAtualizar;
 			}
-			
-			String primeiraLetra = strAtributoDePesquisa.substring(0,1);
-			String semPrimeiraLetra = strAtributoDePesquisa.substring(1);
-			String nomeDeMetodo = "get" + primeiraLetra.toUpperCase() + semPrimeiraLetra;
-			Object valorParaAtualizar = invocarUmGet(nomeDeMetodo, f);
-			if (valorParaAtualizar instanceof String){
-				valorParaAtualizar = "'" + valorParaAtualizar + "'";
-			}
-			
-			codigoSQL = codigoSQL.substring(0, (codigoSQL.length() - 2) );
-			codigoSQL = codigoSQL + " WHERE " + strAtributoDePesquisa.toLowerCase() + "=" + valorParaAtualizar;
 		}
 		
 		// ----x>  Apenas de teste;
 		//System.out.println(codigoSQL);
 		return codigoSQL;
+	}
+	
+	
+// ---------------------------------------------------------------- Métodos internos ----------------------------------------------------------------
+	
+	
+	private ArrayList<Object> getSuperclasses(int superclassesDiretas, Class<?> c1){
+		ArrayList<Object> classes = new ArrayList<>();
+		Class<?> ci = c1.getSuperclass();
+		for (int i = 0; i < superclassesDiretas; i++) {
+			
+			classes.add(ci);
+			
+			ci = ci.getSuperclass();
+		}
+		return classes;
 	}
 	
 	private Object invocarUmGet(String nomeDeMetodo, Object o) {
@@ -177,8 +384,8 @@ public class ComandoSQL {
 		return retornoDeMetodo;
 	}
 	
-	private ArrayList<String> analiseDeClasse(Class<?> c, Funcionario f) {
-		ArrayList<String> toodosAtributos = new ArrayList<>();
+	private ArrayList<String> analiseDeClasse(Class<?> c, Object f) {
+		ArrayList<String> todosAtributos = new ArrayList<>();
 		
 		try {
 			Field informacoesDaClasse[] = c.getDeclaredFields();
@@ -194,31 +401,33 @@ public class ComandoSQL {
 				
 				// ----x>  Apenas de teste;
 				//System.out.println("atributo: " + nomeDeAtributo);
-				toodosAtributos.add(nomeDeAtributo.toString());
+				todosAtributos.add(nomeDeAtributo);
 				
-				if (tipoDeAtributo.equals("String") && !(retornoDeMetodo.equals(""))){
+				boolean tipoString = tipoDeAtributo.equals("String");
+				boolean tipoInt = tipoDeAtributo.equals("int");
+				boolean tipoObject = retornoDeMetodo instanceof Object;
+				
+				if (tipoString && !(retornoDeMetodo.equals(""))){
 					this.atributoUsavel.addString(nomeDeAtributo);
 				} else
 					
-				if (tipoDeAtributo.equals("int")){
+				if (tipoInt){
 					Integer retornoDeMetodoInteiro = (Integer)retornoDeMetodo;
 					if (!(retornoDeMetodoInteiro <= 0)){
 						this.atributoUsavel.addInteiro(nomeDeAtributo);
 					}
 				} else
 					
-				if ( tipoDeAtributo.equals("Pessoa") && (retornoDeMetodo != null) ){
-					this.atributoUsavel.addPessoa(nomeDeAtributo);
+				if ( !tipoString && tipoObject && (retornoDeMetodo != null) ){
+					this.atributoUsavel.addObjeto(nomeDeAtributo);
 				}
-				
-				// ----x>  Apenas de teste;
-				//System.out.println("Todos: " + atributoUsavel.getTodos() + "\n");
+			
 			}
 		}
 		catch (Throwable e) {
 			System.err.println(e);
 		}
 		
-		return toodosAtributos;
+		return todosAtributos;
 	}
 }
