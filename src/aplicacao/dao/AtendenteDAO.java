@@ -222,7 +222,7 @@ public class AtendenteDAO implements IFuncionarioDAO{
 						     "'"+atendente.getLogin()+"'"+ ","+ 
 							"'"+atendente.getSenha()+"'"+","+ 
 							"'"+atendente.getIdentificadorInterno()+"'"+","+ 
-							"'"+atendente.getStatusDeUsuario()+"'"+","+ 
+							"'"+ "Inativo" +"'"+","+ 
 							"'"+db.procurarId(atendente.getPessoa())+"'" +","+ 
 							"'"+ "atendente" +"'" + ")" ;
         
@@ -273,7 +273,7 @@ public class AtendenteDAO implements IFuncionarioDAO{
         PreparedStatement ps = null;
         ResultSet rs = null;
         
-        String comando = "UPDATE atendente SET statusdeusuario = " + "'"+ StatusDeUsuario.IP.getStatus() + "'"+ 
+        String comando = "UPDATE atendente SET statusdeusuario = " + "'"+ "IP" + "'"+ 
         				 "WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";
       
         try {

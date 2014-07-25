@@ -6,62 +6,19 @@ import java.util.Vector;
 
 import aplicacao.dao.EnfermeiroDAO;
 import aplicacao.dao.MedicoDAO;
+import aplicacao.dao.PacienteDAO;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
 import aplicacao.dominio.Paciente;
 import aplicacao.enums.StatusDeUsuario;
 
-public class PacienteControle {
+public class PacienteControle {	
 	
-	
-	
-	public List<Funcionario> pesquisarFuncionarioEspecifico(Funcionario funcionarioParametro){
+	public List<Paciente> pesquisarNaoInternados(Funcionario funcionarioParametro){
 		
-		List<Funcionario> funcionariosPesquisados = null;
-		
-		if (funcionarioParametro instanceof Medico){
-
-		MedicoDAO databaseMedico = new MedicoDAO();				
-		funcionariosPesquisados = databaseMedico.pesquisarFiltrando(funcionarioParametro, true);
-		
-		}
-		
-		else{
-			
-			EnfermeiroDAO databaseEnfermeiro = new EnfermeiroDAO();			
-			funcionariosPesquisados = databaseEnfermeiro.pesquisarFiltrando(funcionarioParametro, true);
-			
-		}
-
-
-		return funcionariosPesquisados;
+		PacienteDAO database = new PacienteDAO();
+		return database.pesquisarTodos();
 	}
 	
-	
-	public List<Funcionario> pesquisarTodosFuncionarios(){
-				
-		List<Funcionario> funcionariosPesquisados = null;
-
-		MedicoDAO databaseMedico = new MedicoDAO();			
-		funcionariosPesquisados.add((Funcionario) databaseMedico.pesquisarTodos(true));
-
-		EnfermeiroDAO databaseEnfermeiro = new EnfermeiroDAO();			
-		funcionariosPesquisados.add((Funcionario) databaseEnfermeiro.pesquisarTodos(true));
-		
-		return funcionariosPesquisados;
-		
-	}
-	
-	public List<Paciente> pesquisarPacienteEspecifico(Funcionario funcionarioParametro){
-		
-		return null;
-	}
-	
-	
-	public List<Paciente> pesquisarTodosPacientes(){
-		
-		return null;
-		
-	}
 }

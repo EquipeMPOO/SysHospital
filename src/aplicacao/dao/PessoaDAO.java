@@ -13,41 +13,41 @@ import aplicacao.dominio.Pessoa;
 import aplicacao.enums.StatusDePessoa;
 
 public class PessoaDAO{
-	
+
 	private static final String SQL_PESQUISA = "SELECT * FROM pessoa";
-	
-	
+
+
 	public int procurarId(Pessoa pessoa){
-		
+
 		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int id = 0;
-		
+
 		try {
 			ps = conexao.prepareStatement("SELECT idpessoa FROM pessoa WHERE cpf = " + "'" + pessoa.getCpf() + "'");
 			rs = ps.executeQuery();
 			if(rs.next()){
 				id = rs.getInt("idpessoa");				
 			}
-			
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally{
 			ConexaoDAO.close(conexao, ps, rs);
 		}
-		
+
 		return id;
-			
+
 	}
-	
+
 	public void cadastrar(Pessoa novaPessoa) {
-		
+
 		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		
+
         String comando = "INSERT INTO pessoa(nome, cpf, idade, tiposanguineo, sexo, statusdepessoa) VALUES ("+
         				"'"+novaPessoa.getNome()+"'"+ ","+ 
         				"'"+novaPessoa.getCpf()+"'"+","+ 
@@ -59,11 +59,11 @@ public class PessoaDAO{
         try {
 			ps = conexao.prepareStatement(comando);
 			ps.executeUpdate();
-			 
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
-			
+
 			ConexaoDAO.close(conexao, ps, null);
 		}
         
@@ -71,7 +71,7 @@ public class PessoaDAO{
 
 
 	public void alterar(Pessoa pessoa) {		
-		
+
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -96,9 +96,9 @@ public class PessoaDAO{
 
  	}
 
-	
+
 	public void excluir(Pessoa pessoa){
-		
+
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -117,7 +117,7 @@ public class PessoaDAO{
 	}
 
 	public ArrayList<Pessoa> pesquisarTodos() {
-		
+
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -154,13 +154,13 @@ public class PessoaDAO{
         	}
         	e.printStackTrace();
         }
-		
+
 		return pessoas;
-		
+
 	}
 
 	public Pessoa pesquisarporID(int idPessoa) {
-		
+
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -200,7 +200,7 @@ public class PessoaDAO{
         	}
         	e.printStackTrace();
         }
-		
+
 		return pessoa;
 	}
 

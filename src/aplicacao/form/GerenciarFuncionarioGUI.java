@@ -1,6 +1,7 @@
 package aplicacao.form;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.EventQueue;
 
@@ -41,6 +42,7 @@ public class GerenciarFuncionarioGUI extends JFrame {
 	private JButton btnInativar, btnAlterarDados, btnVoltar;
 	private JTextPane textLabel;
 	private JLabel lblGerenciarFuncionrio;
+	private JTextPane txtStatus;
 
 	/**
 	 * Create the frame.
@@ -49,7 +51,7 @@ public class GerenciarFuncionarioGUI extends JFrame {
 		
 		this.usuario = user;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 508, 345);
+		setBounds(100, 100, 508, 373);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.inactiveCaption);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -75,13 +77,19 @@ public class GerenciarFuncionarioGUI extends JFrame {
 		
 		btnAlterarDados = new JButton("Alterar dados");
 		btnAlterarDados.setFont(new Font("Georgia", Font.ITALIC, 11));
-		btnAlterarDados.setBounds(365, 238, 117, 23);
+		btnAlterarDados.setBounds(238, 272, 117, 23);
 		
 		textLabel = new JTextPane();
 		textLabel.setBackground(SystemColor.inactiveCaptionBorder);
 		textLabel.setBounds(10, 92, 472, 135);
 		
 		this.configurarJComboBox();
+		
+		
+		
+		txtStatus = new JTextPane();
+		txtStatus.setBounds(0, 314, 492, 20);
+		contentPane.add(txtStatus);
 		
 		this.setVisible(true);
 	}
@@ -140,9 +148,19 @@ public class GerenciarFuncionarioGUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
 
 				GerenciamentoControle controleInativacao = new GerenciamentoControle(funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1));
 				controleInativacao.Inativar();
+				if (controleInativacao.Inativar()){
+					txtStatus.setForeground(Color.BLUE);
+					txtStatus.setText("Processo de inativação bem sucedido!");
+				}
+				else{
+					txtStatus.setForeground(Color.RED);
+					txtStatus.setText("Erro! Processo de inativação não concluido!");
+				}
+				
 				
 				
 			}
@@ -177,6 +195,4 @@ public class GerenciarFuncionarioGUI extends JFrame {
 		
 		});
 	}
-	
-
 }

@@ -1,6 +1,6 @@
 package aplicacao.form;
 
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -32,6 +32,8 @@ import aplicacao.dominio.Gerente;
 import aplicacao.dominio.Pessoa;
 import aplicacao.enums.TipoSanguineo;
 
+import javax.swing.JTextPane;
+
 /**
  * 
  * @author icaro
@@ -41,6 +43,11 @@ import aplicacao.enums.TipoSanguineo;
 
 public class SalvarDadosFuncionariosGUI extends JFrame {
 	
+	/**
+	 * 
+	 */
+	
+	
 	private Gerente usuario;
 	private JTextField nomeField, cpfField, nRegistroField, loginField;
 	private JLabel lblTitulo, lblNome, lblCpf, lblSexo, lblTipoSangueRh, lblNdeRegistro, lblLogin, lblSenha, lblEspecializacao;
@@ -48,6 +55,7 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 	private JButton btnSalvar, btnCancelar;
 	private JPasswordField senhaField;
 	private Funcionario funcionario;
+	private JTextPane txtStatus;
 	
 	/**
 	 * Cria a janela e adocopma todos os componentes adequados para a operação realizada pela tela
@@ -60,7 +68,7 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		getContentPane().setBackground(SystemColor.inactiveCaption);
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 343, 423);
+		setBounds(100, 100, 343, 445);
 		
 		this.criarTextField();
 		this.criarButton();
@@ -94,10 +102,15 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		cpfField.setBounds(10, 155, 119, 20);
 		getContentPane().add(cpfField);
 		
-		nRegistroField = new JTextField();
-		nRegistroField.setColumns(10);
-		nRegistroField.setBounds(10, 211, 119, 20);
-		getContentPane().add(nRegistroField);
+		if (funcionario instanceof Medico || funcionario instanceof Enfermeiro){
+			
+			nRegistroField = new JTextField();
+			nRegistroField.setColumns(10);
+			nRegistroField.setBounds(10, 211, 119, 20);
+			getContentPane().add(nRegistroField);
+			
+		}
+		
 		
 		loginField = new JTextField();
 		loginField.setColumns(10);
@@ -194,10 +207,15 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		lblTipoSangueRh.setBounds(10, 242, 124, 14);
 		getContentPane().add(lblTipoSangueRh);
 		
-		lblNdeRegistro = new JLabel("N\u00BA de registro");
-		lblNdeRegistro.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNdeRegistro.setBounds(10, 186, 83, 14);
-		getContentPane().add(lblNdeRegistro);
+		if (funcionario instanceof Medico||funcionario instanceof Enfermeiro){
+			
+			lblNdeRegistro = new JLabel("N\u00BA de registro");
+			lblNdeRegistro.setFont(new Font("Tahoma", Font.PLAIN, 12));
+			lblNdeRegistro.setBounds(10, 186, 83, 14);
+			getContentPane().add(lblNdeRegistro);
+			
+		}
+		
 				
 		lblLogin = new JLabel("Login");
 		lblLogin.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -209,9 +227,15 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		lblSenha.setBounds(147, 186, 46, 14);
 		getContentPane().add(lblSenha);
 		
+		txtStatus = new JTextPane();
+		txtStatus.setFont(new Font("Tahoma", Font.BOLD, 11));
+		txtStatus.setText("Preencha todos os campos corretamente!");
+		txtStatus.setBounds(0, 384, 326, 21);
+		getContentPane().add(txtStatus);
+		
 		if (funcionario instanceof Medico){
 			
-			JLabel lblEspecializacao = new JLabel("Especializa\u00E7\u00E3o");
+			lblEspecializacao = new JLabel("Especializa\u00E7\u00E3o");
 			lblEspecializacao.setFont(new Font("Tahoma", Font.PLAIN, 12));
 			lblEspecializacao.setBounds(147, 242, 74, 14);
 			getContentPane().add(lblEspecializacao);
@@ -297,59 +321,66 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 					
 					Pessoa pessoa = new Pessoa();
 					funcionario.setPessoa(pessoa);
+					auxFuncionario();
 					
-					funcionario.getPessoa().setNome(nomeField.getText());	
-					funcionario.getPessoa().setCpf(cpfField.getText());
-					funcionario.getPessoa().setSexo((String) sexoBox.getSelectedItem());
-					funcionario.setLogin(loginField.getText());	
-					funcionario.setSenha(senhaField.getText());					
-					adicionarTipoSanguineo(); //o Java interpreta isso como sendo this.adicionarTipoSanguineo()					
-					
-					// Condicional que seta a especializacao se o funcionario pertencer a classe Medico
-					if (funcionario instanceof Medico){
-						//Cast duplo para garantir que o funcionario é um medico e que o SelectedItem da especializacaoBox retornara uma String
-						((Medico)funcionario).setEspecialidade((String) especializacaoBox.getSelectedItem());
-						((Medico)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
-					}
-					else if (funcionario instanceof Enfermeiro){
-						((Enfermeiro)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
-					}
-				    
-
-				    					
-					//Aciona camada de Negócio do sistema para ela fazer as validaçoes necessarias
-					GerenciamentoControle controleAtualizar = new GerenciamentoControle(funcionario);
-					controleAtualizar.Cadastrar();
 			
 				}
 				
 				else{					
 					
-					funcionario.getPessoa().setNome(nomeField.getText());	
-					funcionario.getPessoa().setCpf(cpfField.getText());
-					funcionario.getPessoa().setSexo((String) sexoBox.getSelectedItem());
-					funcionario.setLogin(loginField.getText());	
-					funcionario.setSenha(senhaField.getText());		
-					adicionarTipoSanguineo(); //o Java interpreta isso como sendo this.adicionarTipoSanguineo()
-					
-					// Condicional que seta a especializacao se o funcionario pertencer a classe Medico
-					if (funcionario instanceof Medico){
-						//Cast duplo para garantir que o funcionario é um medico e que o SelectedItem da especializacaoBox retornara uma String
-						((Medico)funcionario).setEspecialidade((String) especializacaoBox.getSelectedItem());
-						((Medico)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
-					}
-					else if (funcionario instanceof Enfermeiro){
-						((Enfermeiro)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
-					}
-					
-					//Aciona camada de Negócio do sistema para ela fazer as validaçoes necessarias
-					GerenciamentoControle controleSalvar = new GerenciamentoControle(funcionario);
-					controleSalvar.AlterarDados();
+					auxFuncionario();
 					
 				}
 				
 				
 			}
+
+			/**
+			 * Define todas as informacoes de (Funcionario) funcionario a partir dos dados provenientes dos componentes da interface gráfica.
+			 * O tratamento destes já é diferenciado dentro da própria classe. Como exemplo, a definicao de especialidade para (Medico) funcionario
+			 * a partir do (JComboBox) especializacaoBox, que evidentemente cabe apenas ao funcionario pertencente a classe Medico. 
+			 * @param funcionario
+			 */
+			@SuppressWarnings("deprecation")
+			public void auxFuncionario(){
+				
+				funcionario.getPessoa().setNome(nomeField.getText());	
+				funcionario.getPessoa().setCpf(cpfField.getText());
+				funcionario.getPessoa().setSexo((String) sexoBox.getSelectedItem());
+				funcionario.setLogin(loginField.getText());	
+				funcionario.setSenha(senhaField.getText());					
+				adicionarTipoSanguineo(); //o Java interpreta isso como sendo this.adicionarTipoSanguineo()					
+				
+				// Condicional que seta a especializacao se o funcionario pertencer a classe Medico
+				if (funcionario instanceof Medico){
+					//Cast duplo para garantir que o funcionario é um medico e que o SelectedItem da especializacaoBox retornara uma String
+					((Medico)funcionario).setEspecialidade((String) especializacaoBox.getSelectedItem());
+					((Medico)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
+				}
+				else if (funcionario instanceof Enfermeiro){
+					((Enfermeiro)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
+				}
+			    
+
+			    					
+				//Verifica se campos estão vazios e aciona camada de negócio, fazendo comparações necessárias
+				if (verificarCamposVazios()){
+					txtStatus.setForeground(Color.BLUE);
+					txtStatus.setText("Processo realizado com sucesso!");
+					GerenciamentoControle controleAtualizar = new GerenciamentoControle(funcionario);
+					controleAtualizar.Cadastrar();
+					
+				}
+				else{
+					txtStatus.setForeground(Color.RED);
+					txtStatus.setText("Erro! Preencha todos os campos corretamente!");
+				}
+				
+			}
+			
+			
+			
+			
 		});
 		
 	}	
@@ -431,6 +462,15 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 			
 		}	
 	
+	}
+	
+	public boolean verificarCamposVazios(){
+		if (nomeField.getSelectedText()==""||cpfField.getSelectedText()==""||loginField.getSelectedText()==""||senhaField.getSelectedText()==""){
+			return false;
+		}
+		else{
+			return true;
+		}
 	}
 			
 	

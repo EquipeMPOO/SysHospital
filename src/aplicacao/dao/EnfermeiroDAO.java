@@ -225,7 +225,7 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 						     "'"+enfermeiro.getLogin()+"'"+ ","+ 
 							"'"+enfermeiro.getSenha()+"'"+","+ 
 							"'"+enfermeiro.getIdentificadorInterno()+"'"+","+ 
-							"'"+enfermeiro.getStatusDeUsuario()+"'"+","+ 
+							"'"+ "Inativo"+"'"+","+ 
 							"'"+db.procurarId(enfermeiro.getPessoa())+"'"+ ","+
 							"'"+((Enfermeiro) enfermeiro).getNumeroDeRegistro() +"'"+ ")" ;
         
@@ -277,7 +277,7 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         PreparedStatement ps = null;
         ResultSet rs = null;
         
-        String comando = "UPDATE enfermeiro SET statusdeusuario = " + "'"+ StatusDeUsuario.IP.getStatus() + "'"+ 
+        String comando = "UPDATE enfermeiro SET statusdeusuario = " + "'"+ "IP" + "'"+ 
         				 "WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";
       
         try {

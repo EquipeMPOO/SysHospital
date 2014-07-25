@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.mysql.jdbc.Connection;
 
@@ -14,9 +15,11 @@ import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Gerente;
 import aplicacao.dominio.Medico;
+import aplicacao.dominio.Paciente;
 import aplicacao.dominio.Pessoa;
 import aplicacao.dao.AdministradorDAO;
 import aplicacao.dao.AtendenteDAO;
+import aplicacao.dao.PacienteDAO;
 import aplicacao.dao.PessoaDAO;
 import aplicacao.form.SalvarDadosFuncionariosGUI;
 import aplicacao.dao.EnfermeiroDAO;
