@@ -16,28 +16,57 @@ public class PessoaDAO{
 	
 	private static final String SQL_PESQUISA = "SELECT * FROM pessoa";
 	
+	
+	public int procurarId(Pessoa pessoa){
+		
+		Connection conexao = ConexaoDAO.getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int id = 0;
+		
+		try {
+			ps = conexao.prepareStatement("SELECT idpessoa FROM pessoa WHERE cpf = " + "'" + pessoa.getCpf() + "'");
+			rs = ps.executeQuery();
+			if(rs.next()){
+				id = rs.getInt("idpessoa");				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conexao, ps, rs);
+		}
+		
+		return id;
+			
+	}
+	
 	public void cadastrar(Pessoa novaPessoa) {
 		
 		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
         String comando = "INSERT INTO pessoa(nome, cpf, idade, tiposanguineo, sexo, statusdepessoa) VALUES ("+
         				"'"+novaPessoa.getNome()+"'"+ ","+ 
         				"'"+novaPessoa.getCpf()+"'"+","+ 
         				"'"+novaPessoa.getIdade()+"'"+","+ 
         				"'"+novaPessoa.getTipoSanguineo()+"'"+","+ 
-        				"'"+novaPessoa.getSexo()+"'"+","+ 
+        				"'"+novaPessoa.getSexo() +"'"+","+ 
         				"'"+novaPessoa.getStatusDePessoa()+"'" + ")";
-        
+                
         try {
 			ps = conexao.prepareStatement(comando);
 			ps.executeUpdate();
+			 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
+			
 			ConexaoDAO.close(conexao, ps, null);
 		}
-		
+        
 	}
 
 
@@ -58,6 +87,7 @@ public class PessoaDAO{
         try {
 			ps = conecxao.prepareStatement(comando);
 			ps.executeUpdate();
+        			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}finally{
@@ -173,22 +203,5 @@ public class PessoaDAO{
 		
 		return pessoa;
 	}
-	
-	public static void main(String[] args) throws SQLException {
-				
-		PessoaDAO a = new PessoaDAO();
-		
-		Pessoa fulano = new Pessoa();
-		fulano.setIdPessoa(11);
-		fulano.setNome("beltrano");
-		fulano.setCpf("123");
-		fulano.setIdade(14);
-		fulano.setSexo("M");
-		fulano.setStatusDePessoa("Vivo");
-		fulano.setTipoSanguineo("O+");
-		System.out.println("ok");
-		a.excluir(fulano);
-		
-	}	
 
 }

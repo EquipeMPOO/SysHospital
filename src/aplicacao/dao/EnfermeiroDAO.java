@@ -9,14 +9,16 @@ import java.util.List;
 
 import aplicacao.dao.util.ComandoSQL;
 import aplicacao.dao.util.Comparacao;
+import aplicacao.dominio.Atendente;
+import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
+import aplicacao.enums.StatusDePessoa;
 import aplicacao.enums.StatusDeUsuario;
 
 public class EnfermeiroDAO implements IFuncionarioDAO {
 	
-	private static final String SQL_PESQUISA =
-		"SELECT * FROM enfermeiro";
+	private static final String SQL_PESQUISA = "SELECT * FROM enfermeiro";
 	
 	public List<Funcionario> pesquisarTodos(Boolean pesquisarPessoa){
 		
@@ -37,14 +39,13 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         		enfermeiro.setSenha(rs.getString("senha"));
         		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		enfermeiro.setStatusDeUsuario(rs.getString("statusdeusuario"));
+        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 
     			if (pesquisarPessoa){
     				PessoaDAO a = new PessoaDAO();
-    				enfermeiro.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
+    				enfermeiro.setPessoa(a.pesquisarporID(rs.getInt("pessoa")));
     			}
-    			
-        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
-        		
+    			        		
         		funcionarios.add(enfermeiro);
         		
         	}
@@ -67,9 +68,105 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 		return funcionarios;
 	}
 	
-	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
+	
+	public Funcionario pesquisarLogin(Funcionario parametro){
 		
-		Enfermeiro enfermeiroDeParametro = (Enfermeiro) f;
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Enfermeiro enfermeiro = new Enfermeiro();
+        
+        try{
+        	ps = conecxao.prepareStatement(SQL_PESQUISA);
+        	rs = ps.executeQuery();
+        	
+        	while(rs.next()) {
+        		enfermeiro.setLogin(rs.getString("login"));
+        		enfermeiro.setSenha(rs.getString("senha"));
+        		
+        		if (enfermeiro.getSenha().equals(parametro.getSenha()) & enfermeiro.getLogin().equals(parametro.getLogin())){
+	        		enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
+	        		enfermeiro.setStatusDeUsuario(rs.getString("statusdeusuario"));
+	        		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
+	        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
+	        		System.out.println("aqui");
+	        		return enfermeiro;
+        		}
+        	}
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+		
+		return null;
+	}
+	
+	public Funcionario pesquisarCpf(Funcionario parametro){
+		
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Enfermeiro enfermeiro = new Enfermeiro();
+        
+        try{
+        	ps = conecxao.prepareStatement(SQL_PESQUISA);
+        	rs = ps.executeQuery();
+        	
+        	while(rs.next()) {
+        		PessoaDAO a = new PessoaDAO();
+        		enfermeiro.setPessoa(a.pesquisarporID(rs.getInt("pessoa")));
+        		
+        		if (enfermeiro.getPessoa().getCpf().equals(parametro.getPessoa().getCpf())){
+        			
+        			enfermeiro.setLogin(rs.getString("login"));
+        			enfermeiro.setSenha(rs.getString("senha"));
+	        		enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
+	        		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
+	        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
+	        		return enfermeiro;
+        		}
+        	}
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+		
+		return null;
+	}
+	
+	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
+		return null;
+	}
+	
+	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
+		
+		return null;
+	}
+	
+	public List<Funcionario> pesquisarInativos(){
+		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -80,28 +177,19 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         	rs = ps.executeQuery();
         	
         	while(rs.next()) {
+        		Enfermeiro enfermeiro = new Enfermeiro();
+        		enfermeiro.setStatusDeUsuario(rs.getString("statusdeusuario"));
         		
-        		Enfermeiro enfermeiroBD = new Enfermeiro();
-        		
-        		enfermeiroBD.setIdFuncionario(rs.getInt("idfuncionario"));
-        		enfermeiroBD.setLogin(rs.getString("login"));
-        		enfermeiroBD.setSenha(rs.getString("senha"));
-        		enfermeiroBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
-        		enfermeiroBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-
-    			if (pesquisarPessoa){
-    				PessoaDAO a = new PessoaDAO();
-    				enfermeiroBD.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
-    			}
-    			
-        		enfermeiroBD.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
-        		
-        		Comparacao comparacao = new Comparacao();
-        		if ( comparacao.eFiltro(enfermeiroDeParametro, enfermeiroBD) ){
-	        		funcionarios.add(enfermeiroBD);
-        		}
-        		else{
-        			enfermeiroBD = null;
+        		if (enfermeiro.getStatusDeUsuario().equals("Inativo")){
+	        		enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
+	        		enfermeiro.setLogin(rs.getString("login"));
+	        		enfermeiro.setSenha(rs.getString("senha"));
+	        		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
+	        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
+	        		
+	    			PessoaDAO a = new PessoaDAO();
+	    			enfermeiro.setPessoa(a.pesquisarporID(rs.getInt("pessoa")));	    				        		
+	        		funcionarios.add(enfermeiro);
         		}
         	}
         }
@@ -121,129 +209,87 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         }
 		
 		return funcionarios;
+		
 	}
 	
-	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
+	
+	public void cadastrar(Funcionario enfermeiro) {
+		
+		Connection conexao = ConexaoDAO.getConnection();
+		PreparedStatement ps = null;
+		
+		PessoaDAO db = new PessoaDAO();
+		db.cadastrar(enfermeiro.getPessoa());
+		
+		String comando = "INSERT INTO enfermeiro(login, senha, identificadorinterno, statusdeusuario, pessoa, numeroderegistro) VALUES ("+
+						     "'"+enfermeiro.getLogin()+"'"+ ","+ 
+							"'"+enfermeiro.getSenha()+"'"+","+ 
+							"'"+enfermeiro.getIdentificadorInterno()+"'"+","+ 
+							"'"+enfermeiro.getStatusDeUsuario()+"'"+","+ 
+							"'"+db.procurarId(enfermeiro.getPessoa())+"'"+ ","+
+							"'"+((Enfermeiro) enfermeiro).getNumeroDeRegistro() +"'"+ ")" ;
+        
+        try {
+			ps = conexao.prepareStatement(comando);
+			ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conexao, ps, null);
+		}
+
+
+	}
+	
+	public void alterar(Funcionario atendente){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
         
-        try{
-        	ComandoSQL codigo = new ComandoSQL();
-        	String comandoSQL = codigo.gerarPesquisa(f, 1);
-        	
-    		// ----x>  Apenas de teste;
-    		//System.out.println(comandoSQL);
-        	
-        	ps = conecxao.prepareStatement(comandoSQL);
-        	rs = ps.executeQuery();
-        	
-        	while(rs.next()) {
-        		Enfermeiro enfermeiro = new Enfermeiro();
-        		
-        		enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
-        		enfermeiro.setLogin(rs.getString("login"));
-        		enfermeiro.setSenha(rs.getString("senha"));
-        		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
-        		enfermeiro.setStatusDeUsuario(rs.getString("statusdeusuario"));
-
-    			if (pesquisarPessoa){
-    				PessoaDAO a = new PessoaDAO();
-    				enfermeiro.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
-    			}
-    		
-        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
-        		
-        		funcionarios.add(enfermeiro);
-        		
-        		// ----x>  Apenas de teste;
-        		//System.out.println(medico.getNumeroDeRegistro());
-        	}
-        }
-        catch(SQLException e){
-        	try{
-        		if(conecxao != null){
-        			conecxao.rollback();
-        		}
-        	}
-        	catch(SQLException e1){
-        		e1.printStackTrace();
-        	}
-        	finally{
-        		ConexaoDAO.close(conecxao, ps, rs);
-        	}
-        	e.printStackTrace();
-        }
+        PessoaDAO db = new PessoaDAO();
+		db.cadastrar(atendente.getPessoa());
 		
-		return funcionarios;
-	}
-	
-	public int cadastrar(Funcionario funcionario) {
-		return 0;
-		
-	}
-	
-	public Funcionario alterar(Funcionario f, int iap){
-		Connection conecxao = ConexaoDAO.getConnection();
-        PreparedStatement ps = null;
-        Enfermeiro enfermeiro = (Enfermeiro) f;
-        
-    	ComandoSQL codigo = new ComandoSQL();
-    	String comandoSQL = codigo.gerarAtualizacao(enfermeiro, iap, 1);
-    	
-    	int resultado = 0;
-        try{
-            ps = conecxao.prepareStatement(comandoSQL);
-            resultado = ps.executeUpdate();
-            
-            }catch(SQLException e){
-            	try{
-            		if(conecxao!=null){
-            			conecxao.rollback();
-            		}
-            	}catch(SQLException e1){
-            		e1.printStackTrace();
-            	}finally{
-            		ConexaoDAO.close(conecxao, ps, null);
-            	}
-            	e.printStackTrace();
-            }
-		
-		enfermeiro.setIdFuncionario(resultado);
-		enfermeiro.setLogin("");
-		enfermeiro.setSenha("");
-		enfermeiro.setIdentificadorInterno("");
-		enfermeiro.setStatusDeUsuario("");
-		enfermeiro.setPessoa(null);
-		enfermeiro.setNumeroDeRegistro(-1);
-		
-		ArrayList<Funcionario> f1 = (ArrayList<Funcionario>) this.pesquisarAlgum(enfermeiro, false);
-		ArrayList<Funcionario> vazio = new ArrayList<>();
-		if (f1 == vazio){
-			return null;
-		} 
-		else{
-			return (Funcionario) f1.get(0);
+        String comando = "UPDATE enfermeiro SET login = " +"'"+atendente.getLogin()+"'"+ 
+		        		", senha = " +"'"+atendente.getSenha()+"'"+
+		        		", identificadorinterno = " +"'"+atendente.getIdentificadorInterno()+"'"+ 
+		        		", statusdeusuario = " +"'"+atendente.getStatusDeUsuario()+"'"+
+		        		", pessoa = " +"'"+db.procurarId(atendente.getPessoa())+"'"+ 
+		        		"WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";
+		                
+        try {
+			ps = conecxao.prepareStatement(comando);
+			ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conecxao, ps, rs);
 		}
 	}
 	
-	public Funcionario excluir(Funcionario f){
-		Enfermeiro f1 = (Enfermeiro) f;
-		f1.setStatusDeUsuario(StatusDeUsuario.MP.getStatus());
-		Enfermeiro f2 = (Enfermeiro) this.alterar(f1, 1);
-		return f2;
-	}
+	public void inativar(Funcionario atendente){		
 	
-	public Funcionario logar(Funcionario f){
-		Enfermeiro f1 = (Enfermeiro) f;
-		f1.setStatusDeUsuario(StatusDeUsuario.A.getStatus());
-		Enfermeiro f2 = (Enfermeiro) this.alterar(f1, 1);
-		return f2;
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        String comando = "UPDATE enfermeiro SET statusdeusuario = " + "'"+ StatusDeUsuario.IP.getStatus() + "'"+ 
+        				 "WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";
+      
+        try {
+ 			ps = conecxao.prepareStatement(comando);
+ 			ps.executeUpdate();
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}finally{
+ 			ConexaoDAO.close(conecxao, ps, rs);
+ 		}
+		
 	}
-	
-	public int deslogar(Funcionario funcionario){
-		return 0;
-	}
+
+
 }

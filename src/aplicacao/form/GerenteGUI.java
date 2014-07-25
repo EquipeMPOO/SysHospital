@@ -152,7 +152,8 @@ public class GerenteGUI extends JFrame {
 		class EventoCadastrarMedico implements ActionListener { //criação da classe interna 
 			
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Cadastro de Medico
-			
+				
+				medico = new Medico();
 				JFrame proximaTela = new SalvarDadosFuncionariosGUI(usuario, medico);
 				GerenteGUI.this.dispose();
 				proximaTela.setVisible(true);
@@ -163,7 +164,8 @@ public class GerenteGUI extends JFrame {
 		class EventoCadastrarEnfermeiro implements ActionListener { //criação da classe interna 
 			
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Cadastro de Enfermeiro
-			
+				
+				enfermeiro = new Enfermeiro();
 				JFrame proximaTela = new SalvarDadosFuncionariosGUI(usuario,enfermeiro);
 				GerenteGUI.this.dispose(); 
 				proximaTela.setVisible(true);
@@ -174,7 +176,8 @@ public class GerenteGUI extends JFrame {
 		class EventoCadastrarAtendente implements ActionListener { //criação da classe interna 
 			
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Cadastro de Atendente
-			
+				
+				atendente = new Atendente();
 				JFrame proximaTela = new SalvarDadosFuncionariosGUI(usuario,atendente);
 				GerenteGUI.this.dispose(); 
 				proximaTela.setVisible(true);

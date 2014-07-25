@@ -27,6 +27,7 @@ import javax.swing.JLabel;
 
 import aplicacao.controle.GerenciamentoControle;
 import aplicacao.controle.PacienteControle;
+import aplicacao.controle.PesquisaControle;
 import aplicacao.dao.EnfermeiroDAO;
 import aplicacao.dao.MedicoDAO;
 import aplicacao.dominio.*;
@@ -88,17 +89,10 @@ public class GerenciarFuncionarioGUI extends JFrame {
 	public void configurarJComboBox(){
 		
 		//Cria um objeto da classe PesquisarFuncionarioControle e em seguida utiliza o metodo pesquisar para retornar uma lista de todos os usuarios pesquisados
-		PacienteControle controlePesquisa = new PacienteControle();
-		
-		Funcionario Mparametro = new Medico();
-		Funcionario Eparametro = new Enfermeiro();
-		Mparametro.setStatusDeUsuario(StatusDeUsuario.I.getStatus());
-		//Eparametro.setStatusDeUsuario(StatusDeUsuario.I.getStatus());
+		PesquisaControle controlePesquisa = new PesquisaControle();
 		
 		final List<Funcionario> funcionariosPesquisados = new ArrayList<Funcionario>();
-		funcionariosPesquisados.addAll(controlePesquisa.pesquisarFuncionarioEspecifico(Mparametro));
-		//funcionariosPesquisados.addAll(controlePesquisa.pesquisarFuncionarioEspecifico(Eparametro));
-		
+		funcionariosPesquisados.addAll(controlePesquisa.pesquisarInativos());		
 
 		Vector listaComboBox = new Vector();
 		listaComboBox.add("Pesquisar Funcionario...");

@@ -22,7 +22,7 @@ import java.awt.Panel;
 
 import javax.swing.JSeparator;
 
-import aplicacao.controle.LoginControle;
+import aplicacao.controle.PesquisaControle;
 import aplicacao.dominio.*;
 import aplicacao.enums.StatusDeUsuario;
 
@@ -81,7 +81,7 @@ public class LoginGUI extends JFrame {
 		panelDeStatus.setBackground(Color.WHITE);
 		panelDeStatus.setBounds(0, 191, 442, 25);
 		panelGeral.add(panelDeStatus);
-		panelDeStatus.setLayout(null);
+		panelDeStatus.setLayout(null); 
 		//------------------------------------------------------------------
 		
 		
@@ -192,6 +192,7 @@ public class LoginGUI extends JFrame {
 			 * Por fim, caso não seja possível logar por algum motivo, o programa executará o metodo informarMotivoDeNaoLogar
 			 * @return void
 			 */
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				
 				if (textLogin.getText().equals("") & textSenha.getText().equals("")){
@@ -209,127 +210,101 @@ public class LoginGUI extends JFrame {
 				
 				else if ( !(textLogin.getText().equals("")) & !(textSenha.getText().equals("")) ) {
 					
+					
+					PesquisaControle controleLogin = new PesquisaControle();
+					
 					Administrador administrador = new Administrador();
 					administrador.setLogin(textLogin.getText());
-					administrador.setSenha(textSenha.getText());
-					ArrayList<Funcionario> adm = new ArrayList();
-					LoginControle funcionarioAdministrador = new LoginControle(administrador);
-					adm = (ArrayList<Funcionario>)funcionarioAdministrador.pesquisarFiltrando(administrador, false);
+					administrador.setSenha(textSenha.getText());				
 					
-					Atendente aterndente = new Atendente();
-					aterndente.setLogin(textLogin.getText());
-					aterndente.setSenha(textSenha.getText());
-					ArrayList<Funcionario> ate = new ArrayList();
-					LoginControle funcionarioAtendente =
-							new LoginControle(aterndente);
-					ate = (ArrayList<Funcionario>)
-							funcionarioAtendente.pesquisarFiltrando(aterndente, false);
+					
+					Atendente atendente = new Atendente();
+					atendente.setLogin(textLogin.getText());
+					atendente.setSenha(textSenha.getText());
 					
 					Enfermeiro enfermeiro = new Enfermeiro();
 					enfermeiro.setLogin(textLogin.getText());
-					enfermeiro.setSenha(textSenha.getText());
-					ArrayList<Funcionario> enf = new ArrayList();
-					LoginControle funcionarioEnfermeiro =
-							new LoginControle(enfermeiro);
-					enf = (ArrayList<Funcionario>)
-							funcionarioEnfermeiro.pesquisarFiltrando(enfermeiro, false);
-					
+					enfermeiro.setSenha(textSenha.getText());					
+										
 					Medico medico = new Medico();
 					medico.setLogin(textLogin.getText());
 					medico.setSenha(textSenha.getText());
-					ArrayList<Funcionario> med = new ArrayList();
-					LoginControle funcionarioMedico =
-							new LoginControle(medico);
-					med = (ArrayList<Funcionario>)
-							funcionarioMedico.pesquisarFiltrando(medico, false);
 					
-					ArrayList<Funcionario> vazio = new ArrayList();
-					Funcionario resultodoDeLigin = null;
-					if ( !(adm.equals(vazio)) ){
+					Funcionario resultadoPesquisa = controleLogin.logar(administrador);
+					
+					if (controleLogin.logar(administrador) != null){
+						
 						lblStatus.setForeground(Color.BLUE);
 						lblStatus.setText("Administrador encontrado! Fazendo Login.");
-						resultodoDeLigin = funcionarioAdministrador.logar(adm.get(0));
-						if (resultodoDeLigin == null){
-							this.informarMotivoDeNaoLogar(adm.get(0));
-						}
-						else{
-							GerenteGUI gerenteGUI = new GerenteGUI((Administrador) adm.get(0));
-							LoginGUI.this.dispose();
-							gerenteGUI.setVisible(true);
-						}
-					}else
+						GerenteGUI gerenteGUI = new GerenteGUI(administrador);
+						LoginGUI.this.dispose();
+						gerenteGUI.setVisible(true);
+
 					
-					if ( !(ate.equals(vazio)) ){
-						lblStatus.setForeground(Color.BLUE);
-						lblStatus.setText("Atendente encontrado! Fazendo Login.");
-						resultodoDeLigin = funcionarioAtendente.logar(ate.get(0));
-						if (resultodoDeLigin == null){
-							this.informarMotivoDeNaoLogar(ate.get(0));
-						}
-						else{
-							GerenteGUI gerenteGUI = new GerenteGUI((Atendente) ate.get(0));
-							LoginGUI.this.dispose();
-							gerenteGUI.setVisible(true);
-						}
-					}else
-					
-					if ( !(enf.equals(vazio)) ){
-						lblStatus.setForeground(Color.BLUE);
-						lblStatus.setText("Enfermeiro encontrado! Fazendo Login.");
-						resultodoDeLigin = funcionarioEnfermeiro.logar(enf.get(0));
-						if (resultodoDeLigin == null){
-							this.informarMotivoDeNaoLogar(enf.get(0));
-						}
-						else{
-							NovaTela novaTela = new NovaTela();
-							LoginGUI.this.dispose();
-							novaTela.setVisible(true);
-						}
-					}else
-					
-					if ( !(med.equals(vazio)) ){
-						lblStatus.setForeground(Color.BLUE);
-						lblStatus.setText("Medico encontrado! Fazendo Login.");
-						resultodoDeLigin = funcionarioMedico.logar(med.get(0));
-						if (resultodoDeLigin == null){
-							this.informarMotivoDeNaoLogar(med.get(0));
-						}
-						else{
-							NovaTela novaTela = new NovaTela();
-							LoginGUI.this.dispose();
-							novaTela.setVisible(true);
-						}
 					}
 					
+					else if (controleLogin.logar(atendente) != null){
+						
+						lblStatus.setForeground(Color.BLUE);
+						lblStatus.setText("Atendente encontrado! Fazendo Login.");
+						GerenteGUI gerenteGUI = new GerenteGUI(atendente);
+						LoginGUI.this.dispose();
+						gerenteGUI.setVisible(true);
+												
+					}
+				
+					
+							
+					else if (controleLogin.logar(enfermeiro) != null){
+						
+						lblStatus.setForeground(Color.BLUE);
+						lblStatus.setText("Enfermeiro encontrado! Fazendo Login.");
+						NovaTela novaTela = new NovaTela();
+						LoginGUI.this.dispose();
+						novaTela.setVisible(true);
+					} 
+					else if (controleLogin.logar(medico) != null){
+						
+						lblStatus.setForeground(Color.BLUE);
+						lblStatus.setText("Medico encontrado! Fazendo Login.");
+						NovaTela novaTela = new NovaTela();
+						LoginGUI.this.dispose();
+						novaTela.setVisible(true);
+						}
+										
 					else{
 						lblStatus.setForeground(Color.RED);
 						lblStatus.setText("Usuário não encontrado! Verifique se o Login e a Senha estão corretos...");
 					}
 				}
+				
 			}
-			
+
 			/**
 			 * Verifica o atributo StatusDeUsuario do parametro f e exibe na label de Status o motivo de não ter sido possível efetuar login
 			 * @param f - Funcionario passado pelo metodo actionPerformed
 			 */
 
-			private void informarMotivoDeNaoLogar(Funcionario f) {
+			private boolean informarMotivoDeNaoLogar(Funcionario f) {
 				
 				if ( f.getStatusDeUsuario().equals(StatusDeUsuario.A.getStatus()) ){
 					lblStatus.setForeground(Color.RED);
 					lblStatus.setText("Este usuário já está logado!");
-				}else
-					
-				if ( f.getStatusDeUsuario().equals(StatusDeUsuario.IP.getStatus()) ){
-					lblStatus.setForeground(Color.RED);
-					lblStatus.setText("Este usuário está impedido de fazer login!");
-				}else
-					
-				if ( f.getStatusDeUsuario().equals(StatusDeUsuario.MP.getStatus()) ){
-					lblStatus.setForeground(Color.BLACK);
-					lblStatus.setText("Este usuário não pode fazer login e será excluído do sistema!");
+					return true;
 				}
 				
+				else if ( f.getStatusDeUsuario().equals(StatusDeUsuario.IP.getStatus()) ){
+					lblStatus.setForeground(Color.RED);
+					lblStatus.setText("Este usuário está impedido de fazer login!");
+					return true;
+					
+				}else if ( f.getStatusDeUsuario().equals(StatusDeUsuario.MP.getStatus()) ){
+					lblStatus.setForeground(Color.BLACK);
+					lblStatus.setText("Este usuário não pode fazer login e será excluído do sistema!");
+					return true;
+				}
+				
+				return false;
 			}
 		}
 		
@@ -349,6 +324,7 @@ public class LoginGUI extends JFrame {
 				lblStatus.setForeground(new Color(0, 128, 0));
 				lblStatus.setText("Para logar preencha os campos com informação válida e click em Entar.");
 			}
+
 			
 		}
 		

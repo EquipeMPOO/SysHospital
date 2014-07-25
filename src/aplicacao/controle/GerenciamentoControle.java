@@ -6,6 +6,7 @@ import aplicacao.dao.AtendenteDAO;
 import aplicacao.dao.EnfermeiroDAO;
 import aplicacao.dao.MedicoDAO;
 import aplicacao.dao.EnfermeiroDAO;
+import aplicacao.dao.PessoaDAO;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
@@ -33,21 +34,20 @@ public class GerenciamentoControle {
 	public boolean AlterarDados(){
 		
 		if (funcionario instanceof Medico){
-			
 			MedicoDAO database = new MedicoDAO();
-			database.alterar(funcionario, 0);
+			database.alterar(funcionario);
 			
 		}
 		else if (funcionario instanceof Enfermeiro){
 			
 			EnfermeiroDAO database = new EnfermeiroDAO();
-			database.alterar(funcionario, 0);
+			database.alterar(funcionario);
 			
 		}
 		
 		else if (funcionario instanceof Atendente){
 			AtendenteDAO database = new AtendenteDAO();
-			database.alterar(funcionario, 0);
+			database.alterar(funcionario);
 			
 		}
 		return true;
@@ -65,20 +65,20 @@ public class GerenciamentoControle {
 		if(funcionario instanceof Medico){
 			
 			MedicoDAO database = new MedicoDAO();
-			database.excluir(funcionario);
+			database.inativar(funcionario);
 			
 		}
 		
 		else if (funcionario instanceof Enfermeiro){
 			
 			EnfermeiroDAO database = new EnfermeiroDAO();
-			database.excluir(funcionario);
+			database.inativar(funcionario);
 			
 		}
 		
 		else if (funcionario instanceof Atendente){
 			AtendenteDAO database = new AtendenteDAO();
-			database.excluir(funcionario);
+			database.inativar(funcionario);
 			
 		}
 		
@@ -100,10 +100,10 @@ public class GerenciamentoControle {
 		if(funcionario instanceof Medico){
 			
 			MedicoDAO database = new MedicoDAO();
-			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,false);
+			Funcionario funcionariosPesquisados = database.pesquisarCpf(funcionario);
 			
 			//caso ele percorra todo o banco de dados e não encontre nenhum, quer dizer que ele ainda não está salvo no banco
-			if (funcionariosPesquisados.size() == 0){ 
+			if (funcionariosPesquisados == null){ 
 				database.cadastrar(funcionario);
 				resultado = true;
 			}
@@ -113,10 +113,11 @@ public class GerenciamentoControle {
 		else if (funcionario instanceof Enfermeiro){
 			
 			EnfermeiroDAO database = new EnfermeiroDAO();
-			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,false);
+			Funcionario funcionariosPesquisados = database.pesquisarCpf(funcionario);
 			
 			//caso ele percorra todo o banco de dados e não encontre nenhum, quer dizer que ele ainda não está salvo no banco 
-			if (funcionariosPesquisados.size() == 0){
+			if (funcionariosPesquisados == null){
+				
 				database.cadastrar(funcionario);
 				resultado = true;
 			}
@@ -127,10 +128,10 @@ public class GerenciamentoControle {
 		else if (funcionario instanceof Atendente){
 			
 			AtendenteDAO database = new AtendenteDAO();
-			List<Funcionario> funcionariosPesquisados = database.pesquisarFiltrando(funcionario,false);
+			Funcionario funcionariosPesquisados = database.pesquisarCpf(funcionario);
 			
 			//caso ele percorra todo o banco de dados e não encontre nenhum, quer dizer que ele ainda não está salvo no banco 
-			if (funcionariosPesquisados.size() == 0){
+			if (funcionariosPesquisados == null){
 				database.cadastrar(funcionario);
 				resultado = true;
 			}

@@ -6,10 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import aplicacao.dao.ConexaoDAO;
 import aplicacao.dao.util.ComandoSQL;
 import aplicacao.dao.util.Comparacao;
+import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
 import aplicacao.dominio.Pessoa;
@@ -19,10 +21,7 @@ public class MedicoDAO implements IFuncionarioDAO {
 	
 	private static final String SQL_PESQUISA =	"SELECT * FROM medico";
 	
-	// ----x> temporário:
-	int a = 1;
-	
-	public List<Funcionario> pesquisarTodos(Boolean pesquisarPessoa){ //Os métodos de pesquisa tem que incluir uma cláusula pois nem sempre se quererá pesquisar uma pessoa...
+	public List<Funcionario> pesquisarTodos(Boolean pesquisarPessoa){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
@@ -41,128 +40,13 @@ public class MedicoDAO implements IFuncionarioDAO {
         		medico.setSenha(rs.getString("senha"));
         		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		medico.setStatusDeUsuario(rs.getString("statusdeusuario"));
-
-        			if (pesquisarPessoa){
-        				PessoaDAO a = new PessoaDAO();
-        				medico.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
-        			}
-        		
         		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
-        		medico.setEspecialidade(rs.getString("especialidade"));
-        		
-        		funcionarios.add(medico);
-        		
-        	}
-        }
-        catch(SQLException e){
-        	try{
-        		if(conecxao != null){
-        			conecxao.rollback();
-        		}
-        	}
-        	catch(SQLException e1){
-        		e1.printStackTrace();
-        	}
-        	finally{
-        		ConexaoDAO.close(conecxao, ps, rs);
-        	}
-        	e.printStackTrace();
-        }
-		
-		return funcionarios;
-	}
-	
-	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
-		
-		Medico medicoDeParametro = (Medico) f;
-		Connection conecxao = ConexaoDAO.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
-        
-        try{
-        	ps = conecxao.prepareStatement(SQL_PESQUISA);
-        	rs = ps.executeQuery();
-        	
-        	while(rs.next()) {
-        		
-    			Medico medicoBD = new Medico();
-        		
-        		medicoBD.setIdFuncionario(rs.getInt("idfuncionario"));
-        		medicoBD.setLogin(rs.getString("login"));
-        		medicoBD.setSenha(rs.getString("senha"));
-        		medicoBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
-        		medicoBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
-
-    			if (pesquisarPessoa){
-    				PessoaDAO a = new PessoaDAO();
-    				medicoBD.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
-    			}
-    		
-        		medicoBD.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
-        		medicoBD.setEspecialidade(rs.getString("especialidade"));
-        		
-        		Comparacao comparacao = new Comparacao();
-        		if ( comparacao.eFiltro(medicoDeParametro, medicoBD) ){
-	        		funcionarios.add(medicoBD);
-        		}
-        		else{
-        			medicoBD = null;
-        		}
-        	}
-        }
-        catch(SQLException e){
-        	try{
-        		if(conecxao != null){
-        			conecxao.rollback();
-        		}
-        	}
-        	catch(SQLException e1){
-        		e1.printStackTrace();
-        	}
-        	finally{
-        		ConexaoDAO.close(conecxao, ps, rs);
-        	}
-        	e.printStackTrace();
-        }
-		
-		return funcionarios;
-	}
-	
-	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
-		
-		Connection conecxao = ConexaoDAO.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
-        
-        try{
-        	ComandoSQL codigo = new ComandoSQL();
-        	String comandoSQL = codigo.gerarPesquisa(f, 1);
-        	
-    		// ----x>  Apenas de teste;
-    		//System.out.println(comandoSQL);
-        	
-        	ps = conecxao.prepareStatement(comandoSQL);
-        	rs = ps.executeQuery();
-        	
-        	while(rs.next()) {
-        		Medico medico = new Medico();
-        		
-        		medico.setIdFuncionario(rs.getInt("idfuncionario"));
-        		medico.setLogin(rs.getString("login"));
-        		medico.setSenha(rs.getString("senha"));
-        		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
-        		medico.setStatusDeUsuario(rs.getString("statusdeusuario"));
 
     			if (pesquisarPessoa){
     				PessoaDAO a = new PessoaDAO();
     				medico.setPessoa(a.pesquisarporID(rs.getInt("idpessoa")));
     			}
-    		
-        		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
-        		medico.setEspecialidade(rs.getString("especialidade"));
-        		
+    			        		
         		funcionarios.add(medico);
         		
         	}
@@ -185,71 +69,227 @@ public class MedicoDAO implements IFuncionarioDAO {
 		return funcionarios;
 	}
 	
-	public int cadastrar(Funcionario funcionario) {
-		return a;
+	
+	public Funcionario pesquisarLogin(Funcionario parametro){
+		
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Medico medico = new Medico();
+        
+        try{
+        	ps = conecxao.prepareStatement(SQL_PESQUISA);
+        	rs = ps.executeQuery();
+        	
+        	while(rs.next()) {
+        		medico.setLogin(rs.getString("login"));
+        		medico.setSenha(rs.getString("senha"));
+        		
+        		if (medico.getSenha().equals(parametro.getSenha()) & medico.getLogin().equals(parametro.getLogin())){
+	        		medico.setIdFuncionario(rs.getInt("idfuncionario"));
+	        		medico.setStatusDeUsuario(rs.getString("statusdeusuario"));
+	        		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
+	        		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
+	        		return medico;
+        		}
+        	}
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+		
+		return null;
+	}
+	
+	public Funcionario pesquisarCpf(Funcionario parametro){
+		
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Medico medico = new Medico();
+        
+        try{
+        	ps = conecxao.prepareStatement(SQL_PESQUISA);
+        	rs = ps.executeQuery();
+        	
+        	while(rs.next()) {
+        		PessoaDAO a = new PessoaDAO();
+        		medico.setPessoa(a.pesquisarporID(rs.getInt("pessoa")));
+        		
+        		if (medico.getPessoa().getCpf().equals(parametro.getPessoa().getCpf())){
+        			
+        			medico.setLogin(rs.getString("login"));
+        			medico.setSenha(rs.getString("senha"));
+	        		medico.setIdFuncionario(rs.getInt("idfuncionario"));
+	        		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
+	        		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
+	        		return medico;
+        		}
+        	}
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+		
+		return null;
+	}
+	
+	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
+		return null;
+	}
+	
+	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
+		
+		return null;
+	}
+	
+	public List<Funcionario> pesquisarInativos(){
+		
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Funcionario> funcionarios = new ArrayList<Funcionario>();
+        
+        try{
+        	ps = conecxao.prepareStatement(SQL_PESQUISA);
+        	rs = ps.executeQuery();
+        	
+        	while(rs.next()) {
+        		Medico medico = new Medico();
+        		medico.setStatusDeUsuario(rs.getString("statusdeusuario"));
+        		
+        		if (medico.getStatusDeUsuario().equals("Inativo")){
+	        		medico.setIdFuncionario(rs.getInt("idfuncionario"));
+	        		medico.setLogin(rs.getString("login"));
+	        		medico.setSenha(rs.getString("senha"));
+	        		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
+	        		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
+	        		
+	    			PessoaDAO a = new PessoaDAO();
+	    			medico.setPessoa(a.pesquisarporID(rs.getInt("pessoa")));	    				        		
+	        		funcionarios.add(medico);
+        		}
+        	}
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+		
+		return funcionarios;
+		
 	}
 	
 	
-	public Funcionario alterar(Funcionario f, int iap){
+	public void cadastrar(Funcionario medico) {
+		
+		Connection conexao = ConexaoDAO.getConnection();
+		PreparedStatement ps = null;
+		
+		PessoaDAO db = new PessoaDAO();
+		db.cadastrar(medico.getPessoa());
+		
+		String comando = "INSERT INTO medico(login, senha, identificadorinterno, statusdeusuario, pessoa, numeroderegistro, especialidade) VALUES ("+
+						     "'"+medico.getLogin()+"'"+ ","+ 
+							"'"+medico.getSenha()+"'"+","+ 
+							"'"+medico.getIdentificadorInterno()+"'"+","+ 
+							"'"+medico.getStatusDeUsuario()+"'"+","+ 
+							"'"+ db.procurarId(medico.getPessoa()) + "'"+ ","+ 
+							"'"+((Medico) medico).getNumeroDeRegistro() +"'"+","+
+							"'"+((Medico) medico).getEspecialidade()+"'" +")" ;
+        
+        try {
+			
+			ps = conexao.prepareStatement(comando);
+			ps.executeUpdate();		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conexao, ps, null);
+		}
+
+
+	}
+	
+	public void alterar(Funcionario medico){
+		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
-        Medico medico = (Medico) f;
+        ResultSet rs = null;
         
-    	ComandoSQL codigo = new ComandoSQL();
-    	String comandoSQL = codigo.gerarAtualizacao(medico, iap, 1);
+		PessoaDAO db = new PessoaDAO();
+		db.alterar(medico.getPessoa());
         
-    	int resultado = 0;
-        try{
-            ps = conecxao.prepareStatement(comandoSQL);
-            resultado = ps.executeUpdate();
-            
-            }catch(SQLException e){
-            	try{
-            		if(conecxao!=null){
-            			conecxao.rollback();
-            		}
-            	}catch(SQLException e1){
-            		e1.printStackTrace();
-            	}finally{
-            		ConexaoDAO.close(conecxao, ps, null);
-            	}
-            	e.printStackTrace();
-            }
-		
-		medico.setIdFuncionario(resultado);
-		medico.setLogin("");
-		medico.setSenha("");
-		medico.setIdentificadorInterno("");
-		medico.setStatusDeUsuario("");
-		medico.setPessoa(null);
-		medico.setNumeroDeRegistro(-1);
-		medico.setEspecialidade("");
-        
-		ArrayList<Funcionario> f1 = (ArrayList<Funcionario>) this.pesquisarAlgum(medico, false);
-		ArrayList<Funcionario> vazio = new ArrayList<>();
-		if (f1 == vazio){
-			return null;
-		} 
-		else{
-			return (Funcionario) f1.get(0);
+        String comando = "UPDATE medico SET login = " +"'"+medico.getLogin()+"'"+
+		        		", senha = " +"'"+medico.getSenha()+"'"+
+		        		", identificadorinterno = " +"'"+medico.getIdentificadorInterno()+"'"+ 
+		        		", statusdeusuario = " +"'"+medico.getStatusDeUsuario()+"'"+
+		        		", pessoa = " +"'"+ db.procurarId(medico.getPessoa()) +"'"+ 
+		        		"WHERE idfuncionario = " + "'" + medico.getIdFuncionario() + "'";
+		                
+        try {
+			ps = conecxao.prepareStatement(comando);
+			ps.executeUpdate();
+			
+
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conecxao, ps, rs);
 		}
 	}
 	
-	public Funcionario excluir(Funcionario f){
-		Medico f1 = (Medico) f;
-		f1.setStatusDeUsuario(StatusDeUsuario.MP.getStatus());
-		Medico f2 = (Medico) this.alterar(f1, 1);
-		return f2;
+	public void inativar(Funcionario atendente){		
+	
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        String comando = "UPDATE medico SET statusdeusuario = " + "'"+ StatusDeUsuario.IP.getStatus() + "'"+ 
+        				 "WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";
+      
+        try {
+ 			ps = conecxao.prepareStatement(comando);
+ 			ps.executeUpdate();
+ 		} catch (SQLException e) {
+ 			e.printStackTrace();
+ 		}finally{
+ 			ConexaoDAO.close(conecxao, ps, rs);
+ 		}
+		
 	}
 	
-	public Funcionario logar(Funcionario f){
-		Medico f1 = (Medico) f;
-		f1.setStatusDeUsuario(StatusDeUsuario.A.getStatus());
-		Medico f2 = (Medico) this.alterar(f1, 1);
-		return f2;
-	}
-	
-	public int deslogar(Funcionario funcionario){
-		return a;
-	}
 }

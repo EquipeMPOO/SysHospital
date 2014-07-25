@@ -11,11 +11,13 @@ import com.mysql.jdbc.Connection;
 import aplicacao.dominio.Administrador;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Enfermeiro;
+import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Gerente;
 import aplicacao.dominio.Medico;
 import aplicacao.dominio.Pessoa;
 import aplicacao.dao.AdministradorDAO;
 import aplicacao.dao.AtendenteDAO;
+import aplicacao.dao.PessoaDAO;
 import aplicacao.form.SalvarDadosFuncionariosGUI;
 import aplicacao.dao.EnfermeiroDAO;
 import aplicacao.form.GerenciarFuncionarioGUI;
@@ -28,8 +30,5 @@ public class Main {
 		
 		JFrame primeiraTela = new LoginGUI();
 		primeiraTela.setVisible(true);
-		
-		
-		
 	}
 }

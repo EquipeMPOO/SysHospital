@@ -117,8 +117,15 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		if (!(funcionario.getPessoa() == null)){ //Se funcionario.getPessoa() for diferente de nulo, ele fará o que está abaixo
 			nomeField.setText(funcionario.getPessoa().getNome());
 			cpfField.setText(funcionario.getPessoa().getCpf());
-			nRegistroField.setText(Integer.toString(funcionario.getNumeroDeRegistro()));
-			loginField.setText(funcionario.getSenha());
+			
+			if(funcionario instanceof Enfermeiro){
+			nRegistroField.setText(Integer.toString(((Enfermeiro) funcionario).getNumeroDeRegistro()));
+			}
+			else if(funcionario instanceof Medico){
+				nRegistroField.setText(Integer.toString(((Medico) funcionario).getNumeroDeRegistro()));
+			}
+			
+			loginField.setText(funcionario.getLogin());
 			senhaField.setText(funcionario.getSenha());
 		}
 		
@@ -286,30 +293,33 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 				//Se o funcionario ainda não tem uma pessoa, quer dizer que ele é novo no sistema
 				//Neste primeiro caso ele foi criado sem nenhum atributo pela GerenteGUI
 				//Caso contrario, quer dizer que ele já existe e foi passado pela GerenciarFuncionarioGUI e já tem todos os atributos instanciados
-				if (funcionario.getPessoa().equals(null)){
+				if (funcionario.getPessoa() == null){
 					
 					Pessoa pessoa = new Pessoa();
 					funcionario.setPessoa(pessoa);
 					
 					funcionario.getPessoa().setNome(nomeField.getText());	
 					funcionario.getPessoa().setCpf(cpfField.getText());
+					funcionario.getPessoa().setSexo((String) sexoBox.getSelectedItem());
 					funcionario.setLogin(loginField.getText());	
 					funcionario.setSenha(senhaField.getText());					
-					funcionario.setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
-					adicionarTipoSanguineo(); //o Java interpreta isso como sendo this.adicionarTipoSanguineo()
-					
+					adicionarTipoSanguineo(); //o Java interpreta isso como sendo this.adicionarTipoSanguineo()					
 					
 					// Condicional que seta a especializacao se o funcionario pertencer a classe Medico
 					if (funcionario instanceof Medico){
 						//Cast duplo para garantir que o funcionario é um medico e que o SelectedItem da especializacaoBox retornara uma String
 						((Medico)funcionario).setEspecialidade((String) especializacaoBox.getSelectedItem());
+						((Medico)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
+					}
+					else if (funcionario instanceof Enfermeiro){
+						((Enfermeiro)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
 					}
 				    
 
 				    					
 					//Aciona camada de Negócio do sistema para ela fazer as validaçoes necessarias
 					GerenciamentoControle controleAtualizar = new GerenciamentoControle(funcionario);
-					controleAtualizar.AlterarDados();
+					controleAtualizar.Cadastrar();
 			
 				}
 				
@@ -317,15 +327,19 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 					
 					funcionario.getPessoa().setNome(nomeField.getText());	
 					funcionario.getPessoa().setCpf(cpfField.getText());
+					funcionario.getPessoa().setSexo((String) sexoBox.getSelectedItem());
 					funcionario.setLogin(loginField.getText());	
-					funcionario.setSenha(senhaField.getText());					
-					funcionario.setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
+					funcionario.setSenha(senhaField.getText());		
 					adicionarTipoSanguineo(); //o Java interpreta isso como sendo this.adicionarTipoSanguineo()
 					
 					// Condicional que seta a especializacao se o funcionario pertencer a classe Medico
 					if (funcionario instanceof Medico){
 						//Cast duplo para garantir que o funcionario é um medico e que o SelectedItem da especializacaoBox retornara uma String
 						((Medico)funcionario).setEspecialidade((String) especializacaoBox.getSelectedItem());
+						((Medico)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
+					}
+					else if (funcionario instanceof Enfermeiro){
+						((Enfermeiro)funcionario).setNumeroDeRegistro(Integer.parseInt(nRegistroField.getText()));
 					}
 					
 					//Aciona camada de Negócio do sistema para ela fazer as validaçoes necessarias
