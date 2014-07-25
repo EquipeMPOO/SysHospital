@@ -60,7 +60,7 @@ public class PacienteDAO {
 		PessoaDAO db = new PessoaDAO();
 		db.cadastrar(paciente.getPessoa());
 		
-		String comando = "INSERT INTO paciente(pessoa) VALUES (" + "'" +  db.procurarId(paciente.getPessoa())+"'"+ ")" ;
+		String comando = "INSERT INTO paciente(idpaciente, pessoa) VALUES ( '1', " + "'" +  db.procurarId(paciente.getPessoa())+"'"+ ")" ;
         
         try {
 			ps = conexao.prepareStatement(comando);

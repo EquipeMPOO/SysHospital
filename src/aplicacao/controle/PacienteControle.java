@@ -15,7 +15,7 @@ import aplicacao.enums.StatusDeUsuario;
 
 public class PacienteControle {	
 	
-	public List<Paciente> pesquisarNaoInternados(Funcionario funcionarioParametro){
+	public List<Paciente> pesquisarNaoInternados(){
 		
 		PacienteDAO database = new PacienteDAO();
 		return database.pesquisarTodos();
