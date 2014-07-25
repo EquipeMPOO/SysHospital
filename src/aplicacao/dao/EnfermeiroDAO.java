@@ -250,7 +250,7 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         ResultSet rs = null;
         
         PessoaDAO db = new PessoaDAO();
-		db.cadastrar(atendente.getPessoa());
+		db.alterar(atendente.getPessoa());
 		
         String comando = "UPDATE enfermeiro SET login = " +"'"+atendente.getLogin()+"'"+ 
 		        		", senha = " +"'"+atendente.getSenha()+"'"+
