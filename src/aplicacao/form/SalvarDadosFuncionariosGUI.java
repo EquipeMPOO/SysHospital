@@ -157,33 +157,33 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 		
 		if (funcionario instanceof Medico){
 			if (funcionario.getPessoa() == null){
-				lblTitulo.setName("Cadastro de Médico");
+				lblTitulo.setText("Cadastro de Médico");
 			}
 			else{
-				lblTitulo.setName("Atualizar dados de Médico");
+				lblTitulo.setText("Atualizar dados de Médico");
 			}
 			
 		}
 		else if (funcionario instanceof Enfermeiro){
 			
 			if (funcionario.getPessoa() == null){
-				lblTitulo.setName("Cadastro de Enfermeiro");
+				lblTitulo.setText("Cadastro de Enfermeiro");
 			}
 			else{
-				lblTitulo.setName("Atualizar dados de Enfemeiro");
+				lblTitulo.setText("Atualizar dados de Enfemeiro");
 			}
 		}
 		else if (funcionario instanceof Atendente){
 			
 			if (funcionario.getPessoa()==null){
-				lblTitulo.setName("Cadastro de Atendente");
+				lblTitulo.setText("Cadastro de Atendente");
 			}
 			else{
-				lblTitulo.setName("Atualizar dados de Atendente");
+				lblTitulo.setText("Atualizar dados de Atendente");
 			}
 		}
 		
-		lblTitulo.setFont(new Font("Georgia", Font.ITALIC, 25));
+		lblTitulo.setFont(new Font("Georgia", Font.ITALIC, 17));
 		lblTitulo.setBounds(10, 11, 227, 33);
 		getContentPane().add(lblTitulo);
 		
@@ -386,9 +386,11 @@ public class SalvarDadosFuncionariosGUI extends JFrame {
 					}
 				    
 					
-
-			}
+					
 				}
+				
+				
+			}
 			
 			
 			
