@@ -190,9 +190,9 @@ public class GerenteGUI extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Internar o Paciente
 				
-				JFrame proximaTela = new GerenciarPacienteGUI();
-				GerenteGUI.this.dispose();
-				proximaTela.setVisible(true);
+//				JFrame proximaTela = new GerenciarPacienteGUI();
+//				GerenteGUI.this.dispose();
+//				proximaTela.setVisible(true);
 				
 			}
 		}

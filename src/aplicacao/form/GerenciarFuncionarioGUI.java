@@ -127,11 +127,10 @@ public class GerenciarFuncionarioGUI extends JFrame {
 					
 					contentPane.add(btnAlterarDados);
 					contentPane.add(btnInativar);
-					
+										
 					String texto = "Cargo: " + funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1).getClass() + "\n"
 							+ "Nome: " +funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1).getPessoa().getNome() + "\n"
-							+ "CPF: " + funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1).getPessoa().getCpf() + "\n"
-							+ "Identificador Interno: " + funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1).getIdentificadorInterno();						
+							+ "CPF: " + funcionariosPesquisados.get(funcionarioBox.getSelectedIndex()-1).getPessoa().getCpf();						
 					
 					textLabel.setText(texto);
 					contentPane.add(textLabel);

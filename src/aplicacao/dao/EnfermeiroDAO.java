@@ -124,8 +124,8 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         	rs = ps.executeQuery();
         	
         	while(rs.next()) {
-        		PessoaDAO a = new PessoaDAO();
-        		enfermeiro.setPessoa(a.pesquisarporID(rs.getInt("pessoa")));
+        		PessoaDAO dbPessoa = new PessoaDAO();
+        		enfermeiro.setPessoa(dbPessoa.pesquisarporID(rs.getInt("pessoa")));
         		
         		if (enfermeiro.getPessoa().getCpf().equals(parametro.getPessoa().getCpf())){
         			

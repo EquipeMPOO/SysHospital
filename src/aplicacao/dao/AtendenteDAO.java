@@ -14,7 +14,7 @@ import aplicacao.dominio.Funcionario;
 import aplicacao.enums.StatusDePessoa;
 import aplicacao.enums.StatusDeUsuario;
 
-public class AtendenteDAO implements IFuncionarioDAO{
+public class AtendenteDAO{
 	
 	private static final String SQL_PESQUISA =	"SELECT * FROM atendente";
 	
@@ -120,8 +120,8 @@ public class AtendenteDAO implements IFuncionarioDAO{
         	rs = ps.executeQuery();
         	
         	while(rs.next()) {
-        		PessoaDAO a = new PessoaDAO();
-        		atendente.setPessoa(a.pesquisarporID(rs.getInt("pessoa")));
+        		PessoaDAO dbPessoa = new PessoaDAO();
+        		atendente.setPessoa(dbPessoa.pesquisarporID(rs.getInt("pessoa")));
         		
         		if (atendente.getPessoa().getCpf().equals(parametro.getPessoa().getCpf())){
         			

@@ -33,7 +33,6 @@ public class Main {
 		
 		JFrame primeiraTela = new LoginGUI();
 		primeiraTela.setVisible(true);
-
 		
 	}
 }
