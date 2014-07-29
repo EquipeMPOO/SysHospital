@@ -4,70 +4,44 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import aplicacao.enums.StatusDeEntrada;
-
 public class Entrada {
  
-	private int codigo;
-	private String descricao;
-	private Date dataEntrada;
-	private Date dataSaida;
-	private Paciente paciente;
-	private StatusDeEntrada statusdeentrada;
-	private ArrayList<Atendimento> situacaoDePaciente;
+	private int idEntrada;
+	private String dataEntrada;
+	private String dataSaida;
+	private String statusdeentrada;
+	private ArrayList<Atendimento> atendimentos;
 	
-	public int getCodigo() {
-		return codigo;
+	public int getIdEntrada() {
+		return idEntrada;
 	}
-	public void setCodigo(int codigo) {
-		this.codigo = codigo;
+	public void setIdEntrada(int idEntrada) {
+		this.idEntrada = idEntrada;
 	}
-	
-	public String getDescricao() {
-		return descricao;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-		
-	public Paciente getPaciente() {
-		return paciente;
-	}
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
-	}
-	
-	public StatusDeEntrada getStatusDeEntrada() {
-		return statusdeentrada;
-	}
-	public void setStatusDeEntrada(StatusDeEntrada statusdeentrada) {
-		this.statusdeentrada = statusdeentrada;
-	}
-	public Date getDataEntrada() {
+	public String getDataEntrada() {
 		return dataEntrada;
 	}
-	public void setDataEntrada(Date dataEntrada) {
+	public void setDataEntrada(String dataEntrada) {
 		this.dataEntrada = dataEntrada;
 	}
-	public Date getDataSaida() {
+	public String getDataSaida() {
 		return dataSaida;
 	}
-	public void setDataSaida(Date dataSaida) {
+	public void setDataSaida(String dataSaida) {
 		this.dataSaida = dataSaida;
 	}
-	public StatusDeEntrada getStatusdeentrada() {
+	public String getStatusdeentrada() {
 		return statusdeentrada;
 	}
-	public void setStatusdeentrada(StatusDeEntrada statusdeentrada) {
+	public void setStatusdeentrada(String statusdeentrada) {
 		this.statusdeentrada = statusdeentrada;
 	}
-	public ArrayList<Atendimento> getSituacaoDePaciente() {
-		return situacaoDePaciente;
+	public ArrayList<Atendimento> getAtendimentos() {
+		return atendimentos;
 	}
-	public void setSituacaoDePaciente(ArrayList<Atendimento> situacaoDePaciente) {
-		this.situacaoDePaciente = situacaoDePaciente;
+	public void setAtendimentos(ArrayList<Atendimento> atendimentos) {
+		this.atendimentos = atendimentos;
 	}
-	
 	
 }
  

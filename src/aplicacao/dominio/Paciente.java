@@ -1,13 +1,13 @@
 package aplicacao.dominio;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 public class Paciente {
 		
 		private int idPaciente;
-		private List<EnfermidadePessoal> enfermidadePessoal;
-		private List<Entrada> historico;
+		private ArrayList<EnfermidadePessoal> enfermidadePessoal;
+		private ArrayList<Entrada> historico;
 		private Pessoa pessoa;
 		
 		public int getIdPaciente() {
@@ -17,17 +17,17 @@ public class Paciente {
 			this.idPaciente = idPaciente;
 		}
 		
-		public List<EnfermidadePessoal> getDoenca() {
+		public ArrayList<EnfermidadePessoal> getDoenca() {
 			return enfermidadePessoal;
 		}
-		public void setDoenca(List<EnfermidadePessoal> enfermidadePessoal) {
+		public void setDoenca(ArrayList<EnfermidadePessoal> enfermidadePessoal) {
 			this.enfermidadePessoal = enfermidadePessoal;
 		}
 		
-		public List<Entrada> getHistorico() {
+		public ArrayList<Entrada> getHistorico() {
 			return historico;
 		}
-		public void setHistorico(List<Entrada> historico) {
+		public void setHistorico(ArrayList<Entrada> historico) {
 			this.historico = historico;
 		}
 		

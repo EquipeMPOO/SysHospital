@@ -2,7 +2,7 @@ package aplicacao.dominio;
 
 public class Enfermidade {
 	
-	private String idEnfermidade;
+	private int idEnfermidade;
 	private String nome;
 	private String tipo;
 	private String descricao;
@@ -27,10 +27,10 @@ public class Enfermidade {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	public String getIdEnfermidade() {
+	public int getIdEnfermidade() {
 		return idEnfermidade;
 	}
-	public void setIdEnfermidade(String idEnfermidade) {
+	public void setIdEnfermidade(int idEnfermidade) {
 		this.idEnfermidade = idEnfermidade;
 	}
 	

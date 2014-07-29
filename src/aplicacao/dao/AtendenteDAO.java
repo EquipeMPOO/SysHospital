@@ -147,16 +147,6 @@ public class AtendenteDAO{
 		
 		return null;
 	}
-	
-	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
-		return null;
-	}
-	
-	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
-		
-		return null;
-	}
-	
 	public List<Funcionario> pesquisarInativos(){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
