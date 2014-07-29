@@ -9,10 +9,22 @@ import aplicacao.dominio.Atendimento;
 import aplicacao.dominio.Entrada;
 import aplicacao.enums.StatusDePessoa;
 
+/**
+ * 
+ * @author icaro
+ * Classe que cria a conexão com a tabela entrada do banco de dados
+ */
+
 public class EntradaDAO {	
 	
 private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
 	
+	/**
+	 * Metodo que realiza a pesquisa dos dados de uma linha da tabela de Entradas de ID correspondente ao parametrizado
+	 * @param ID - Parametro que servirá para comparação com os dados coletados do banco de dados
+	 * @return Entrada - Instancia da classe entrada que possui os dados selecionados do banco
+	 */
+
 	public Entrada pesquisarPorId(int ID){		
 	
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -55,6 +67,11 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         return en;
 	}
 	
+	/**
+	 * Metodo que trata da inserção dos dados de um objeto da classe Entrada numa nova linha da Tabela Entrada
+	 * @param en - Instancia da classe Entrada que conterá os dados que serão persistidos numa nova linha da tabela Entrada
+	 */
+	
 	public void inserir(Entrada en){		
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -88,6 +105,11 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         }
         
 	}
+	
+	/**
+	 * Metodo que alterará o status de uma linha da tabela de Entrada para Finalizado
+	 * @param en - Instancia da classe Entrada que terá o ID da linha que terá o status atualizado
+	 */
 	
 	public void remover(Entrada en){		
 		

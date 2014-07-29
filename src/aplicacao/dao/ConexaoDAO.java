@@ -6,6 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 
+ * @author icaro
+ * Classe responsavel por fazer a conexão do sistema com o banco de dados de url syshospital_v2
+ * A classe é instanciada por todos os objetos da camada de persistencia
+ */
+
+
 public class ConexaoDAO {
 	
     private static final String URL_MYSQL = "jdbc:mysql://localhost/syshospital_v2";
@@ -13,6 +21,10 @@ public class ConexaoDAO {
     private static final String USER = "root";
     private static final String PASS = "qwe123z0";
 	
+    /**
+     * Cria a conexão com a tabela através do JDBC
+     */
+    
     public static Connection getConnection() {
         try {
             Class.forName(DRIVER_CLASS_MYSQL);
@@ -22,9 +34,16 @@ public class ConexaoDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("Conectando ao Banco de Dados");
         return null;
     }
+    
+    /**
+     * Encerra a conexao criada com o banco
+     * @param conecxao 
+     * @param ps 
+     * @param rs 
+     */
+    
     
     public static void close(Connection conecxao, PreparedStatement ps, ResultSet rs) {
         try {

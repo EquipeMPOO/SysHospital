@@ -19,6 +19,12 @@ public class EnfermeiroDAO{
 	
 	private static final String SQL_PESQUISA = "SELECT * FROM enfermeiro";
 	
+	/**
+	 * Retorna uma coleção de objetos que possuem dados de todas as linhas da tabela enfermeiro
+	 * @param pesquisarPessoa - Boolena que trata a condição de pesquisar os dados pessoais relacionados ao atendente pesquisado
+	 * @return List<Funcionario> - Coleção de instancias da classe Funcionario que possuem os dados das linhas da tabela enfermeiro
+	 */
+	
 	public List<Funcionario> pesquisarTodos(Boolean pesquisarPessoa){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -64,8 +70,13 @@ public class EnfermeiroDAO{
         }
 		
 		return funcionarios;
-	}
+	}	
 	
+	/**
+	 * Procura dentro da tabela de enfermeiro uma linha que possua o mesmo dado nas colunas de login e senha que o do parametro informado
+	 * @param parametro - Instancia da classe Funcionario responsavel por servir como parametro para comparação de Login e Senha
+	 * @return Funcionario - Instancia da classe Funcionario que possui o mesmo Login e Senha do Funcionario parametrizado
+	 */	
 	
 	public Funcionario pesquisarLogin(Funcionario parametro){
 		
@@ -109,6 +120,13 @@ public class EnfermeiroDAO{
 		return null;
 	}
 	
+	/**
+	 * 
+	 * Procura dentro da tabela de enfermeiro uma linha que possua o mesmo dado na coluna de cpf que o do parametro informado
+	 * @param parametro - Instancia da classe funcionario que servirá como parametro para comparação de Cpf com o objeto formado a partir dos dados presentes numa linha da tabela
+	 * @return Funcionario - Instancia da classe funcionario que possui o mesmo cpf informado pelo funcionario parametrizado
+	 */
+	
 	public Funcionario pesquisarCpf(Funcionario parametro){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -151,6 +169,11 @@ public class EnfermeiroDAO{
 		
 		return null;
 	}
+	
+	/**
+	 * Retorna uma coleção de funcionarios que não estão logados dentro da tabela enfermeiro
+	 * @return List<Funcionario> - Coleção de funcionarios inativos (que não estão logados) no sistema
+	 */
 	
 	public List<Funcionario> pesquisarInativos(){
 		
@@ -198,6 +221,10 @@ public class EnfermeiroDAO{
 		
 	}
 	
+	/**
+	 * Recupera os dados do objeto parametrizado e os insere numa nova linha tabela enfermeiro
+	 * @param atendente -Instancia da classe Funcionario que possui os dados que serão persistidos na tabela
+	 */
 	
 	public void cadastrar(Funcionario enfermeiro) {
 		
@@ -228,6 +255,11 @@ public class EnfermeiroDAO{
 
 	}
 	
+	/**
+	 * Altera os dados da coluna de um item da tabela de enfermeiro
+	 * @param atendente - Instancia da classe Funcionario que contém os dados que serão atualizados na tabela de Id correspondente
+	 */
+	
 	public void alterar(Funcionario atendente){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -254,6 +286,11 @@ public class EnfermeiroDAO{
 			ConexaoDAO.close(conecxao, ps, rs);
 		}
 	}
+	
+	/**
+	 * Altera o status de usuario de um funcionario da tabela para Inativo Permanente (IP)
+	 * @param atendente - Instancia que servirá como parametro alterar a linha de ID correspondente
+	 */
 	
 	public void inativar(Funcionario atendente){		
 	

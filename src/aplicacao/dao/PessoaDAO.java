@@ -11,11 +11,22 @@ import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Pessoa;
 import aplicacao.enums.StatusDePessoa;
 
+/**
+ * 
+ * @author icaro
+ * Classe que trata da persistencia dos dados das instancias da Classe Pessoa
+ * É instanciado pelas classes PacienteDAO e classes que tratam da persistencia Funcionarios
+ */
+
 public class PessoaDAO{
 
 	private static final String SQL_PESQUISA = "SELECT * FROM pessoa";
 
-
+	/**
+	 * Metodo que faz a busca de um ID a partir de um parametro que possua os dados do objeto parametrizado
+	 * @param pessoa - Parametro de pesquisa que conterá o cpf necessario para a pesquisa ser realizada
+	 * @return int - Id pesquisado
+	 */
 	public int procurarId(Pessoa pessoa){
 
 		Connection conexao = ConexaoDAO.getConnection();
@@ -40,6 +51,11 @@ public class PessoaDAO{
 		return id;
 
 	}
+	
+	/**
+	 * Metodo que trata da inserção dos dados de um objeto da classe Pessoa na tabela pessoa
+	 * @param novaPessoa - Parametro que conterá os dados a serem persistidos na tabela de Pessoa
+	 */
 
 	public void cadastrar(Pessoa novaPessoa) {
 
@@ -67,6 +83,11 @@ public class PessoaDAO{
 		}
         
 	}
+	
+	/**
+	 * Metodo que altera os dados de uma linha da tabela pessoa cujo id seja o mesmo do objeto parametrizado
+	 * @param pessoa - Instancia da classe pessoa que possuirá os dados que serão alterados na tabela pessoa
+	 */
 
 
 	public void alterar(Pessoa pessoa) {		
@@ -95,7 +116,11 @@ public class PessoaDAO{
 
  	}
 
-
+	/**
+	 * 
+	 * Metodo que altera o dado da coluna statusdepessoa da tabela pessoa cujo ID é o mesmo do objeto parametrizado
+	 * @param pessoa - Instancia da classe pessoa que possui o ID da linha a ser alterada na tabela pessoa
+	 */
 	public void excluir(Pessoa pessoa){
 
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -114,6 +139,11 @@ public class PessoaDAO{
  			ConexaoDAO.close(conecxao, ps, rs);
  		}
 	}
+	
+	/**
+	 * Metodo que retorna uma coleção de instancias da classe Pessoa com todos os dados persistidos na tabela pessoa
+	 * @return ArrayList<Pessoa> - coleção com objetos que contém os dados persistidos no banco de dados
+	 */
 
 	public ArrayList<Pessoa> pesquisarTodos() {
 
@@ -157,6 +187,12 @@ public class PessoaDAO{
 		return pessoas;
 
 	}
+	
+	/**
+	 * Metodo que realiza a busca de uma linha específica da tabela pessoa onde o ID for o mesmo do parametro passado
+	 * @param idPessoa - inteiro que possui o mesmo ID de alguma linha persistida no banco de dados
+	 * @return
+	 */
 
 	public Pessoa pesquisarporID(int idPessoa) {
 

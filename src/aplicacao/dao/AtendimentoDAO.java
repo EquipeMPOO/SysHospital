@@ -11,9 +11,22 @@ import aplicacao.dominio.Atendimento;
 import aplicacao.dominio.Enfermidade;
 import aplicacao.dominio.Medico;
 
+/**
+ * @author icaro
+ * Classe que trata de conexao do sistema com a tabela de atendimentos do banco de dados
+ * É instanciado na classe PacienteControle
+ */
+
+
 public class AtendimentoDAO {
 	
 	private static final String SQL_PESQUISA =	"SELECT * FROM atendimento";
+	
+	/**
+	 * Metodo que forma um objeto de ID selecionado
+	 * @param ID - Inteiro que possui o numero indexado que servirá como parametro de pesquisa
+	 * @return Atendimento - Instancia da classe Atendimento que contém os dados capturados pela tabela correspondente no banco
+	 */
 	
 	public Atendimento pesquisarPorId(int ID){		
 	
@@ -61,7 +74,12 @@ public class AtendimentoDAO {
         return at;
 	}
 	
-	public void cadastrar(Atendimento at){		
+	/**
+	 * Metodo que captura dados de um objeto parametrizado e os insere numa nova linha do banco de dados
+	 * @param at - Instancia da classe atendimento que contem os dados que serão persistidos no banco de dados
+	 */
+	
+	public void inserir(Atendimento at){		
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;

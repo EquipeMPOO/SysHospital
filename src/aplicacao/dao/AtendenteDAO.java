@@ -13,9 +13,21 @@ import aplicacao.dominio.Funcionario;
 import aplicacao.enums.StatusDePessoa;
 import aplicacao.enums.StatusDeUsuario;
 
+/**
+ * 
+ * @author icaro
+ * Classe que trata de conexao do sistema com a tabela atendente do banco de dado
+ * É instanciado nas classes de PesquisaControle e GerenciamentoControle
+ */
 public class AtendenteDAO{
 	
 	private static final String SQL_PESQUISA =	"SELECT * FROM atendente";
+	
+	/**
+	 * Retorna uma coleção de objetos que possuem dados de todas as linhas da tabela atendente
+	 * @param pesquisarPessoa - Boolena que trata a condição de pesquisar os dados pessoais relacionados ao atendente pesquisado
+	 * @return List<Funcionario> - Coleção de instancias da classe Funcionario que possuem os dados das linhas da tabela Atendente
+	 */
 	
 	public List<Funcionario> pesquisarTodos(Boolean pesquisarPessoa){
 		
@@ -64,6 +76,12 @@ public class AtendenteDAO{
 		return funcionarios;
 	}
 	
+	/**
+	 * Procura dentro da tabela de atendente uma linha que possua o mesmo dado nas colunas de login e senha que o do parametro informado
+	 * @param parametro - Instancia da classe Funcionario responsavel por servir como parametro para comparação de Login e Senha
+	 * @return Funcionario - Instancia da classe Funcionario que possui o mesmo Login e Senha do Funcionario parametrizado
+	 */
+	
 	public Funcionario pesquisarLogin(Funcionario parametro){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -105,6 +123,13 @@ public class AtendenteDAO{
 		return null;
 	}
 	
+	/**
+	 * 
+	 * Procura dentro da tabela de atendente uma linha que possua o mesmo dado na coluna de cpf que o do parametro informado
+	 * @param parametro - Instancia da classe funcionario que servirá como parametro para comparação de Cpf com o objeto formado a partir dos dados presentes numa linha da tabela
+	 * @return Funcionario - Instancia da classe funcionario que possui o mesmo cpf informado pelo funcionario parametrizado
+	 */
+		
 	public Funcionario pesquisarCpf(Funcionario parametro){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -147,6 +172,12 @@ public class AtendenteDAO{
 		
 		return null;
 	}
+	
+	/**
+	 * Retorna uma coleção de funcionarios que não estão logados dentro da tabela atendente
+	 * @return List<Funcionario> - Coleção de funcionarios inativos (que não estão logados) no sistema
+	 */
+	
 	public List<Funcionario> pesquisarInativos(){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -194,6 +225,10 @@ public class AtendenteDAO{
 		
 	}
 	
+	/**
+	 * Recupera os dados do objeto parametrizado e os insere numa nova linha tabela atendente
+	 * @param atendente -Instancia da classe Funcionario que possui os dados que serão persistidos na tabela
+	 */
 	
 	public void cadastrar(Funcionario atendente) {
 		
@@ -224,6 +259,11 @@ public class AtendenteDAO{
 
 	}
 	
+	/**
+	 * Altera os dados da coluna de um item da tabela de atendente
+	 * @param atendente - Instancia da classe Funcionario que contém os dados que serão atualizados na tabela de Id correspondente
+	 */
+	
 	public void alterar(Funcionario atendente){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -249,6 +289,11 @@ public class AtendenteDAO{
 			ConexaoDAO.close(conecxao, ps, rs);
 		}
 	}
+	
+	/**
+	 * Altera o status de usuario de um funcionario da tabela para Inativo Permanente (IP)
+	 * @param atendente - Instancia que servirá como parametro alterar a linha de ID correspondente
+	 */
 	
 	public void inativar(Funcionario atendente){		
 	

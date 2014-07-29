@@ -11,9 +11,19 @@ import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Enfermidade;
 import aplicacao.dominio.Funcionario;
 
+/**
+ * @author icaro
+ * Classe que trata de conexao do sistema com a tabela de enfermidades do banco de dados
+ */
+
 public class EnfermidadeDAO {
 	
-	private static final String SQL_PESQUISA =	"SELECT * FROM enfermidade";
+	private static final String SQL_PESQUISA =	"SELECT * FROM enfermidade";	
+	
+	/**
+	 * Metodo que retorna objetos com dados de todas as enfermidadas cadastradas no banco
+	 * @return List<Enfermidade> - Coleção de instancias da classe Enfermidade que possuem todos os dados da tabela de enfermidade do banco de dados
+	 */
 	
 	public List<Enfermidade> pesquisarTodos(){
 		
@@ -54,6 +64,12 @@ public class EnfermidadeDAO {
 		
 		return enfermidades;
 	}
+	
+	/**
+	 * Metodo que permite ao usuario adicionar uma nova enfermidade inexistente no banco de dados
+	 * @param enfermidade - Instancia da classe enfermidade que será persistida na tabela de enfermidade do banco de dados
+	 * @return enfermidade - Objeto com o ID gerado pelo metodo de cadastro
+	 */
 	
 	public Enfermidade cadastrar(Enfermidade enfermidade){
 		
