@@ -1,7 +1,8 @@
 package aplicacao.dominio;
 
-public abstract class Enfermidade {
- 
+public class Enfermidade {
+	
+	private String idEnfermidade;
 	private String nome;
 	private String tipo;
 	private String descricao;
@@ -26,6 +27,14 @@ public abstract class Enfermidade {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	public String getIdEnfermidade() {
+		return idEnfermidade;
+	}
+	public void setIdEnfermidade(String idEnfermidade) {
+		this.idEnfermidade = idEnfermidade;
+	}
+	
+	
 	
 }
  

@@ -19,6 +19,7 @@ import aplicacao.dominio.Paciente;
 import aplicacao.dominio.Pessoa;
 import aplicacao.dao.AdministradorDAO;
 import aplicacao.dao.AtendenteDAO;
+import aplicacao.dao.ConexaoDAO;
 import aplicacao.dao.PacienteDAO;
 import aplicacao.dao.PessoaDAO;
 import aplicacao.form.SalvarDadosFuncionariosGUI;
@@ -33,6 +34,6 @@ public class Main {
 		
 		JFrame primeiraTela = new LoginGUI();
 		primeiraTela.setVisible(true);
-		
+				
 	}
 }

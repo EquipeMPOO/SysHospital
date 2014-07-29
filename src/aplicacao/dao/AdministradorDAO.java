@@ -8,13 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aplicacao.dao.util.ComandoSQL;
-import aplicacao.dao.util.Comparacao;
 import aplicacao.dominio.Administrador;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Funcionario;
 import aplicacao.enums.StatusDeUsuario;
 
-public class AdministradorDAO implements IFuncionarioDAO{
+public class AdministradorDAO{
 	
 	private static final String SQL_PESQUISA = "SELECT * FROM administrador";
 	
@@ -35,7 +34,6 @@ public class AdministradorDAO implements IFuncionarioDAO{
         		adm.setIdFuncionario(rs.getInt("idfuncionario"));
         		adm.setLogin(rs.getString("login"));
         		adm.setSenha(rs.getString("senha"));
-        		adm.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		adm.setStatusDeUsuario(rs.getString("statusdeusuario"));
 
     			if (pesquisarPessoa){
@@ -85,7 +83,6 @@ public class AdministradorDAO implements IFuncionarioDAO{
         		if (adm.getSenha().equals(parametro.getSenha()) & adm.getLogin().equals(parametro.getLogin())){
 	        		adm.setIdFuncionario(rs.getInt("idfuncionario"));
 	        		adm.setStatusDeUsuario(rs.getString("statusdeusuario"));
-	        		adm.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		adm.setCargo(rs.getString("cargo"));
 	        		return adm;
         		}
@@ -129,7 +126,6 @@ public class AdministradorDAO implements IFuncionarioDAO{
         			adm.setLogin(rs.getString("login"));
         			adm.setSenha(rs.getString("senha"));
 	        		adm.setIdFuncionario(rs.getInt("idfuncionario"));
-	        		adm.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		adm.setCargo(rs.getString("cargo"));
 	        		return adm;
         		}
@@ -152,15 +148,7 @@ public class AdministradorDAO implements IFuncionarioDAO{
 		
 		return null;
 	}
-	
-	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
-		return null;
-	}
-	
-	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
-		
-		return null;
-	}
+
 	
 	public List<Funcionario> pesquisarInativos(){
 		
@@ -181,7 +169,6 @@ public class AdministradorDAO implements IFuncionarioDAO{
 	        		adm.setIdFuncionario(rs.getInt("idfuncionario"));
 	        		adm.setLogin(rs.getString("login"));
 	        		adm.setSenha(rs.getString("senha"));
-	        		adm.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		adm.setCargo(rs.getString("cargo"));        	
 
 	        		
@@ -216,10 +203,9 @@ public class AdministradorDAO implements IFuncionarioDAO{
 		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement ps = null;
 		
-		String comando = "INSERT INTO administrador(login, senha, identificadorinterno, statusdeusuario, pessoa) VALUES ("+
+		String comando = "INSERT INTO administrador(login, senha, statusdeusuario, pessoa) VALUES ("+
 						     "'"+atendente.getLogin()+"'"+ ","+ 
 							"'"+atendente.getSenha()+"'"+","+ 
-							"'"+atendente.getIdentificadorInterno()+"'"+","+ 
 							"'"+atendente.getStatusDeUsuario()+"'"+","+ 
 							"'"+atendente.getPessoa().getIdPessoa()+"'"+ ")" ;
         
@@ -243,7 +229,6 @@ public class AdministradorDAO implements IFuncionarioDAO{
         
         String comando = "UPDATE administrador SET login = " +"'"+atendente.getLogin()+"'"+  
 		        		", senha = " +"'"+atendente.getSenha()+"'"+
-		        		", identificadorinterno = " +"'"+atendente.getIdentificadorInterno()+"'"+ 
 		        		", statusdeusuario = " +"'"+atendente.getStatusDeUsuario()+"'"+ 
 		        		", pessoa = " +"'"+atendente.getPessoa().getIdPessoa()+"'"+ 
 		        		"WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";

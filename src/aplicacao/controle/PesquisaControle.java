@@ -6,7 +6,6 @@ import java.util.List;
 import aplicacao.dao.AdministradorDAO;
 import aplicacao.dao.AtendenteDAO;
 import aplicacao.dao.EnfermeiroDAO;
-import aplicacao.dao.IFuncionarioDAO;
 import aplicacao.dao.MedicoDAO;
 import aplicacao.dominio.Administrador;
 import aplicacao.dominio.Atendente;

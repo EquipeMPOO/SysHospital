@@ -33,19 +33,15 @@ public class Testes {
 		z.setCpf("414.465");
 		Funcionario a = new Medico();
 		a.setPessoa(x);
-		a.setIdentificadorInterno("10000");
 		Funcionario b = new Medico();
 		b.setPessoa(y);
-		b.setIdentificadorInterno("4000");
 		Funcionario c = new Enfermeiro();
 		c.setPessoa(z);
-		c.setIdentificadorInterno("3333");
 		
 		final ArrayList<Funcionario> funcionariosPesquisados = new ArrayList<Funcionario>();
 		funcionariosPesquisados.add(a);
 		funcionariosPesquisados.add(b);
 		funcionariosPesquisados.add(c);
-		ImpressaoDeTestes idt = new ImpressaoDeTestes();
 		ArrayList<Funcionario> medicos = new ArrayList<>();
 		
 		
@@ -67,7 +63,6 @@ public class Testes {
 		a1.setIdFuncionario(-1);
 		a1.setLogin("");
 		a1.setSenha("65456");
-		a1.setIdentificadorInterno("");
 		a1.setStatusDeUsuario("");
 		a1.setPessoa(null);
 		a1.setCargo("");
@@ -76,7 +71,6 @@ public class Testes {
 		e0.setIdFuncionario(8);
 		e0.setLogin("Fulano");
 		e0.setSenha("123");
-		e0.setIdentificadorInterno("Dai-50-002");
 		e0.setStatusDeUsuario("Ativo");
 		e0.setPessoa(null);
 		e0.setNumeroDeRegistro(987);
@@ -85,7 +79,6 @@ public class Testes {
 		e1.setIdFuncionario(22999);
 		e1.setLogin("Beltrano");
 		e1.setSenha("487498");
-		e1.setIdentificadorInterno("349832-50-32998439");
 		e1.setStatusDeUsuario("Inativo");
 		e1.setPessoa(p1);
 		e1.setNumeroDeRegistro(0);
@@ -94,7 +87,6 @@ public class Testes {
 		m1.setIdFuncionario(1);
 		m1.setLogin("Abc");
 		m1.setSenha("123456");
-		m1.setIdentificadorInterno("");
 		m1.setStatusDeUsuario("");
 		m1.setPessoa(null);
 		m1.setNumeroDeRegistro(-1);
@@ -104,7 +96,6 @@ public class Testes {
 		m0.setIdFuncionario(10);
 		m0.setLogin("Abc");
 		m0.setSenha("123456");
-		m0.setIdentificadorInterno("");
 		m0.setStatusDeUsuario("");
 		m0.setPessoa(p0);
 		m0.setNumeroDeRegistro(-1);

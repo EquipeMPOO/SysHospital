@@ -1,5 +1,6 @@
 package aplicacao.dominio;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,10 +10,11 @@ public class Entrada {
  
 	private int codigo;
 	private String descricao;
-	private List<Date> data;
+	private Date dataEntrada;
+	private Date dataSaida;
 	private Paciente paciente;
 	private StatusDeEntrada statusdeentrada;
-	private Prontuario prontuario;
+	private ArrayList<Atendimento> situacaoDePaciente;
 	
 	public int getCodigo() {
 		return codigo;
@@ -27,14 +29,7 @@ public class Entrada {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
-	
-	public List<Date> getData() {
-		return data;
-	}
-	public void setData(List<Date> data) {
-		this.data = data;
-	}
-	
+		
 	public Paciente getPaciente() {
 		return paciente;
 	}
@@ -48,12 +43,31 @@ public class Entrada {
 	public void setStatusDeEntrada(StatusDeEntrada statusdeentrada) {
 		this.statusdeentrada = statusdeentrada;
 	}
+	public Date getDataEntrada() {
+		return dataEntrada;
+	}
+	public void setDataEntrada(Date dataEntrada) {
+		this.dataEntrada = dataEntrada;
+	}
+	public Date getDataSaida() {
+		return dataSaida;
+	}
+	public void setDataSaida(Date dataSaida) {
+		this.dataSaida = dataSaida;
+	}
+	public StatusDeEntrada getStatusdeentrada() {
+		return statusdeentrada;
+	}
+	public void setStatusdeentrada(StatusDeEntrada statusdeentrada) {
+		this.statusdeentrada = statusdeentrada;
+	}
+	public ArrayList<Atendimento> getSituacaoDePaciente() {
+		return situacaoDePaciente;
+	}
+	public void setSituacaoDePaciente(ArrayList<Atendimento> situacaoDePaciente) {
+		this.situacaoDePaciente = situacaoDePaciente;
+	}
 	
-	public Prontuario getProntuario() {
-		return prontuario;
-	}
-	public void setProntuario(Prontuario prontuario) {
-		this.prontuario = prontuario;
-	}
+	
 }
  

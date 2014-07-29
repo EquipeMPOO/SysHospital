@@ -8,7 +8,7 @@ import java.sql.SQLException;
 
 public class ConexaoDAO {
 	
-    private static final String URL_MYSQL = "jdbc:mysql://localhost/syshospital_v1";
+    private static final String URL_MYSQL = "jdbc:mysql://localhost/syshospital_v2";
     private static final String DRIVER_CLASS_MYSQL = "com.mysql.jdbc.Driver";
     private static final String USER = "root";
     private static final String PASS = "qwe123z0";

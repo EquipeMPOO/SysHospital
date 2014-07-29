@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aplicacao.dao.util.ComandoSQL;
-import aplicacao.dao.util.Comparacao;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Enfermeiro;
@@ -16,7 +15,7 @@ import aplicacao.dominio.Funcionario;
 import aplicacao.enums.StatusDePessoa;
 import aplicacao.enums.StatusDeUsuario;
 
-public class EnfermeiroDAO implements IFuncionarioDAO {
+public class EnfermeiroDAO{
 	
 	private static final String SQL_PESQUISA = "SELECT * FROM enfermeiro";
 	
@@ -37,7 +36,6 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         		enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
         		enfermeiro.setLogin(rs.getString("login"));
         		enfermeiro.setSenha(rs.getString("senha"));
-        		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		enfermeiro.setStatusDeUsuario(rs.getString("statusdeusuario"));
         		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 
@@ -87,7 +85,6 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         		if (enfermeiro.getSenha().equals(parametro.getSenha()) & enfermeiro.getLogin().equals(parametro.getLogin())){
 	        		enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
 	        		enfermeiro.setStatusDeUsuario(rs.getString("statusdeusuario"));
-	        		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 	        		System.out.println("aqui");
 	        		return enfermeiro;
@@ -132,7 +129,6 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
         			enfermeiro.setLogin(rs.getString("login"));
         			enfermeiro.setSenha(rs.getString("senha"));
 	        		enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
-	        		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 	        		return enfermeiro;
         		}
@@ -156,15 +152,6 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 		return null;
 	}
 	
-	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
-		return null;
-	}
-	
-	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
-		
-		return null;
-	}
-	
 	public List<Funcionario> pesquisarInativos(){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -184,7 +171,6 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 	        		enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
 	        		enfermeiro.setLogin(rs.getString("login"));
 	        		enfermeiro.setSenha(rs.getString("senha"));
-	        		enfermeiro.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 	        		
 	    			PessoaDAO a = new PessoaDAO();
@@ -221,10 +207,9 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 		PessoaDAO db = new PessoaDAO();
 		db.cadastrar(enfermeiro.getPessoa());
 		
-		String comando = "INSERT INTO enfermeiro(login, senha, identificadorinterno, statusdeusuario, pessoa, numeroderegistro) VALUES ("+
+		String comando = "INSERT INTO enfermeiro(login, senha, statusdeusuario, pessoa, numeroderegistro) VALUES ("+
 						     "'"+enfermeiro.getLogin()+"'"+ ","+ 
 							"'"+enfermeiro.getSenha()+"'"+","+ 
-							"'"+enfermeiro.getIdentificadorInterno()+"'"+","+ 
 							"'"+ "Inativo"+"'"+","+ 
 							"'"+db.procurarId(enfermeiro.getPessoa())+"'"+ ","+
 							"'"+((Enfermeiro) enfermeiro).getNumeroDeRegistro() +"'"+ ")" ;
@@ -254,7 +239,6 @@ public class EnfermeiroDAO implements IFuncionarioDAO {
 		
         String comando = "UPDATE enfermeiro SET login = " +"'"+atendente.getLogin()+"'"+ 
 		        		", senha = " +"'"+atendente.getSenha()+"'"+
-		        		", identificadorinterno = " +"'"+atendente.getIdentificadorInterno()+"'"+ 
 		        		", statusdeusuario = " +"'"+atendente.getStatusDeUsuario()+"'"+
 		        		", pessoa = " +"'"+db.procurarId(atendente.getPessoa())+"'"+ 
 		        		"WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";

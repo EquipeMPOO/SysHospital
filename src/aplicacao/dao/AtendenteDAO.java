@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aplicacao.dao.util.ComandoSQL;
-import aplicacao.dao.util.Comparacao;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Funcionario;
 import aplicacao.enums.StatusDePessoa;
@@ -35,7 +34,6 @@ public class AtendenteDAO{
         		atendenteBD.setIdFuncionario(rs.getInt("idfuncionario"));
         		atendenteBD.setLogin(rs.getString("login"));
         		atendenteBD.setSenha(rs.getString("senha"));
-        		atendenteBD.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		atendenteBD.setStatusDeUsuario(rs.getString("statusdeusuario"));
 
     			if (pesquisarPessoa){
@@ -84,7 +82,6 @@ public class AtendenteDAO{
         		if (atendente.getSenha().equals(parametro.getSenha()) & atendente.getLogin().equals(parametro.getLogin())){
 	        		atendente.setIdFuncionario(rs.getInt("idfuncionario"));
 	        		atendente.setStatusDeUsuario(rs.getString("statusdeusuario"));
-	        		atendente.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		atendente.setCargo(rs.getString("cargo"));
 	        		return atendente;
         		}
@@ -128,7 +125,6 @@ public class AtendenteDAO{
         			atendente.setLogin(rs.getString("login"));
         			atendente.setSenha(rs.getString("senha"));
 	        		atendente.setIdFuncionario(rs.getInt("idfuncionario"));
-	        		atendente.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		atendente.setCargo(rs.getString("cargo"));
 	        		return atendente;
         		}
@@ -180,7 +176,6 @@ public class AtendenteDAO{
 	        		atendente.setIdFuncionario(rs.getInt("idfuncionario"));
 	        		atendente.setLogin(rs.getString("login"));
 	        		atendente.setSenha(rs.getString("senha"));
-	        		atendente.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		atendente.setCargo(rs.getString("cargo"));        	
 
 	        		
@@ -218,10 +213,9 @@ public class AtendenteDAO{
 		PessoaDAO db = new PessoaDAO();
 		db.cadastrar(atendente.getPessoa());
 		
-		String comando = "INSERT INTO atendente(login, senha, identificadorinterno, statusdeusuario, pessoa, cargo) VALUES ("+
+		String comando = "INSERT INTO atendente(login, senha, statusdeusuario, pessoa, cargo) VALUES ("+
 						     "'"+atendente.getLogin()+"'"+ ","+ 
 							"'"+atendente.getSenha()+"'"+","+ 
-							"'"+atendente.getIdentificadorInterno()+"'"+","+ 
 							"'"+ "Inativo" +"'"+","+ 
 							"'"+db.procurarId(atendente.getPessoa())+"'" +","+ 
 							"'"+ "atendente" +"'" + ")" ;
@@ -251,7 +245,6 @@ public class AtendenteDAO{
 		
         String comando = "UPDATE atendente SET login = " +"'"+atendente.getLogin()+"'"+ 
 		        		", senha = " +"'"+atendente.getSenha()+"'" +
-		        		", identificadorinterno = " +"'"+atendente.getIdentificadorInterno()+"'"+ 
 		        		", statusdeusuario = " +"'"+atendente.getStatusDeUsuario()+"'"+
 		        		", pessoa = " +"'"+atendente.getPessoa().getIdPessoa()+"'"+ 
 		        		"WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";

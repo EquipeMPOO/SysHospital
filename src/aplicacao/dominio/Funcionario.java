@@ -12,7 +12,6 @@ public abstract class Funcionario {
 	private int idFuncionario;
 	private String login;
 	private String senha;
-	private String identificadorInterno;
 	private String statusDeUsuario;
 	private Pessoa pessoa;
 	
@@ -35,13 +34,6 @@ public abstract class Funcionario {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
-	}
-	
-	public String getIdentificadorInterno() {
-		return identificadorInterno;
-	}
-	public void setIdentificadorInterno(String identificadorinterno) {
-		this.identificadorInterno = identificadorinterno;
 	}
 	
 	public String getStatusDeUsuario() {

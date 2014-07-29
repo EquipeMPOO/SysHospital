@@ -10,14 +10,13 @@ import java.util.Random;
 
 import aplicacao.dao.ConexaoDAO;
 import aplicacao.dao.util.ComandoSQL;
-import aplicacao.dao.util.Comparacao;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
 import aplicacao.dominio.Pessoa;
 import aplicacao.enums.StatusDeUsuario;
 
-public class MedicoDAO implements IFuncionarioDAO {
+public class MedicoDAO{
 	
 	private static final String SQL_PESQUISA =	"SELECT * FROM medico";
 	
@@ -38,7 +37,6 @@ public class MedicoDAO implements IFuncionarioDAO {
         		medico.setIdFuncionario(rs.getInt("idfuncionario"));
         		medico.setLogin(rs.getString("login"));
         		medico.setSenha(rs.getString("senha"));
-        		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
         		medico.setStatusDeUsuario(rs.getString("statusdeusuario"));
         		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 
@@ -88,7 +86,6 @@ public class MedicoDAO implements IFuncionarioDAO {
         		if (medico.getSenha().equals(parametro.getSenha()) & medico.getLogin().equals(parametro.getLogin())){
 	        		medico.setIdFuncionario(rs.getInt("idfuncionario"));
 	        		medico.setStatusDeUsuario(rs.getString("statusdeusuario"));
-	        		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 	        		return medico;
         		}
@@ -132,7 +129,6 @@ public class MedicoDAO implements IFuncionarioDAO {
         			medico.setLogin(rs.getString("login"));
         			medico.setSenha(rs.getString("senha"));
 	        		medico.setIdFuncionario(rs.getInt("idfuncionario"));
-	        		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 	        		return medico;
         		}
@@ -156,15 +152,6 @@ public class MedicoDAO implements IFuncionarioDAO {
 		return null;
 	}
 	
-	public List<Funcionario> pesquisarFiltrando(Funcionario f, Boolean pesquisarPessoa){
-		return null;
-	}
-	
-	public List<Funcionario> pesquisarAlgum(Funcionario f, Boolean pesquisarPessoa){
-		
-		return null;
-	}
-	
 	public List<Funcionario> pesquisarInativos(){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
@@ -184,7 +171,6 @@ public class MedicoDAO implements IFuncionarioDAO {
 	        		medico.setIdFuncionario(rs.getInt("idfuncionario"));
 	        		medico.setLogin(rs.getString("login"));
 	        		medico.setSenha(rs.getString("senha"));
-	        		medico.setIdentificadorInterno(rs.getString("identificadorinterno"));
 	        		medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
 	        		
 	    			PessoaDAO a = new PessoaDAO();
@@ -221,10 +207,9 @@ public class MedicoDAO implements IFuncionarioDAO {
 		PessoaDAO db = new PessoaDAO();
 		db.cadastrar(medico.getPessoa());
 		
-		String comando = "INSERT INTO medico(login, senha, identificadorinterno, statusdeusuario, pessoa, numeroderegistro, especialidade) VALUES ("+
+		String comando = "INSERT INTO medico(login, senha, statusdeusuario, pessoa, numeroderegistro, especialidade) VALUES ("+
 						     "'"+medico.getLogin()+"'"+ ","+ 
 							"'"+medico.getSenha()+"'"+","+ 
-							"'"+medico.getIdentificadorInterno()+"'"+","+ 
 							"'"+ "Inativo" +"'"+","+ 
 							"'"+ db.procurarId(medico.getPessoa()) + "'"+ ","+ 
 							"'"+((Medico) medico).getNumeroDeRegistro() +"'"+","+
@@ -254,7 +239,6 @@ public class MedicoDAO implements IFuncionarioDAO {
         
         String comando = "UPDATE medico SET login = " +"'"+medico.getLogin()+"'"+
 		        		", senha = " +"'"+medico.getSenha()+"'"+
-		        		", identificadorinterno = " +"'"+medico.getIdentificadorInterno()+"'"+ 
 		        		", statusdeusuario = " +"'"+medico.getStatusDeUsuario()+"'"+
 		        		", pessoa = " +"'"+ db.procurarId(medico.getPessoa()) +"'"+ 
 		        		"WHERE idfuncionario = " + "'" + medico.getIdFuncionario() + "'";

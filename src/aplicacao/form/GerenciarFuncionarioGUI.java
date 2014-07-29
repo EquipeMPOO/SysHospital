@@ -106,6 +106,7 @@ public class GerenciarFuncionarioGUI extends JFrame {
 		listaComboBox.add("Pesquisar Funcionario...");
 		
 		for (Funcionario object : funcionariosPesquisados) {
+			System.out.println(object.getPessoa().getNome());
 			listaComboBox.add(object.getPessoa().getNome());
 		}
 			
