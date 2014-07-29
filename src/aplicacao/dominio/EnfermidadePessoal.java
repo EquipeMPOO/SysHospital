@@ -4,10 +4,23 @@ import aplicacao.enums.*;
 
 public class EnfermidadePessoal {
 	
+	private int idEnfermidade;
 	private String comentario;
-	private StatusDeDoenca statusdedoenca;
-	private Enfermidade enfermidade;
+	private String statusdedoenca;
+	private Enfermidade enfermidade;	
 	
+	public int getIdEnfermidade() {
+		return idEnfermidade;
+	}
+	public void setIdEnfermidade(int idEnfermidade) {
+		this.idEnfermidade = idEnfermidade;
+	}
+	public String getStatusdedoenca() {
+		return statusdedoenca;
+	}
+	public void setStatusdedoenca(String statusdedoenca) {
+		this.statusdedoenca = statusdedoenca;
+	}
 	public String getComentario() {
 		return comentario;
 	}
@@ -15,10 +28,10 @@ public class EnfermidadePessoal {
 		this.comentario = comentario;
 	}
 	
-	public StatusDeDoenca getStatusDeDoenca() {
+	public String getStatusDeDoenca() {
 		return statusdedoenca;
 	}
-	public void setStatusDeDoenca(StatusDeDoenca statusdedoenca) {
+	public void setStatusDeDoenca(String statusdedoenca) {
 		this.statusdedoenca = statusdedoenca;
 	}
 	
