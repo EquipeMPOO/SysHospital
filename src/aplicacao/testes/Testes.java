@@ -11,6 +11,7 @@ import aplicacao.dao.EnfermeiroDAO;
 import aplicacao.dao.EnfermidadeDAO;
 import aplicacao.dao.EntradaDAO;
 import aplicacao.dao.MedicoDAO;
+import aplicacao.dao.PacienteDAO;
 import aplicacao.dao.util.ComandoSQL;
 import aplicacao.dominio.Administrador;
 import aplicacao.dominio.Atendente;
@@ -20,38 +21,44 @@ import aplicacao.dominio.Enfermidade;
 import aplicacao.dominio.Entrada;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
+import aplicacao.dominio.Paciente;
 import aplicacao.dominio.Pessoa;
+import aplicacao.enums.Sexo;
+import aplicacao.enums.StatusDePessoa;
+import aplicacao.enums.TipoSanguineo;
 import aplicacao.form.GerenciarFuncionarioGUI;
 import aplicacao.form.SalvarDadosFuncionariosGUI;
 
 public class Testes {
 	public static void main(String[] args) {
 		
-//		Enfermeiro e1 = new Enfermeiro();
-//		e1.setIdFuncionario(5);
-//
-//		Medico m1 = new Medico();
-//		m1.setIdFuncionario(6);
-//		
-//		Atendimento a = new Atendimento();
-//		a.setAltura(15);
-//		a.setPeso(678);
-//		a.setComentarioEnfermeiro("...");
-//		a.setComentarioMedico("...");
-//		a.setData("12/04/2012");
-//		a.setMedico(m1);
-//		a.setEnfermeiro(e1);
+//		Paciente paciente = new Paciente();
+//		Pessoa p0 = new Pessoa();
+//		p0.setCpf("123456");
+//		p0.setNome("Icaro");
+//		p0.setStatusDePessoa(StatusDePessoa.V.getStatus());
+//		p0.setSexo("M");
+//		p0.setTipoSanguineo(TipoSanguineo.ABN.getTipoSanguineo());
+//		p0.setIdade(18);
 		
-		Entrada e = new Entrada();
-		e.setDataEntrada("12/01/2014");
-		e.setDataSaida("25/04/2010");
-		e.setIdEntrada(3);
+//		paciente.setPessoa(p0);
+		PacienteDAO db = new PacienteDAO();
+//		db.cadastrar(paciente);
 		
-		EntradaDAO db = new EntradaDAO();
-		db.remover(e);
-		Entrada x = db.pesquisarPorId(3);
-			System.out.println(x.getDataEntrada());
-			System.out.println(x.getStatusdeentrada());		
+		Paciente p = new Paciente();
+		p.setIdPaciente(3);
+		EntradaDAO e = new EntradaDAO();			
+		
+		ArrayList<Entrada> historico = new ArrayList<Entrada>();
+		Entrada x = new Entrada();
+		
+		x.setIdEntrada(44);
+		x.setDataEntrada("16/12/2013");
+		x.setDataSaida("20/01/2014");
+		
+		e.remover(x);
+				
+//		db.liberar(p);
 		
 //		
 //		
