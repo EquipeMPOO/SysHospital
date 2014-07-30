@@ -50,6 +50,8 @@ public class Testes {
 		for (Atendimento at : db.procurarAtendimentos(e)) {
 			System.out.println(at.getAltura());
 			System.out.println(at.getIdAtentimento());
+			System.out.println(at.getEnfermeiro().getPessoa().getNome());
+			System.out.println(at.getMedico().getIdFuncionario());
 		}
 		
 		
