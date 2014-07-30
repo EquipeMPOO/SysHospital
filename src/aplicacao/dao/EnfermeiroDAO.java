@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import aplicacao.dao.util.geral.ComandoSQL;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Enfermeiro;
@@ -119,6 +118,48 @@ public class EnfermeiroDAO{
 		
 		return null;
 	}
+	
+	public Enfermeiro pesquisarPorID(int ID){
+		
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Enfermeiro enfermeiro = new Enfermeiro();
+        
+        try{
+        	ps = conecxao.prepareStatement("SELECT * from enfermeiro WHERE idfuncionario =" + ID);
+        	rs = ps.executeQuery();
+        	
+        	while(rs.next()){
+        		PessoaDAO dbPessoa = new PessoaDAO();
+        		enfermeiro.setPessoa(dbPessoa.pesquisarporID(rs.getInt("pessoa")));   
+        			
+        		enfermeiro.setLogin(rs.getString("login"));
+        		enfermeiro.setSenha(rs.getString("senha"));
+	        	enfermeiro.setIdFuncionario(rs.getInt("idfuncionario"));
+	        	enfermeiro.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
+        	}
+	        	
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+		
+		return enfermeiro;
+		
+	}
+	
 	
 	/**
 	 * 

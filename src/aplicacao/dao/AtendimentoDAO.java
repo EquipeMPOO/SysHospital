@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aplicacao.dominio.Atendimento;
+import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Enfermidade;
 import aplicacao.dominio.Medico;
 
@@ -46,10 +47,21 @@ public class AtendimentoDAO {
         		if(at.getIdAtentimento() == ID){
             		at.setComentarioEnfermeiro(rs.getString("comentarioenfermeiro"));
             		at.setComentarioMedico(rs.getString("comentariomedico"));
-            		at.setData(rs.getString("data"));            		
+            		at.setData(rs.getString("data"));      
+            		
             		//espaco para setar doencas
-            		//at.setEnfermeiro(enfermeiro);
-            		//at.setMedico(medico);
+            		
+            		//Adicionar Medico
+            		MedicoDAO dbMedico = new MedicoDAO();            		
+            		Medico medico = dbMedico.pesquisarPorID(rs.getInt("medico"));
+            		at.setMedico(medico);
+            		
+            		//Adicionar Enfermeiro
+            		EnfermeiroDAO dbEnfermeiro = new EnfermeiroDAO();            		
+            		Enfermeiro enf = dbEnfermeiro.pesquisarPorID(rs.getInt("enfermeiro"));
+            		at.setEnfermeiro(enf);          		
+            		
+            		
             		at.setPeso(rs.getFloat("peso"));
         			at.setAltura(rs.getFloat("altura"));
         		}
@@ -79,11 +91,12 @@ public class AtendimentoDAO {
 	 * @param at - Instancia da classe atendimento que contem os dados que serão persistidos no banco de dados
 	 */
 	
-	public void inserir(Atendimento at){		
+	public int inserir(Atendimento at){		
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;         
+        int idGerado = 0;
         
         try{
         	
@@ -97,8 +110,13 @@ public class AtendimentoDAO {
         			          "'"+ at.getMedico().getIdFuncionario() +"'"+ 
         			          ")";
         	
-        	ps = conecxao.prepareStatement(comando);
+        	ps = conecxao.prepareStatement(comando, PreparedStatement.RETURN_GENERATED_KEYS);
         	ps.executeUpdate();
+        	
+        	rs = ps.getGeneratedKeys();
+        	while(rs.next()){
+				idGerado = rs.getInt(1);
+			}
         }
         catch(SQLException e){
         	try{
@@ -114,7 +132,7 @@ public class AtendimentoDAO {
         	}
         	e.printStackTrace();
         }
-        
+        return idGerado;
 	}
 	
 	

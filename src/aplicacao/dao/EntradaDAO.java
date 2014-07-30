@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import aplicacao.dominio.Atendimento;
 import aplicacao.dominio.Entrada;
+import aplicacao.dominio.Paciente;
 import aplicacao.enums.StatusDePessoa;
 
 /**
@@ -44,7 +45,10 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         		if(en.getIdEntrada() == ID){
             		en.setDataEntrada(rs.getString("dataentrada"));
             		en.setDataSaida(rs.getString("datasaida"));
-            		//en.setAtendimentos();
+            		
+            		ArrayList<Atendimento> atendimentos = this.procurarAtendimentos(en);            		
+            		en.setAtendimentos(atendimentos);
+            		
             		en.setStatusdeentrada(rs.getString("statusdeentrada"));            		
         		}
         		
@@ -86,7 +90,10 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         		en.setIdEntrada(rs.getInt("identrada"));
             	en.setDataEntrada(rs.getString("dataentrada"));
             	en.setDataSaida(rs.getString("datasaida"));
-            	//en.setAtendimentos();
+            	
+        		ArrayList<Atendimento> atendimentos = this.procurarAtendimentos(en);            		
+        		en.setAtendimentos(atendimentos);
+        		
             	en.setStatusdeentrada(rs.getString("statusdeentrada"));            		
         		
             	entradas.add(en);
@@ -190,5 +197,65 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         }
         
 	}
+	
+	public ArrayList<Atendimento> procurarAtendimentos(Entrada entrada){
+		
+		Connection conexao = ConexaoDAO.getConnection();
+		PreparedStatement ps = null;
+		
+		ArrayList<Atendimento> atendimentosPesquisados = new ArrayList<Atendimento>();
+		
+		//antes de mais nada ele irá criar o comando para pegar dentro da tabela situacaodepaciente, todas as linhas onde a coluna "entrada" for igual ao id informado em entrada.getIdEntrada()
+		String comando = "SELECT * FROM situacaodepaciente WHERE entrada = " + entrada.getIdEntrada();	
+		
+        try {
+			ps = conexao.prepareStatement(comando);
+			ResultSet rs = ps.executeQuery();
+			
+			AtendimentoDAO databaseAtendimento = new AtendimentoDAO();
+			
+			//enquanto houverem querys com a coluna entrada igual ao id do objeto passado ele fará uma busca 
+			while(rs.next()){
+				
+				//em seguida ele irá consultar a tabela de ATENDIMENTOS e irá fazer uma pesquisa pelo ID que consta na tabela de situacaodepaciente
+				Atendimento atend = databaseAtendimento.pesquisarPorId(rs.getInt("atendimento"));	
+				atendimentosPesquisados.add(atend); //Por fim ele irá adicionar o atendimento selecionado na lista de Atendimentos
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conexao, ps, null);
+		}
+        
+        return atendimentosPesquisados;
+		
+	}
+	
+	public void adicionarAtendimento(Entrada entrada){
+		
+		Connection conexao = ConexaoDAO.getConnection();
+		PreparedStatement ps = null;
+		
+		AtendimentoDAO databaseAtendimento = new AtendimentoDAO();
+		
+		int tamanho = entrada.getAtendimentos().size(); //recupera a quantidade de elementos da Array		
+		Atendimento atendimento = entrada.getAtendimentos().get(tamanho-1); //recupera o ultimo objeto atendimento da lista
+				
+		String comando = "INSERT INTO situacaodepaciente (entrada, atendimento) VALUES ('" + entrada.getIdEntrada() + "'" + "," + "'" + databaseAtendimento.inserir(atendimento) + "')";	
+		
+        try {
+			ps = conexao.prepareStatement(comando);
+			ps.executeUpdate();
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally{
+			ConexaoDAO.close(conexao, ps, null);
+		}
+	}	
 
 }

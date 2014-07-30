@@ -12,7 +12,6 @@ import aplicacao.dao.EnfermidadeDAO;
 import aplicacao.dao.EntradaDAO;
 import aplicacao.dao.MedicoDAO;
 import aplicacao.dao.PacienteDAO;
-import aplicacao.dao.util.geral.ComandoSQL;
 import aplicacao.dominio.Administrador;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Atendimento;
@@ -42,22 +41,18 @@ public class Testes {
 //		p0.setIdade(18);
 		
 //		paciente.setPessoa(p0);
-		PacienteDAO db = new PacienteDAO();
+		EntradaDAO db = new EntradaDAO();
 //		db.cadastrar(paciente);
 		
-		Paciente p = new Paciente();
-		p.setIdPaciente(3);
-		EntradaDAO e = new EntradaDAO();			
+		Entrada e = new Entrada();
+		e.setIdEntrada(3);
 		
-		ArrayList<Entrada> historico = new ArrayList<Entrada>();
-		Entrada x = new Entrada();
+		for (Atendimento at : db.procurarAtendimentos(e)) {
+			System.out.println(at.getAltura());
+			System.out.println(at.getIdAtentimento());
+		}
 		
-		x.setIdEntrada(44);
-		x.setDataEntrada("16/12/2013");
-		x.setDataSaida("20/01/2014");
 		
-		e.remover(x);
-				
 //		db.liberar(p);
 		
 //		

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Random;
 
 import aplicacao.dao.ConexaoDAO;
-import aplicacao.dao.util.geral.ComandoSQL;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;
@@ -72,6 +71,49 @@ public class MedicoDAO{
 		
 		return funcionarios;
 	}
+	
+	
+	public Medico pesquisarPorID(int ID){
+		
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Medico medico = new Medico();
+        
+        try{
+        	ps = conecxao.prepareStatement("SELECT * from enfermeiro WHERE idfuncionario =" + ID);
+        	rs = ps.executeQuery();
+        	
+        	while(rs.next()){
+        		PessoaDAO dbPessoa = new PessoaDAO();
+        		medico.setPessoa(dbPessoa.pesquisarporID(rs.getInt("pessoa")));     		
+        			
+        		medico.setLogin(rs.getString("login"));
+        		medico.setSenha(rs.getString("senha"));
+	        	medico.setIdFuncionario(rs.getInt("idfuncionario"));
+	        	medico.setNumeroDeRegistro(rs.getInt("numeroderegistro"));
+        	}
+	        	
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+		
+		return medico;
+		
+	}
+	
 	
 	/**
 	 * Procura dentro da tabela de medico uma linha que possua o mesmo dado nas colunas de login e senha que o do parametro informado
