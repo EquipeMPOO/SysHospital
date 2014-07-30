@@ -12,7 +12,7 @@ import aplicacao.dao.EnfermidadeDAO;
 import aplicacao.dao.EntradaDAO;
 import aplicacao.dao.MedicoDAO;
 import aplicacao.dao.PacienteDAO;
-import aplicacao.dao.util.ComandoSQL;
+import aplicacao.dao.util.geral.ComandoSQL;
 import aplicacao.dominio.Administrador;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Atendimento;

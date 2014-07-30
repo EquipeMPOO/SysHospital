@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import aplicacao.dao.util.ComandoSQL;
+import aplicacao.dao.util.geral.ComandoSQL;
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Funcionario;
 import aplicacao.enums.StatusDePessoa;

@@ -1,24 +1,23 @@
 package aplicacao.dominio;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Atendimento {
 	
 	private int idAtentimento;
 	private String comentarioEnfermeiro;
 	private String comentarioMedico;
-	private double peso;
-	private double altura;
+	private float peso;
+	private float altura;
 	private String data;
-	private ArrayList<EnfermidadePessoal> doencas;
+	private ArrayList<EnfermidadePessoal> doenca;
 	private Medico medico;
 	private Enfermeiro enfermeiro;
 	
 	public double getAltura() {
 		return altura;
 	}
-	public void setAltura(double altura) {
+	public void setAltura(float altura) {
 		this.altura = altura;
 	}
 	public int getIdAtentimento() {
@@ -42,7 +41,7 @@ public class Atendimento {
 	public double getPeso() {
 		return peso;
 	}
-	public void setPeso(double peso) {
+	public void setPeso(float peso) {
 		this.peso = peso;
 	}
 	public String getData() {
@@ -51,11 +50,11 @@ public class Atendimento {
 	public void setData(String data) {
 		this.data = data;
 	}
-	public ArrayList<EnfermidadePessoal> getDoencas() {
-		return doencas;
+	public ArrayList<EnfermidadePessoal> getDoenca() {
+		return doenca;
 	}
-	public void setDoencas(ArrayList<EnfermidadePessoal> doencas) {
-		this.doencas = doencas;
+	public void setDoenca(ArrayList<EnfermidadePessoal> doenca) {
+		this.doenca = doenca;
 	}
 	public Medico getMedico() {
 		return medico;
@@ -69,7 +68,4 @@ public class Atendimento {
 	public void setEnfermeiro(Enfermeiro enfermeiro) {
 		this.enfermeiro = enfermeiro;
 	}
-	
-	
-
 }

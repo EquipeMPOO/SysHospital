@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Random;
 
 import aplicacao.dao.ConexaoDAO;
-import aplicacao.dao.util.ComandoSQL;
+import aplicacao.dao.util.geral.ComandoSQL;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Medico;

@@ -1,26 +1,19 @@
 package aplicacao.dominio;
 
-import aplicacao.enums.*;
-
 public class EnfermidadePessoal {
 	
-	private int idEnfermidade;
+	private int idEnfermidadePessoal;
 	private String comentario;
-	private String statusdedoenca;
-	private Enfermidade enfermidade;	
+	private String statusDeDoenca;
+	private Enfermidade enfermidade;
 	
-	public int getIdEnfermidade() {
-		return idEnfermidade;
+	public int getIdEnfermidadePessoal() {
+		return idEnfermidadePessoal;
 	}
-	public void setIdEnfermidade(int idEnfermidade) {
-		this.idEnfermidade = idEnfermidade;
+	public void setIdEnfermidadePessoal(int idEnfermidadePessoal) {
+		this.idEnfermidadePessoal = idEnfermidadePessoal;
 	}
-	public String getStatusdedoenca() {
-		return statusdedoenca;
-	}
-	public void setStatusdedoenca(String statusdedoenca) {
-		this.statusdedoenca = statusdedoenca;
-	}
+	
 	public String getComentario() {
 		return comentario;
 	}
@@ -29,10 +22,10 @@ public class EnfermidadePessoal {
 	}
 	
 	public String getStatusDeDoenca() {
-		return statusdedoenca;
+		return statusDeDoenca;
 	}
-	public void setStatusDeDoenca(String statusdedoenca) {
-		this.statusdedoenca = statusdedoenca;
+	public void setStatusDeDoenca(String statusDeDoenca) {
+		this.statusDeDoenca = statusDeDoenca;
 	}
 	
 	public Enfermidade getEnfermidade() {
