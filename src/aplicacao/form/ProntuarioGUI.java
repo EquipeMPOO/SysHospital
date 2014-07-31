@@ -41,6 +41,7 @@ import javax.swing.JTextPane;
 
 import aplicacao.controle.EnfermidadeControle;
 import aplicacao.controle.PacienteControle;
+import aplicacao.dao.EntradaDAO;
 import aplicacao.dominio.Atendimento;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Enfermidade;
@@ -256,24 +257,43 @@ public class ProntuarioGUI extends JFrame {
 		}
 		contentPane.add(idadeField);
 		
-		ArrayList<Atendimento>listaAtendimentos = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos();;
-		
 		/* 
 		 * Recupera de paciente o ultimo elemento (Entrada) de (List) historico e, a partir deste,
 		 * recupera o ultimo elemento (Atendimento) de (List) situacaoDePaciente, para so entao recuperar o
 		 * (float) altura deste elemento, salvando-o assim em um variavel local denominada altura. 
 		 */
-		double altura;
+		float altura;
+		int ultimeEntradaIndex;
+		int ultimoAtendimentoIndex;
+		
 		if (novo){ // Se for um novo prontuario
-			altura = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos().get(listaAtendimentos.size()-1).getAltura();
+			if (paciente.getHistorico().size()>0){
+				ultimeEntradaIndex = paciente.getHistorico().size()-1;
+				if (paciente.getHistorico().get(ultimeEntradaIndex).getAtendimentos().size()>0){
+					ultimoAtendimentoIndex = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos().size()-1;
+					
+					altura = (float) paciente.getHistorico().get(ultimeEntradaIndex).getAtendimentos().get(ultimoAtendimentoIndex).getAltura();
+				}
+				else{
+					altura = 0;
+				}
+				
+			}
+			else{
+				altura = 0;
+			}
+			
+			
 		}
 		else{
-			altura = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos().get(paciente.getHistorico().size()-2).getAltura();
+			ultimeEntradaIndex = paciente.getHistorico().size()-1;
+			ultimoAtendimentoIndex = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos().size()-1;
+			altura = (float) paciente.getHistorico().get(ultimeEntradaIndex).getAtendimentos().get(ultimoAtendimentoIndex).getAltura();
 		}
 		
 		alturaField = new JTextField();
 		alturaField.setBounds(292, 100, 30, 16);
-		alturaField.setText(Double.toString(altura));  // Tornando o double um String
+		alturaField.setText(Float.toString(altura));
 		if (usuario instanceof Medico){
 			alturaField.setBackground(SystemColor.inactiveCaption);
 			alturaField.setEditable(false);
@@ -285,17 +305,36 @@ public class ProntuarioGUI extends JFrame {
 		 * recupera o ultimo elemento (Atendimento) de (List) situacaoDePaciente, para so entao recuperar o
 		 * (float) peso deste elemento, salvando-o assim em um variavel local denominada peso. 
 		 */
-		double peso;
-		if(novo){ // Se for um novo prontuario
-			peso = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos().get(listaAtendimentos.size()-1).getPeso();
+		float peso;
+		
+		if (novo){ // Se for um novo prontuario
+			if (paciente.getHistorico().size()>0){
+				ultimeEntradaIndex = paciente.getHistorico().size()-1;
+				if (paciente.getHistorico().get(ultimeEntradaIndex).getAtendimentos().size()>0){
+					ultimoAtendimentoIndex = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos().size()-1;
+					
+					peso = (float) paciente.getHistorico().get(ultimeEntradaIndex).getAtendimentos().get(ultimoAtendimentoIndex).getPeso();
+				}
+				else{
+					peso = 0;
+				}
+				
+			}
+			else{
+				peso = 0;
+			}
+			
+			
 		}
 		else{
-			peso = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos().get(listaAtendimentos.size()-2).getPeso();
+			ultimeEntradaIndex = paciente.getHistorico().size()-1;
+			ultimoAtendimentoIndex = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos().size()-1;
+			peso = (float) paciente.getHistorico().get(ultimeEntradaIndex).getAtendimentos().get(ultimoAtendimentoIndex).getPeso();
 		}
 		
 		pesoField = new JTextField();
 		pesoField.setBounds(394, 100, 44, 16);
-		pesoField.setText(Double.toString(peso));
+		pesoField.setText(Float.toString(peso));
 		if (usuario instanceof Medico){
 			pesoField.setBackground(SystemColor.inactiveCaption);
 			pesoField.setEditable(false);
@@ -355,7 +394,6 @@ public class ProntuarioGUI extends JFrame {
 		nova = ""; // String vazio
 		
 		txtEnfCronicas = new JTextArea();
-		txtEnfCronicas.setEditable(false);
 		txtEnfCronicas.setBackground(SystemColor.inactiveCaption);
 		txtEnfCronicas.setBounds(10, 150, 634, 48);
 		ArrayList<Atendimento> listaAtendimentos = paciente.getHistorico().get(paciente.getHistorico().size()-1).getAtendimentos();
@@ -363,10 +401,19 @@ public class ProntuarioGUI extends JFrame {
 		/*Percorrendo a lista de enfermidades cronicas do paciente e concatenando seus nomes
 		 * em um "grande" String, cada nome posto linha a linha. 
 		 */
-		for (EnfermidadePessoal enfermidade:paciente.getDoenca()){
-			nova = nova + enfermidade.getEnfermidade().getNome() + "\n";
+		if (paciente.getDoenca()== null || paciente.getDoenca().size()==0){
+			txtEnfCronicas.setText("");
 		}
-		txtEnfCronicas.setText(nova);
+		else{
+			for (EnfermidadePessoal enfermidade:paciente.getDoenca()){
+				nova = nova + enfermidade.getEnfermidade().getNome() + "\n";
+			}
+			txtEnfCronicas.setText(nova);
+			txtEnfCronicas.setEditable(false);
+			
+		}
+		
+		
 		contentPane.add(txtEnfCronicas);
 		
 		
@@ -461,7 +508,7 @@ public class ProntuarioGUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// - Retorna a data e hora do sistema e transforma em String
-				PacienteControle controle = new PacienteControle();
+				EntradaDAO controle = new EntradaDAO();
 				
 				
 				
@@ -470,6 +517,7 @@ public class ProntuarioGUI extends JFrame {
 
 					Paciente pacienteConfigurado = configurarPaciente();
 					int indexUltimoAtendimento = pacienteConfigurado.getHistorico().size();
+					
 					controle.adicionarAtendimento(pacienteConfigurado.getHistorico().get(indexUltimoAtendimento-1));
 					
 					
@@ -530,7 +578,7 @@ public class ProntuarioGUI extends JFrame {
 		
 		int indexUltimoAtendimento = paciente.getHistorico().get(-1).getAtendimentos().size();
 		int indexUltimaEntrada = paciente.getHistorico().size();
-		paciente.getHistorico().get(indexUltimaEntrada-1).getAtendimentos().get(indexUltimoAtendimento-1).setDoencas(listaEP);
+		paciente.getHistorico().get(indexUltimaEntrada-1).getAtendimentos().get(indexUltimoAtendimento-1).setDoenca(listaEP);
 		paciente.getHistorico().get(indexUltimaEntrada-1).getAtendimentos().get(indexUltimoAtendimento-1).setComentarioMedico(txtParecer.getText());
 		
 		return paciente;
@@ -543,15 +591,16 @@ public class ProntuarioGUI extends JFrame {
 		String stringData = "" + data;
 		
 		Atendimento atendimento = new Atendimento();
-		double altura = Double.parseDouble(alturaField.getText());
+		float altura = Float.parseFloat(alturaField.getText());
 		atendimento.setAltura(altura);
-		atendimento.setPeso(Double.parseDouble(pesoField.getText()));
+		atendimento.setPeso(Float.parseFloat(pesoField.getText()));
 		atendimento.setComentarioEnfermeiro(txtComentarioEnfermeiro.getText());
 		atendimento.setData(stringData);
 		atendimento.setEnfermeiro((Enfermeiro) usuario);
 		paciente.getPessoa().setIdade(Integer.parseInt(idadeField.getText()));
 		paciente.getPessoa().setStatusDePessoa((String) statusPessoaBox.getSelectedItem());
-		paciente.getHistorico().get(-1).getAtendimentos().add(atendimento);
+		int ultimaEntradaIndex = paciente.getHistorico().size()-1;
+		paciente.getHistorico().get(ultimaEntradaIndex).getAtendimentos().add(atendimento);
 		
 		return paciente;
 	}
