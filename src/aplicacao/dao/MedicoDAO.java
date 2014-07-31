@@ -274,13 +274,13 @@ public class MedicoDAO{
 		PreparedStatement ps = null;
 		
 		PessoaDAO db = new PessoaDAO();
-		db.cadastrar(medico.getPessoa());
+		Pessoa pessoaMedico = db.cadastrar(medico.getPessoa());
 		
 		String comando = "INSERT INTO medico(login, senha, statusdeusuario, pessoa, numeroderegistro, especialidade) VALUES ("+
 						     "'"+medico.getLogin()+"'"+ ","+ 
 							"'"+medico.getSenha()+"'"+","+ 
 							"'"+ "Inativo" +"'"+","+ 
-							"'"+ db.procurarId(medico.getPessoa()) + "'"+ ","+ 
+							"'"+ pessoaMedico.getIdPessoa() + "'"+ ","+ 
 							"'"+((Medico) medico).getNumeroDeRegistro() +"'"+","+
 							"'"+((Medico) medico).getEspecialidade()+"'" +")" ;
         
@@ -309,12 +309,12 @@ public class MedicoDAO{
         ResultSet rs = null;
         
 		PessoaDAO db = new PessoaDAO();
-		db.alterar(medico.getPessoa());
+		Pessoa pessoaMedico = db.cadastrar(medico.getPessoa());
         
         String comando = "UPDATE medico SET login = " +"'"+medico.getLogin()+"'"+
 		        		", senha = " +"'"+medico.getSenha()+"'"+
 		        		", statusdeusuario = " +"'"+medico.getStatusDeUsuario()+"'"+
-		        		", pessoa = " +"'"+ db.procurarId(medico.getPessoa()) +"'"+ 
+		        		", pessoa = " +"'"+ pessoaMedico.getIdPessoa() +"'"+ 
 		        		"WHERE idfuncionario = " + "'" + medico.getIdFuncionario() + "'";
 		                
         try {

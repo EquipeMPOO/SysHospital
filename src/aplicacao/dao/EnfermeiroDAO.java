@@ -11,6 +11,7 @@ import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Funcionario;
+import aplicacao.dominio.Pessoa;
 import aplicacao.enums.StatusDePessoa;
 import aplicacao.enums.StatusDeUsuario;
 
@@ -267,19 +268,19 @@ public class EnfermeiroDAO{
 	 * @param atendente -Instancia da classe Funcionario que possui os dados que serão persistidos na tabela
 	 */
 	
-	public void cadastrar(Funcionario enfermeiro) {
+	public Funcionario cadastrar(Funcionario enfermeiro) {
 		
 		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement ps = null;
 		
 		PessoaDAO db = new PessoaDAO();
-		db.cadastrar(enfermeiro.getPessoa());
+		Pessoa pessoaEnfermeiro = db.cadastrar(enfermeiro.getPessoa());
 		
 		String comando = "INSERT INTO enfermeiro(login, senha, statusdeusuario, pessoa, numeroderegistro) VALUES ("+
 						     "'"+enfermeiro.getLogin()+"'"+ ","+ 
 							"'"+enfermeiro.getSenha()+"'"+","+ 
 							"'"+ "Inativo"+"'"+","+ 
-							"'"+db.procurarId(enfermeiro.getPessoa())+"'"+ ","+
+							"'"+ pessoaEnfermeiro.getIdPessoa() +"'"+ ","+
 							"'"+((Enfermeiro) enfermeiro).getNumeroDeRegistro() +"'"+ ")" ;
         
         try {
@@ -292,29 +293,31 @@ public class EnfermeiroDAO{
 		}finally{
 			ConexaoDAO.close(conexao, ps, null);
 		}
+        
+        return enfermeiro;
 
 
 	}
 	
 	/**
 	 * Altera os dados da coluna de um item da tabela de enfermeiro
-	 * @param atendente - Instancia da classe Funcionario que contém os dados que serão atualizados na tabela de Id correspondente
+	 * @param enfermeiro - Instancia da classe Funcionario que contém os dados que serão atualizados na tabela de Id correspondente
 	 */
 	
-	public void alterar(Funcionario atendente){
+	public Funcionario alterar(Funcionario enfermeiro){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         
         PessoaDAO db = new PessoaDAO();
-		db.alterar(atendente.getPessoa());
+		Pessoa pessoaEnfermeiro = db.cadastrar(enfermeiro.getPessoa());
 		
-        String comando = "UPDATE enfermeiro SET login = " +"'"+atendente.getLogin()+"'"+ 
-		        		", senha = " +"'"+atendente.getSenha()+"'"+
-		        		", statusdeusuario = " +"'"+atendente.getStatusDeUsuario()+"'"+
-		        		", pessoa = " +"'"+db.procurarId(atendente.getPessoa())+"'"+ 
-		        		"WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";
+        String comando = "UPDATE enfermeiro SET login = " +"'"+enfermeiro.getLogin()+"'"+ 
+		        		", senha = " +"'"+enfermeiro.getSenha()+"'"+
+		        		", statusdeusuario = " +"'"+enfermeiro.getStatusDeUsuario()+"'"+
+		        		", pessoa = " +"'"+ pessoaEnfermeiro.getIdPessoa() +"'"+ 
+		        		"WHERE idfuncionario = " + "'" + enfermeiro.getIdFuncionario() + "'";
 		                
         try {
 			ps = conecxao.prepareStatement(comando);
@@ -326,6 +329,8 @@ public class EnfermeiroDAO{
 		}finally{
 			ConexaoDAO.close(conecxao, ps, rs);
 		}
+        
+        return enfermeiro;
 	}
 	
 	/**

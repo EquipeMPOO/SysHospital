@@ -21,43 +21,14 @@ import aplicacao.enums.StatusDePessoa;
 public class PessoaDAO{
 
 	private static final String SQL_PESQUISA = "SELECT * FROM pessoa";
-
-	/**
-	 * Metodo que faz a busca de um ID a partir de um parametro que possua os dados do objeto parametrizado
-	 * @param pessoa - Parametro de pesquisa que conterá o cpf necessario para a pesquisa ser realizada
-	 * @return int - Id pesquisado
-	 */
-	public int procurarId(Pessoa pessoa){
-
-		Connection conexao = ConexaoDAO.getConnection();
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int id = 0;
-
-		try {
-			ps = conexao.prepareStatement("SELECT idpessoa FROM pessoa WHERE cpf = " + "'" + pessoa.getCpf() + "'");
-			rs = ps.executeQuery();
-			if(rs.next()){
-				id = rs.getInt("idpessoa");				
-			}
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}finally{
-			ConexaoDAO.close(conexao, ps, rs);
-		}
-
-		return id;
-
-	}
 	
 	/**
 	 * Metodo que trata da inserção dos dados de um objeto da classe Pessoa na tabela pessoa
 	 * @param novaPessoa - Parametro que conterá os dados a serem persistidos na tabela de Pessoa
+	 * @return novaPessoa - Parametro instanciado que conterá agora a informação do ID da linha criada na tabela do banco de dados
 	 */
 
-	public void cadastrar(Pessoa novaPessoa) {
+	public Pessoa cadastrar(Pessoa novaPessoa) {
 
 		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement ps = null;
@@ -72,8 +43,14 @@ public class PessoaDAO{
         				"'"+novaPessoa.getStatusDePessoa()+"'" + ")";
                 
         try {
-			ps = conexao.prepareStatement(comando);
+			ps = conexao.prepareStatement(comando, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.executeUpdate();
+			rs = ps.getGeneratedKeys();
+			
+			while(rs.next()){
+				
+				novaPessoa.setIdPessoa(rs.getInt(1));
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -82,15 +59,18 @@ public class PessoaDAO{
 			ConexaoDAO.close(conexao, ps, null);
 		}
         
+        return novaPessoa;
+        
 	}
 	
 	/**
 	 * Metodo que altera os dados de uma linha da tabela pessoa cujo id seja o mesmo do objeto parametrizado
 	 * @param pessoa - Instancia da classe pessoa que possuirá os dados que serão alterados na tabela pessoa
+	 * @return 
 	 */
 
 
-	public void alterar(Pessoa pessoa) {		
+	public Pessoa alterar(Pessoa pessoa) {		
 
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
@@ -113,6 +93,8 @@ public class PessoaDAO{
 		}finally{
 			ConexaoDAO.close(conecxao, ps, rs);
 		}
+        
+        return pessoa;
 
  	}
 

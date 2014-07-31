@@ -9,6 +9,7 @@ import java.util.List;
 
 import aplicacao.dominio.Atendente;
 import aplicacao.dominio.Funcionario;
+import aplicacao.dominio.Pessoa;
 import aplicacao.enums.StatusDePessoa;
 import aplicacao.enums.StatusDeUsuario;
 
@@ -229,19 +230,19 @@ public class AtendenteDAO{
 	 * @param atendente -Instancia da classe Funcionario que possui os dados que serão persistidos na tabela
 	 */
 	
-	public void cadastrar(Funcionario atendente) {
+	public Funcionario cadastrar(Funcionario atendente) {
 		
 		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement ps = null;
 		
 		PessoaDAO db = new PessoaDAO();
-		db.cadastrar(atendente.getPessoa());
+		Pessoa pessoaAtendente = db.cadastrar(atendente.getPessoa());
 		
 		String comando = "INSERT INTO atendente(login, senha, statusdeusuario, pessoa, cargo) VALUES ("+
 						     "'"+atendente.getLogin()+"'"+ ","+ 
 							"'"+atendente.getSenha()+"'"+","+ 
 							"'"+ "Inativo" +"'"+","+ 
-							"'"+db.procurarId(atendente.getPessoa())+"'" +","+ 
+							"'"+ pessoaAtendente.getIdPessoa() + "'" +","+ 
 							"'"+ "atendente" +"'" + ")" ;
         
         try {
@@ -254,6 +255,8 @@ public class AtendenteDAO{
 		}finally{
 			ConexaoDAO.close(conexao, ps, null);
 		}
+        
+        return atendente;
 
 
 	}
@@ -263,19 +266,19 @@ public class AtendenteDAO{
 	 * @param atendente - Instancia da classe Funcionario que contém os dados que serão atualizados na tabela de Id correspondente
 	 */
 	
-	public void alterar(Funcionario atendente){
+	public Funcionario alterar(Funcionario atendente){
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         
 		PessoaDAO db = new PessoaDAO();
-		db.alterar(atendente.getPessoa());
+		Pessoa pessoaAtendente = db.cadastrar(atendente.getPessoa());
 		
         String comando = "UPDATE atendente SET login = " +"'"+atendente.getLogin()+"'"+ 
 		        		", senha = " +"'"+atendente.getSenha()+"'" +
 		        		", statusdeusuario = " +"'"+atendente.getStatusDeUsuario()+"'"+
-		        		", pessoa = " +"'"+atendente.getPessoa().getIdPessoa()+"'"+ 
+		        		", pessoa = " +"'"+ pessoaAtendente.getIdPessoa() +"'"+ 
 		        		"WHERE idfuncionario = " + "'" + atendente.getIdFuncionario() + "'";
 		                
         try {
@@ -287,6 +290,8 @@ public class AtendenteDAO{
 		}finally{
 			ConexaoDAO.close(conecxao, ps, rs);
 		}
+        
+        return atendente;
 	}
 	
 	/**

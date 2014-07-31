@@ -29,42 +29,43 @@ public class AtendimentoDAO {
 	 * @return Atendimento - Instancia da classe Atendimento que contém os dados capturados pela tabela correspondente no banco
 	 */
 	
-	public Atendimento pesquisarPorId(int ID){		
+	public ArrayList<Atendimento> pesquisarPorId(int ID){		
 	
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
+        ArrayList<Atendimento> atendimentos = new ArrayList<Atendimento>();
         Atendimento at = new Atendimento();
         
         try{
-        	ps = conecxao.prepareStatement(SQL_PESQUISA);
+        	ps = conecxao.prepareStatement("SELECT * FROM atendimento WHERE entrada =" + ID);
         	rs = ps.executeQuery();
         	
         	while(rs.next()) {
         		
         		at.setIdAtentimento(rs.getInt("idatendimento"));
         		        		
-        		if(at.getIdAtentimento() == ID){
-            		at.setComentarioEnfermeiro(rs.getString("comentarioenfermeiro"));
-            		at.setComentarioMedico(rs.getString("comentariomedico"));
-            		at.setData(rs.getString("data"));      
+            	at.setComentarioEnfermeiro(rs.getString("comentarioenfermeiro"));
+            	at.setComentarioMedico(rs.getString("comentariomedico"));
+            	at.setData(rs.getString("data"));      
             		
-            		//espaco para setar doencas
+            	//espaco para setar doencas
             		
-            		//Adicionar Medico
-            		MedicoDAO dbMedico = new MedicoDAO();            		
-            		Medico medico = dbMedico.pesquisarPorID(rs.getInt("medico"));
-            		at.setMedico(medico);
+            	//Adicionar Medico
+            	MedicoDAO dbMedico = new MedicoDAO();            		
+            	Medico medico = dbMedico.pesquisarPorID(rs.getInt("medico"));
+            	at.setMedico(medico);
             		
-            		//Adicionar Enfermeiro
-            		EnfermeiroDAO dbEnfermeiro = new EnfermeiroDAO();            		
-            		Enfermeiro enf = dbEnfermeiro.pesquisarPorID(rs.getInt("enfermeiro"));
-            		at.setEnfermeiro(enf);          		
+            	//Adicionar Enfermeiro
+            	EnfermeiroDAO dbEnfermeiro = new EnfermeiroDAO();            		
+            	Enfermeiro enf = dbEnfermeiro.pesquisarPorID(rs.getInt("enfermeiro"));
+            	at.setEnfermeiro(enf);          		
             		
             		
-            		at.setPeso(rs.getFloat("peso"));
-        			at.setAltura(rs.getFloat("altura"));
-        		}
+            	at.setPeso(rs.getFloat("peso"));
+        		at.setAltura(rs.getFloat("altura"));
+        		
+        		atendimentos.add(at);
         		
         	}
         }
@@ -83,31 +84,30 @@ public class AtendimentoDAO {
         	e.printStackTrace();
         }
         
-        return at;
+        return atendimentos;
 	}
 	
 	/**
 	 * Metodo que captura dados de um objeto parametrizado e os insere numa nova linha do banco de dados
 	 * @param at - Instancia da classe atendimento que contem os dados que serão persistidos no banco de dados
+	 * @param idEntrada 
 	 */
 	
-	public int inserir(Atendimento at){		
+	public Atendimento inserir(Atendimento at, int idEntrada){		
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;         
-        int idGerado = 0;
         
         try{
         	
-        	String comando = "INSERT INTO atendimento (comentarioenfermeiro, comentariomedico, peso, altura, data, enfermeiro, medico) VALUES ("+
+        	String comando = "INSERT INTO atendimento (comentarioenfermeiro, peso, altura, data,  enfermeiro, entrada) VALUES ("+
         			          "'"+ at.getComentarioEnfermeiro() +"'"+ ","+
-        			          "'"+ at.getComentarioMedico() +"'"+ ","+ 
         			          "'"+ at.getPeso() +"'"+ ","+ 
         			          "'"+ at.getAltura() +"'"+ ","+ 
         			          "'"+ at.getData() +"'"+ ","+
         			          "'"+ at.getEnfermeiro().getIdFuncionario() +"'"+ ","+ 
-        			          "'"+ at.getMedico().getIdFuncionario() +"'"+ 
+        			          "'" + idEntrada + "'" +
         			          ")";
         	
         	ps = conecxao.prepareStatement(comando, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -115,7 +115,7 @@ public class AtendimentoDAO {
         	
         	rs = ps.getGeneratedKeys();
         	while(rs.next()){
-				idGerado = rs.getInt(1);
+				at.setIdAtentimento(rs.getInt(1));
 			}
         }
         catch(SQLException e){
@@ -132,9 +132,51 @@ public class AtendimentoDAO {
         	}
         	e.printStackTrace();
         }
-        return idGerado;
+        return at;
 	}
 	
+	public Atendimento inserirDadosMedico(Atendimento at){		
+		
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;         
+        
+        try{        	
+        	String comando = "UPDATE atendimento SET comentariomedico = "+  "'" + at.getComentarioMedico() +"'"+
+        			          ", medico ='"+ at.getMedico().getIdFuncionario() +"'"+
+        			          "WHERE idatendimento = " + "'" + at.getIdAtentimento() + "'";
+        	
+        	System.out.println(comando);
+        	
+        	ps = conecxao.prepareStatement(comando, PreparedStatement.RETURN_GENERATED_KEYS);
+        	ps.executeUpdate();
+        	
+        	//TODO criar algoritmo pra inserir uma enfermidade pessoal
+        	//EnfermidadePessoalDAO databaseEP = new EnfermidadePessoalDAO()
+        	//databaseEP.inserir(at);
+        	
+        	rs = ps.getGeneratedKeys();
+        	while(rs.next()){
+				at.setIdAtentimento(rs.getInt(1));
+			}
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+        return at;
+	}
+	 
 	
 	
 }

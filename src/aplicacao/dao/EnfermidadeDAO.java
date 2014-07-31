@@ -65,6 +65,44 @@ public class EnfermidadeDAO {
 		return enfermidades;
 	}
 	
+	public Enfermidade pesquisarPorID(int idEnfermidade){
+		
+		Connection conecxao = ConexaoDAO.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Enfermidade enf = new Enfermidade();
+        
+        try{
+        	ps = conecxao.prepareStatement("SELECT * FROM enfermidade WHERE idenfermidade = " + idEnfermidade);
+        	rs = ps.executeQuery();
+        	
+        	while(rs.next()) {
+        		
+        		enf.setDescricao(rs.getString("descricao"));
+        		enf.setNome(rs.getString("nome"));
+        		enf.setTipo(rs.getString("tipo"));
+        		enf.setIdEnfermidade(rs.getInt("idEnfermidade"));
+        		
+        	}
+        }
+        catch(SQLException e){
+        	try{
+        		if(conecxao != null){
+        			conecxao.rollback();
+        		}
+        	}
+        	catch(SQLException e1){
+        		e1.printStackTrace();
+        	}
+        	finally{
+        		ConexaoDAO.close(conecxao, ps, rs);
+        	}
+        	e.printStackTrace();
+        }
+		
+		return enf;
+	}
+	
 	/**
 	 * Metodo que permite ao usuario adicionar uma nova enfermidade inexistente no banco de dados
 	 * @param enfermidade - Instancia da classe enfermidade que será persistida na tabela de enfermidade do banco de dados

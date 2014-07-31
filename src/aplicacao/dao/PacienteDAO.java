@@ -11,6 +11,7 @@ import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Entrada;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Paciente;
+import aplicacao.dominio.Pessoa;
 
 public class PacienteDAO {
 
@@ -57,53 +58,23 @@ public class PacienteDAO {
 		return pacientes;
 	}
 	
-	public void cadastrar(Paciente paciente) {
+	public Paciente cadastrar(Paciente paciente) {
 		
 		Connection conexao = ConexaoDAO.getConnection();
 		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
 		PessoaDAO db = new PessoaDAO();
-		db.cadastrar(paciente.getPessoa());
+		Pessoa pessoaPaciente = db.cadastrar(paciente.getPessoa());
 		
-		String comando = "INSERT INTO paciente(pessoa) VALUES ('" +  db.procurarId(paciente.getPessoa())+"'"+ ")" ;
+		String comando = "INSERT INTO paciente(pessoa) VALUES ('" +  pessoaPaciente.getIdPessoa() +"'"+ ")" ;
         
         try {
-			ps = conexao.prepareStatement(comando);
+			ps = conexao.prepareStatement(comando, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.executeUpdate();
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			ConexaoDAO.close(conexao, ps, null);
-		}
-
-
-	}
-	
-	public ArrayList<Entrada> procurarEntradas(Paciente paciente){
-		
-		Connection conexao = ConexaoDAO.getConnection();
-		PreparedStatement ps = null;
-		
-		ArrayList<Entrada> entradasPesquisadas = new ArrayList<Entrada>();
-		
-		//antes de mais nada ele irá criar o comando para pegar dentro da tabela historico, todas as linhas onde a coluna "paciente" for igual ao id informado em paciente.getIdPaciete()
-		String comando = "SELECT * FROM historico WHERE paciente = " + paciente.getIdPaciente();	
-		
-        try {
-			ps = conexao.prepareStatement(comando);
-			ResultSet rs = ps.executeQuery();
-			
-			EntradaDAO databaseEntrada = new EntradaDAO();
-			
-			//enquanto houverem querys com a coluna paciente igual ao id do objeto passado ele fará uma busca 
-			while(rs.next()){
-				
-				//em seguida ele irá consultar a tabela de ENTRADAS e irá fazer uma pesquisa pelo ID que consta na tabela de historico
-				Entrada ent = databaseEntrada.pesquisarPorId(rs.getInt("entrada"));				
-				entradasPesquisadas.add(ent); //Por fim ele irá adicionar a entrada selecionada na lista de Entradas
-				
+			rs = ps.getGeneratedKeys();
+        	while(rs.next()){
+				paciente.setIdPaciente(rs.getInt(1));
 			}
 			
 			
@@ -112,32 +83,45 @@ public class PacienteDAO {
 		}finally{
 			ConexaoDAO.close(conexao, ps, null);
 		}
+        return paciente;
+
+
+	}
+	
+	public Paciente alterar(Paciente paciente){
+		
+		Connection conexao = ConexaoDAO.getConnection();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		PessoaDAO databasePessoa = new PessoaDAO();		
+		Pessoa pessoaPaciente = paciente.getPessoa();
+		
+		paciente.setPessoa(databasePessoa.alterar(pessoaPaciente));
         
+        return paciente;
+		
+	}
+	
+	
+	public ArrayList<Entrada> procurarEntradas(Paciente paciente){
+		
+		ArrayList<Entrada> entradasPesquisadas = new ArrayList<Entrada>();
+				
+		EntradaDAO databaseEntrada = new EntradaDAO();
+							
+		entradasPesquisadas= databaseEntrada.pesquisarPorId(paciente.getIdPaciente());							
         return entradasPesquisadas;
 		
 	}
 	
 	public void internar(Paciente paciente){
 		
-		Connection conexao = ConexaoDAO.getConnection();
-		PreparedStatement ps = null;
-		
 		EntradaDAO databaseEntrada = new EntradaDAO();
-		int tamanho = paciente.getHistorico().size(); //recupera a quantidade de elementos da Array
-		Entrada entrada = paciente.getHistorico().get(tamanho-1); //recupera o ultimo objeto entrada da lista
+		int ultimoindex = paciente.getHistorico().size()-1; //recupera a quantidade de elementos da Array
+		Entrada entrada = paciente.getHistorico().get(ultimoindex); //recupera o ultimo objeto entrada da lista
 				
-		String comando = "INSERT INTO historico (paciente, entrada) VALUES ('" + paciente.getIdPaciente() + "'" + "," + "'" + databaseEntrada.inserir(entrada) + "')";	
-		
-        try {
-			ps = conexao.prepareStatement(comando);
-			ps.executeUpdate();
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			ConexaoDAO.close(conexao, ps, null);
-		}
+		databaseEntrada.inserir(entrada, paciente.getIdPaciente());
 	}
 	
 	public void liberar(Paciente paciente){
@@ -146,8 +130,8 @@ public class PacienteDAO {
 		PreparedStatement ps = null;
 		
 		EntradaDAO databaseEntrada = new EntradaDAO();
-		int tamanho = paciente.getHistorico().size(); //recupera a quantidade de elementos da Array
-		Entrada entrada = paciente.getHistorico().get(tamanho-1); //recupera o ultimo objeto entrada da lista
+		int ultimoindex = paciente.getHistorico().size() -1; //recupera a quantidade de elementos da Array
+		Entrada entrada = paciente.getHistorico().get(ultimoindex); //recupera o ultimo objeto entrada da lista
 		
 		databaseEntrada.remover(entrada);
 		

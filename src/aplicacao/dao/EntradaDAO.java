@@ -27,31 +27,29 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
 	 * @return Entrada - Instancia da classe entrada que possui os dados selecionados do banco
 	 */
 
-	public Entrada pesquisarPorId(int ID){		
+	public ArrayList<Entrada> pesquisarPorId(int ID){		
 	
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         Entrada en = new Entrada();
+        ArrayList<Entrada> entradas = new ArrayList<Entrada>();
         
         try{
-        	ps = conecxao.prepareStatement(SQL_PESQUISA);
+        	ps = conecxao.prepareStatement("SELECT * FROM entrada WHERE paciente =" + ID);
         	rs = ps.executeQuery();
         	
-        	while(rs.next()) {
-        		
+        	while(rs.next()) {        		
         		en.setIdEntrada(rs.getInt("identrada"));
-        		        		
-        		if(en.getIdEntrada() == ID){
-            		en.setDataEntrada(rs.getString("dataentrada"));
-            		en.setDataSaida(rs.getString("datasaida"));
+        		en.setDataEntrada(rs.getString("dataentrada"));
+            	en.setDataSaida(rs.getString("datasaida"));
             		
-            		ArrayList<Atendimento> atendimentos = this.procurarAtendimentos(en);            		
-            		en.setAtendimentos(atendimentos);
+            	ArrayList<Atendimento> atendimentos = this.procurarAtendimentos(en);            		
+            	en.setAtendimentos(atendimentos);
             		
-            		en.setStatusdeentrada(rs.getString("statusdeentrada"));            		
-        		}
+            	en.setStatusdeentrada(rs.getString("statusdeentrada"));            		
         		
+            	entradas.add(en);
         	}
         }
         catch(SQLException e){
@@ -69,7 +67,7 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         	e.printStackTrace();
         }
         
-        return en;
+        return entradas;
 	}
 	
 	
@@ -122,7 +120,7 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
 	 * @param en - Instancia da classe Entrada que conterá os dados que serão persistidos numa nova linha da tabela Entrada
 	 */
 	
-	public int inserir(Entrada en){		
+	public int inserir(Entrada en, int idPaciente){		
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
@@ -131,9 +129,10 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         
         try{
         	
-        	String comando = "INSERT INTO entrada (dataentrada, statusdeentrada) VALUES ("+
+        	String comando = "INSERT INTO entrada (dataentrada, statusdeentrada, paciente) VALUES ("+
         			          "'"+ en.getDataEntrada() +"'"+ ","+
-        			          "'Atendendo'"+
+        			          "'Atendendo'"+ ","+
+        			          "'" + idPaciente + "'" +
         			          ")";
         	
         	ps = conecxao.prepareStatement(comando, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -200,62 +199,36 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
 	
 	public ArrayList<Atendimento> procurarAtendimentos(Entrada entrada){
 		
-		Connection conexao = ConexaoDAO.getConnection();
-		PreparedStatement ps = null;
-		
 		ArrayList<Atendimento> atendimentosPesquisados = new ArrayList<Atendimento>();
 		
-		//antes de mais nada ele irá criar o comando para pegar dentro da tabela situacaodepaciente, todas as linhas onde a coluna "entrada" for igual ao id informado em entrada.getIdEntrada()
-		String comando = "SELECT * FROM situacaodepaciente WHERE entrada = " + entrada.getIdEntrada();	
-		
-        try {
-			ps = conexao.prepareStatement(comando);
-			ResultSet rs = ps.executeQuery();
+		AtendimentoDAO databaseAtendimento = new AtendimentoDAO();
+		Atendimento atend = new Atendimento();
 			
-			AtendimentoDAO databaseAtendimento = new AtendimentoDAO();
-			
-			//enquanto houverem querys com a coluna entrada igual ao id do objeto passado ele fará uma busca 
-			while(rs.next()){
-				
-				//em seguida ele irá consultar a tabela de ATENDIMENTOS e irá fazer uma pesquisa pelo ID que consta na tabela de situacaodepaciente
-				Atendimento atend = databaseAtendimento.pesquisarPorId(rs.getInt("atendimento"));	
-				atendimentosPesquisados.add(atend); //Por fim ele irá adicionar o atendimento selecionado na lista de Atendimentos
-				
-			}
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			ConexaoDAO.close(conexao, ps, null);
-		}
-        
+		atendimentosPesquisados = databaseAtendimento.pesquisarPorId(entrada.getIdEntrada());
+
         return atendimentosPesquisados;
 		
 	}
 	
 	public void adicionarAtendimento(Entrada entrada){
-		
-		Connection conexao = ConexaoDAO.getConnection();
-		PreparedStatement ps = null;
-		
+	
 		AtendimentoDAO databaseAtendimento = new AtendimentoDAO();
 		
-		int tamanho = entrada.getAtendimentos().size(); //recupera a quantidade de elementos da Array		
-		Atendimento atendimento = entrada.getAtendimentos().get(tamanho-1); //recupera o ultimo objeto atendimento da lista
+		int ultimoindex = entrada.getAtendimentos().size() -1; //recupera a quantidade de elementos da Array		
+		Atendimento atendimento = entrada.getAtendimentos().get(ultimoindex); //recupera o ultimo objeto atendimento da lista
 				
-		String comando = "INSERT INTO situacaodepaciente (entrada, atendimento) VALUES ('" + entrada.getIdEntrada() + "'" + "," + "'" + databaseAtendimento.inserir(atendimento) + "')";	
+		databaseAtendimento.inserir(atendimento, entrada.getIdEntrada());
 		
-        try {
-			ps = conexao.prepareStatement(comando);
-			ps.executeUpdate();
-			
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}finally{
-			ConexaoDAO.close(conexao, ps, null);
-		}
 	}	
+	
+	public void completarAtendimento(Entrada entrada){		
+		AtendimentoDAO databaseAtendimento = new AtendimentoDAO();
+		
+		int ultimoindex = entrada.getAtendimentos().size() -1; //recupera a quantidade de elementos da Array		
+		Atendimento atendimento = entrada.getAtendimentos().get(ultimoindex); //recupera o ultimo objeto atendimento da lista
+				
+		databaseAtendimento.inserirDadosMedico(atendimento);
+		
+	}
 
 }
