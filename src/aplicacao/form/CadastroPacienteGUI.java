@@ -45,6 +45,8 @@ import aplicacao.dominio.Pessoa;
 import aplicacao.enums.StatusDePessoa;
 import aplicacao.enums.TipoEnfermidade;
 import aplicacao.enums.TipoSanguineo;
+import javax.swing.JScrollBar;
+
 
 public class CadastroPacienteGUI extends JFrame {
 
@@ -92,7 +94,10 @@ public class CadastroPacienteGUI extends JFrame {
 	}
 
 	
-
+	/**
+	 * @author Guilherme
+	 * Cria todos os JButtons na janela.
+	 */
 	public void criarBotoes(){
 		
 		btnSalvar = new JButton("Salvar");
@@ -108,7 +113,10 @@ public class CadastroPacienteGUI extends JFrame {
 	}
 	
 	
-	
+	/**
+	 * @author Guilherme
+	 * Cria todos os JComboBoxes na janela.
+	 */
 	public void criarBoxes(){
 		
 		tipoSangueBox = new JComboBox();
@@ -131,7 +139,9 @@ public class CadastroPacienteGUI extends JFrame {
 	}
 	
 	
-	
+	/**
+	 * @author Guilherme
+	 */
 	public void criarLabels(){
 		
 		JLabel lblCadastroDePaciente = new JLabel("Cadastro de paciente");
@@ -244,6 +254,9 @@ public class CadastroPacienteGUI extends JFrame {
 		deficienciaList.setVisibleRowCount(3);
 		deficienciaList.setModel(new DefaultComboBoxModel(stringNomesDeficiencia));
 		
+		JScrollBar scrollBar_2 = new JScrollBar();
+		scrollPaneDeficiencia.setRowHeaderView(scrollBar_2);
+		
 		scrollPaneAnomalia = new JScrollPane();
 		scrollPaneAnomalia.setBounds(382, 158, 151, 69);
 		contentPane.add(scrollPaneAnomalia);
@@ -259,6 +272,9 @@ public class CadastroPacienteGUI extends JFrame {
 		stringNomesAnomalia = (String[]) nomesAnomalia.toArray(stringNomesAnomalia);
 		scrollPaneAnomalia.setViewportView(anomaliaList);
 		anomaliaList.setModel(new DefaultComboBoxModel(stringNomesAnomalia));
+		
+		JScrollBar scrollBar_1 = new JScrollBar();
+		scrollPaneAnomalia.setRowHeaderView(scrollBar_1);
 		
 		scrollPaneDoenca = new JScrollPane();
 		scrollPaneDoenca.setBounds(382, 243, 151, 69);
@@ -276,6 +292,9 @@ public class CadastroPacienteGUI extends JFrame {
 		scrollPaneDoenca.setViewportView(doencaList);
 		doencaList.setModel(new DefaultComboBoxModel(stringNomesDoencaCronica));
 		
+		JScrollBar scrollBar_3 = new JScrollBar();
+		scrollPaneDoenca.setRowHeaderView(scrollBar_3);
+		
 		scrollPaneAlergia = new JScrollPane();
 		scrollPaneAlergia.setBounds(92, 158, 151, 69);
 		contentPane.add(scrollPaneAlergia);
@@ -291,6 +310,9 @@ public class CadastroPacienteGUI extends JFrame {
 		stringNomesAlergia = (String[]) nomesAlergia.toArray(stringNomesAlergia);
 		scrollPaneAlergia.setViewportView(alergiaList);
 		alergiaList.setModel(new DefaultComboBoxModel(stringNomesAlergia));
+		
+		JScrollBar scrollBar = new JScrollBar();
+		scrollPaneAlergia.setRowHeaderView(scrollBar);
 		
 		
 		textStatus = new JTextPane();
@@ -444,6 +466,4 @@ public class CadastroPacienteGUI extends JFrame {
 			textStatus.setText("Não foi possível concluir a operacao!");
 		}
 	}
-	
-	
 }
