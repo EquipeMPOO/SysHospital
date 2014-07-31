@@ -14,9 +14,9 @@ public class EnfermidadeControle {
 		return enfermidades;
 		
 	}
-	public List<Enfermidade> getDeficiencia(){
+	public ArrayList<Enfermidade> getDeficiencias(){
 		EnfermidadeDAO db = new EnfermidadeDAO ();
-		List<Enfermidade> deficiencia = new ArrayList<Enfermidade>();
+		ArrayList<Enfermidade> deficiencia = new ArrayList<Enfermidade>();
 		List<Enfermidade> enfermidades = db.pesquisarTodos();
 		for(Enfermidade enfermidade : enfermidades){
 			if(enfermidade.getTipo().equals(TipoEnfermidade.D.getTipoEnfermidade())){
@@ -28,9 +28,9 @@ public class EnfermidadeControle {
 
 		
 	}	
-	public List<Enfermidade> getAnomalias(){
+	public ArrayList<Enfermidade> getAnomalias(){
 		EnfermidadeDAO db = new EnfermidadeDAO ();
-		List<Enfermidade> anomalias = new ArrayList<Enfermidade>();
+		ArrayList<Enfermidade> anomalias = new ArrayList<Enfermidade>();
 		List<Enfermidade> enfermidades = db.pesquisarTodos();
 		for(Enfermidade enfermidade : enfermidades){
 			if(enfermidade.getTipo().equals(TipoEnfermidade.A.getTipoEnfermidade())){
@@ -42,9 +42,9 @@ public class EnfermidadeControle {
 
 		
 	}
-	public List<Enfermidade> getAlergias(){
+	public ArrayList<Enfermidade> getAlergias(){
 		EnfermidadeDAO db = new EnfermidadeDAO ();
-		List<Enfermidade> alergias = new ArrayList<Enfermidade>();
+		ArrayList<Enfermidade> alergias = new ArrayList<Enfermidade>();
 		List<Enfermidade> enfermidades = db.pesquisarTodos();
 		for(Enfermidade enfermidade : enfermidades){
 			if(enfermidade.getTipo().equals(TipoEnfermidade.AL.getTipoEnfermidade())){
@@ -56,9 +56,9 @@ public class EnfermidadeControle {
 
 		
 	}
-	public List<Enfermidade> getCronicas(){
+	public ArrayList<Enfermidade> getCronicas(){
 		EnfermidadeDAO db = new EnfermidadeDAO ();
-		List<Enfermidade> cronicas = new ArrayList<Enfermidade>();
+		ArrayList<Enfermidade> cronicas = new ArrayList<Enfermidade>();
 		List<Enfermidade> enfermidades = db.pesquisarTodos();
 		for(Enfermidade enfermidade : enfermidades){
 			if(enfermidade.getTipo().equals(TipoEnfermidade.C.getTipoEnfermidade())){
@@ -69,9 +69,9 @@ public class EnfermidadeControle {
 		return cronicas;
 
 		
-	}public List<Enfermidade> getComuns(){
+	}public ArrayList<Enfermidade> getComuns(){
 		EnfermidadeDAO db = new EnfermidadeDAO ();
-		List<Enfermidade> comuns= new ArrayList<Enfermidade>();
+		ArrayList<Enfermidade> comuns= new ArrayList<Enfermidade>();
 		List<Enfermidade> enfermidades = db.pesquisarTodos();
 		for(Enfermidade enfermidade : enfermidades){
 			if(enfermidade.getTipo().equals(TipoEnfermidade.N.getTipoEnfermidade())){
