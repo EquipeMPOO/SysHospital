@@ -120,12 +120,11 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
 	 * @param en - Instancia da classe Entrada que conterá os dados que serão persistidos numa nova linha da tabela Entrada
 	 */
 	
-	public int inserir(Entrada en, int idPaciente){		
+	public Entrada inserir(Entrada en, int idPaciente){		
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null; 
-        int idGerado = 0;
         
         try{
         	
@@ -139,7 +138,7 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         	ps.executeUpdate();
         	rs = ps.getGeneratedKeys();        	
         	while(rs.next()){
-				idGerado = rs.getInt(1);
+				en.setIdEntrada(rs.getInt(1));
 			}
         }
         catch(SQLException e){
@@ -156,7 +155,7 @@ private static final String SQL_PESQUISA =	"SELECT * FROM entrada";
         	}
         	e.printStackTrace();
         }
-        return idGerado;
+        return en;
         
 	}
 	

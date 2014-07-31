@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import aplicacao.dominio.Enfermeiro;
+import aplicacao.dominio.EnfermidadePessoal;
 import aplicacao.dominio.Entrada;
 import aplicacao.dominio.Funcionario;
 import aplicacao.dominio.Paciente;
@@ -34,9 +35,12 @@ public class PacienteDAO {
         		paciente.setIdPaciente(rs.getInt("idpaciente"));
         		paciente.setHistorico(this.procurarEntradas(paciente));        		
         		PessoaDAO db = new PessoaDAO();
-    			paciente.setPessoa(db.pesquisarporID(rs.getInt("pessoa")));    			
+    			paciente.setPessoa(db.pesquisarporID(rs.getInt("pessoa")));   
+    			
+    			paciente.setDoenca(this.procurarEnfermidadesCronicas(paciente));
     			
     			pacientes.add(paciente);
+    			
     			
     		}   
         }
@@ -66,7 +70,7 @@ public class PacienteDAO {
 		
 		PessoaDAO db = new PessoaDAO();
 		Pessoa pessoaPaciente = db.cadastrar(paciente.getPessoa());
-		
+				
 		String comando = "INSERT INTO paciente(pessoa) VALUES ('" +  pessoaPaciente.getIdPessoa() +"'"+ ")" ;
         
         try {
@@ -75,7 +79,9 @@ public class PacienteDAO {
 			rs = ps.getGeneratedKeys();
         	while(rs.next()){
 				paciente.setIdPaciente(rs.getInt(1));
+				
 			}
+        	this.adicionarEnfermidadesCronicas(paciente);
 			
 			
 		} catch (SQLException e) {
@@ -126,14 +132,32 @@ public class PacienteDAO {
 	
 	public void liberar(Paciente paciente){
 		
-		Connection conexao = ConexaoDAO.getConnection();
-		PreparedStatement ps = null;
-		
 		EntradaDAO databaseEntrada = new EntradaDAO();
 		int ultimoindex = paciente.getHistorico().size() -1; //recupera a quantidade de elementos da Array
 		Entrada entrada = paciente.getHistorico().get(ultimoindex); //recupera o ultimo objeto entrada da lista
 		
 		databaseEntrada.remover(entrada);
+		
+	}
+	
+	public void adicionarEnfermidadesCronicas(Paciente paciente){
+		
+		EnfermidadePessoalDAO databaseEnfPessoal = new EnfermidadePessoalDAO();			
+		for (EnfermidadePessoal enfPessoal : paciente.getDoenca()) {			
+			databaseEnfPessoal.inserirEnfermidadeCronica(enfPessoal, paciente.getIdPaciente());
+			
+		}
+		
+	}
+	
+	public ArrayList<EnfermidadePessoal> procurarEnfermidadesCronicas(Paciente paciente){
+		
+		ArrayList<EnfermidadePessoal> enfermidadesPesquisadas = new ArrayList<EnfermidadePessoal>();
+			
+		EnfermidadePessoalDAO databaseEnfermidade = new EnfermidadePessoalDAO();
+							
+		enfermidadesPesquisadas= databaseEnfermidade.pesquisarCronicasId(paciente);							
+        return enfermidadesPesquisadas;
 		
 	}
 	

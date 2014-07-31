@@ -10,7 +10,9 @@ import java.util.List;
 import aplicacao.dominio.Atendimento;
 import aplicacao.dominio.Enfermeiro;
 import aplicacao.dominio.Enfermidade;
+import aplicacao.dominio.EnfermidadePessoal;
 import aplicacao.dominio.Medico;
+import aplicacao.dominio.Paciente;
 
 /**
  * @author icaro
@@ -48,8 +50,9 @@ public class AtendimentoDAO {
             	at.setComentarioEnfermeiro(rs.getString("comentarioenfermeiro"));
             	at.setComentarioMedico(rs.getString("comentariomedico"));
             	at.setData(rs.getString("data"));      
-            		
-            	//espaco para setar doencas
+            	
+            	//Adiciona doecanas
+            	at.setDoenca(this.procurarEnfermidadesGerais(at));
             		
             	//Adicionar Medico
             	MedicoDAO dbMedico = new MedicoDAO();            		
@@ -97,8 +100,8 @@ public class AtendimentoDAO {
 		
 		Connection conecxao = ConexaoDAO.getConnection();
         PreparedStatement ps = null;
-        ResultSet rs = null;         
-        
+        ResultSet rs = null;
+                
         try{
         	
         	String comando = "INSERT INTO atendimento (comentarioenfermeiro, peso, altura, data,  enfermeiro, entrada) VALUES ("+
@@ -150,10 +153,8 @@ public class AtendimentoDAO {
         	
         	ps = conecxao.prepareStatement(comando, PreparedStatement.RETURN_GENERATED_KEYS);
         	ps.executeUpdate();
-        	
-        	//TODO criar algoritmo pra inserir uma enfermidade pessoal
-        	//EnfermidadePessoalDAO databaseEP = new EnfermidadePessoalDAO()
-        	//databaseEP.inserir(at);
+        	        	
+        	this.adicionarEnfermidadesGerais(at);
         	
         	rs = ps.getGeneratedKeys();
         	while(rs.next()){
@@ -177,6 +178,27 @@ public class AtendimentoDAO {
         return at;
 	}
 	 
+	public void adicionarEnfermidadesGerais(Atendimento atendimento){
+		
+		EnfermidadePessoalDAO databaseEnfPessoal = new EnfermidadePessoalDAO();		
+		
+		for (EnfermidadePessoal enfPessoal : atendimento.getDoenca()) {			
+			databaseEnfPessoal.inserirEnfermidadeGeral(enfPessoal, atendimento.getIdAtentimento());
+			
+		}
+		
+	}
+	
+	public ArrayList<EnfermidadePessoal> procurarEnfermidadesGerais(Atendimento atendimento){
+		
+		ArrayList<EnfermidadePessoal> enfermidadesPesquisadas = new ArrayList<EnfermidadePessoal>();
+			
+		EnfermidadePessoalDAO databaseEnfPessoal = new EnfermidadePessoalDAO();	
+							
+		enfermidadesPesquisadas= databaseEnfPessoal.pesquisarGeraisId(atendimento);							
+        return enfermidadesPesquisadas;
+		
+	}
 	
 	
 }
