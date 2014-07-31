@@ -2,6 +2,8 @@ package aplicacao.form;
 
 
 import aplicacao.dominio.*;
+import aplicacao.enums.StatusDeEntrada;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.util.Date;
 
 /**
  * 
@@ -25,9 +28,11 @@ public class GerenteGUI extends JFrame {
 	private Gerente usuario;
 	private Medico medico;
 	private Enfermeiro enfermeiro;
+	private Paciente paciente;
 	private Atendente atendente;
 	private JPanel contentPane;
 	private JButton btnCadastrarPaciente, btnSair,btnCadastrarMedico,btnCadastrarEnfermeiro,btnInternarPaciente,btnLiberarPaciente, btnGerenciarFuncinario, btnCadastrarAtendente;
+	private Entrada entrada;
 
 
 	/**
@@ -142,7 +147,7 @@ public class GerenteGUI extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Cadastro de Paciente
 				
-				JFrame proximaTela = new CadastroPacienteGUI();
+				JFrame proximaTela = new CadastroPacienteGUI(usuario);
 				GerenteGUI.this.dispose();
 				proximaTela.setVisible(true);
 			
@@ -188,11 +193,14 @@ public class GerenteGUI extends JFrame {
 		
 		class EventoInternar implements ActionListener { //criação da classe interna 
 			
+			
+
 			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionaro o botao de Internar o Paciente
 				
-//				JFrame proximaTela = new GerenciarPacienteGUI();
-//				GerenteGUI.this.dispose();
-//				proximaTela.setVisible(true);
+				
+				JFrame proximaTela = new GerenciarPacienteGUI(usuario,1);
+				GerenteGUI.this.dispose();
+				proximaTela.setVisible(true);
 				
 			}
 		}
@@ -210,7 +218,12 @@ public class GerenteGUI extends JFrame {
 
 		class EventoLiberar implements ActionListener { //criação da classe interna 
 			
-			public void actionPerformed(ActionEvent e) { //Espaço para sobrescrever o que deve ser feito ao pressionar o botao de Liberar o Paciente
+			public void actionPerformed(ActionEvent e) { 
+				
+				JFrame proximaTela = new GerenciarPacienteGUI(usuario,2);
+				GerenteGUI.this.dispose();
+				proximaTela.setVisible(true);
+				
 			}
 		}
 		

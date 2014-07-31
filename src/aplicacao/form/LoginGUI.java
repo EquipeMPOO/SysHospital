@@ -259,7 +259,7 @@ public class LoginGUI extends JFrame {
 						
 						lblStatus.setForeground(Color.BLUE);
 						lblStatus.setText("Enfermeiro encontrado! Fazendo Login.");
-						NovaTela novaTela = new NovaTela();
+						GerenciarPacienteGUI novaTela = new GerenciarPacienteGUI(enfermeiro,0);
 						LoginGUI.this.dispose();
 						novaTela.setVisible(true);
 					} 
@@ -267,7 +267,7 @@ public class LoginGUI extends JFrame {
 						
 						lblStatus.setForeground(Color.BLUE);
 						lblStatus.setText("Medico encontrado! Fazendo Login.");
-						NovaTela novaTela = new NovaTela();
+						GerenciarPacienteGUI novaTela = new GerenciarPacienteGUI(medico,0);
 						LoginGUI.this.dispose();
 						novaTela.setVisible(true);
 						}
